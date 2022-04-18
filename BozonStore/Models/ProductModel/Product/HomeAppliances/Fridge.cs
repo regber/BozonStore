@@ -18,6 +18,14 @@ namespace BozonStore.Models.ProductModel.Product.HomeAppliances
         public int Width { get; set; }
         public int Depth { get; set; }
         public int Height { get; set; }
-        
+
+
+        public int TotalVolume { get; set; }
+        public string DefrostingType { get; set; }
+        public int CoolingVolume { get; set; }
+        public int FreezerVolume { get; set; }
+        public int FreezingPower { get; set; }
+        public string CompressorType { get; set; }
+
     }
 }

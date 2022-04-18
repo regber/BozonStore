@@ -26,7 +26,7 @@ namespace BozonStore.Models.ProductModel.Product.HomeAppliances
         public string SpinClass { get; set; }
         public bool HaveDrying { get; set; }
         public string ControlType { get; set; }
-
+        public bool DirectDrive { get; set; }
 
 
 

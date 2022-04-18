@@ -7,6 +7,7 @@ namespace BozonStore.Models.ProductModel
         public int Id { get; set; }
 
         public string Title { get; set; }
+        public string Discription { get; set; }
         public int Price { get; set; }
 
 

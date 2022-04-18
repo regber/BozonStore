@@ -4,6 +4,6 @@
     {
         Tool,
         BuildingMat,
-        Plumbing
+        SanitaryWare
     }
 }

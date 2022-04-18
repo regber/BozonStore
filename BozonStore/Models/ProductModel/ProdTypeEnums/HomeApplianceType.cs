@@ -3,7 +3,7 @@
     public enum HomeApplianceType
     {
         Fridge,
-        Oven,
+        Stove,
         WashingMachine
     }
 }

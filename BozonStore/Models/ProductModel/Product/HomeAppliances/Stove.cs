@@ -5,9 +5,9 @@ using System.Drawing;
 
 namespace BozonStore.Models.ProductModel.Product.HomeAppliances
 {
-    public class Oven : BaseProduct, IHomeAppliances,IColor,IEmbedded,IEnergyClass,ISize
+    public class Stove : BaseProduct, IHomeAppliances,IColor,IEmbedded,IEnergyClass,ISize
     {
-        public HomeApplianceType HomeApplianceType => HomeApplianceType.Oven;
+        public HomeApplianceType HomeApplianceType => HomeApplianceType.Stove;
 
 
         public Color Color { get; set; }
@@ -18,6 +18,13 @@ namespace BozonStore.Models.ProductModel.Product.HomeAppliances
         public int Width { get; set; }
         public int Depth { get; set; }
         public int Height { get; set; }
+
+
+        public string BurnersType { get; set; }
+        public string OvenType { get; set; }
+        public int OvenVolume { get; set; }
+        public string ControlType { get; set; }
+
 
     }
 }

@@ -5,9 +5,8 @@ using System.Drawing;
 
 namespace BozonStore.Models.ProductModel.Product.ConstrAndRepair
 {
-    public class Plumbing : BaseProduct, IConstrAndRepair
+    public class SanitaryWare : BaseProduct, IConstrAndRepair
     {
-        public ConstrAndRepairType ConstrAndRepairType => ConstrAndRepairType.Plumbing;
-
+        public ConstrAndRepairType ConstrAndRepairType => ConstrAndRepairType.SanitaryWare;
     }
 }
