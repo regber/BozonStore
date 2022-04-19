@@ -30,8 +30,6 @@ namespace BozonStore.Models.ProductModel.Product.Electronics
                 _WirelessInterface = String.Join(';', _data.Select(p => p.ToString()).ToArray());
             }
         }
-        
-
         public int VerticalResolution { get; set; }
         public int HorizontalResolution { get; set; }
         public int CoreCount { get; set; }

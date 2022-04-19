@@ -43,6 +43,8 @@ namespace BozonStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
+
             IncludeBaseProductTPT(modelBuilder);
             IncludeHomeAppliancesTPT(modelBuilder);
             IncludeElectronicsTPT(modelBuilder);

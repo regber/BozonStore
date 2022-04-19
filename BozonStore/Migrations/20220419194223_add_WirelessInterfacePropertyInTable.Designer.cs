@@ -4,14 +4,16 @@ using BozonStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BozonStore.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220419194223_add_WirelessInterfacePropertyInTable")]
+    partial class add_WirelessInterfacePropertyInTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,8 +397,7 @@ namespace BozonStore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("_WirelessInterface")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("WirelessInterface");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("ColorId");
 
