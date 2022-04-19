@@ -1,5 +1,5 @@
 ﻿using BozonStore.Models.ProductModel.ProdCommonInterfaces;
-using System.Drawing;
+using BozonStore.Models.ProductModel.CommonClass;
 
 namespace BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip
 {

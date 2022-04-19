@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using BozonStore.Models.ProductModel.CommonClass;
 
 namespace BozonStore.Models.ProductModel.ProdCommonInterfaces
 {

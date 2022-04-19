@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+
+
 
 namespace BozonStore.Models.ProductModel
 {
-    public abstract class BaseProduct
+    public class BaseProduct
     {
         public int Id { get; set; }
 
@@ -11,8 +14,8 @@ namespace BozonStore.Models.ProductModel
         public int Price { get; set; }
 
 
-        public string MainImagePath { get; set; }
-        public ICollection<string> ImagesPaths { get; set; }
+        public Image MainImage { get; set; }
+        public ICollection<Image> Images { get; set; }
 
 
         public int SellerId { get; set; }

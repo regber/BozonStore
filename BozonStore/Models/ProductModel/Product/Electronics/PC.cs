@@ -1,7 +1,7 @@
 ﻿using BozonStore.Models.ProductModel.ProdTypeInterfaces;
 using BozonStore.Models.ProductModel.ProdTypeEnums;
 using BozonStore.Models.ProductModel.ProdCommonInterfaces;
-using System.Drawing;
+using BozonStore.Models.ProductModel.CommonClass;
 
 namespace BozonStore.Models.ProductModel.Product.Electronics
 {

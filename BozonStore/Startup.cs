@@ -9,6 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using BozonStore.Models;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace BozonStore
 {
     public class Startup
@@ -23,6 +27,8 @@ namespace BozonStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationContext>(options=>options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
         }
 

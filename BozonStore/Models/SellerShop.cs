@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using BozonStore.Models.ProductModel;
 
 namespace BozonStore.Models
 {
@@ -13,5 +11,7 @@ namespace BozonStore.Models
 
         public int SellerId {get;set;}
         public Seller Seller { get; set; }
+
+        public ICollection<BaseProduct> Products { get; set; }
     }
 }
