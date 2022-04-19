@@ -5,7 +5,7 @@ using BozonStore.Models.ProductModel.CommonClass;
 
 namespace BozonStore.Models.ProductModel.Product.Electronics
 {
-    public class TV : BaseProduct, IElectronics,IColor
+    public class Television : BaseProduct, IElectronics,IColor
     {
         public ElectronicType ElectronicType => ElectronicType.TV;
         public Color Color { get; set; }
