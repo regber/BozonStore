@@ -43,7 +43,6 @@ namespace BozonStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             IncludeBaseProductTPT(modelBuilder);
             IncludeHomeAppliancesTPT(modelBuilder);
             IncludeElectronicsTPT(modelBuilder);
