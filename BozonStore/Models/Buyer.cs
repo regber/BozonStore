@@ -5,14 +5,8 @@ using System.Threading.Tasks;
 
 namespace BozonStore.Models
 {
-    public class Buyer
+    public class Buyer:User
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-
-
         public ICollection<Purchas> Purchases { get; set; }
     }
 }
