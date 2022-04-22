@@ -1,4 +1,5 @@
-﻿using BozonStore.Models.ProductModel;
+﻿using BozonStore.Models.PurchasModel;
+
 
 namespace BozonStore.Models
 {
@@ -6,8 +7,8 @@ namespace BozonStore.Models
     {
         public int Id { get; set; }
 
-        public BaseProduct Product { get; set; }
-        public Seller Seller { get; set; }
-        public SellerShop SellerShop { get; set; }
+        public PurchasProduct Product { get; set; }
+        public PurchasSeller Seller { get; set; }
+        public PurchasSellerShop SellerShop { get; set; }
     }
 }

@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using BozonStore.Models.ProductModel.Product.HomeAppliances;
 using BozonStore.Models.ProductModel.Product.Electronics;
 using ConstrAndRepair = BozonStore.Models.ProductModel.Product.ConstrAndRepair;
-
+using BozonStore.Models.PurchasModel;
+using System;
 
 namespace BozonStore.Models
 {
@@ -46,6 +47,7 @@ namespace BozonStore.Models
             modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
 
             IncludeBaseProductTPT(modelBuilder);
+            IncludePurchasModelTPT(modelBuilder);
             IncludeHomeAppliancesTPT(modelBuilder);
             IncludeElectronicsTPT(modelBuilder);
             IncludeConstrAndRepairTPT(modelBuilder);
@@ -53,9 +55,17 @@ namespace BozonStore.Models
             base.OnModelCreating(modelBuilder);
         }
 
+
+
         private void IncludeBaseProductTPT(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BaseProduct>().ToTable("BaseProducts");
+        }
+        private void IncludePurchasModelTPT(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PurchasProduct>().ToTable("PurchaseProducts");
+            //modelBuilder.Entity<PurchasSeller>().ToTable("PurchasSellers");
+            modelBuilder.Entity<PurchasSellerShop>().ToTable("PurchasSellerShops");
         }
         private void IncludeHomeAppliancesTPT(ModelBuilder modelBuilder)
         {
