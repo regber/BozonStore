@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-
-
-namespace BozonStore.Models.ProductModel
+namespace BozonStore.Models.ProductModel.ProdCommonInterfaces
 {
-    public class BaseProduct
+    interface IBaseProduct
     {
         public int Id { get; set; }
 

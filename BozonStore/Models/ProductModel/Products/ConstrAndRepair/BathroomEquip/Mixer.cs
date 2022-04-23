@@ -1,7 +1,7 @@
 ﻿using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 using BozonStore.Models.ProductModel.CommonClass;
 
-namespace BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip
+namespace BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip
 {
     public class Mixer : SanitaryWare, IColor
     {

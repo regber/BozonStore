@@ -3,9 +3,9 @@ using BozonStore.Models.ProductModel.ProdTypeEnums;
 using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 using BozonStore.Models.ProductModel.CommonClass;
 
-namespace BozonStore.Models.ProductModel.Product.Electronics
+namespace BozonStore.Models.ProductModel.Products.Electronics
 {
-    public class Audio : BaseProduct, IElectronics,IColor
+    public class Audio : Product, IElectronics,IColor
     {
         public ElectronicType ElectronicType => ElectronicType.Audio;
 

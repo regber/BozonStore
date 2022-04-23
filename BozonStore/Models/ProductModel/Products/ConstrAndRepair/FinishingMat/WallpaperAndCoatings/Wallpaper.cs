@@ -1,5 +1,5 @@
 ﻿
-namespace BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings
+namespace BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings
 {
     public class Wallpaper:BuildingMat
     {

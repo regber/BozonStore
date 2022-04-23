@@ -3,9 +3,9 @@ using BozonStore.Models.ProductModel.ProdTypeEnums;
 using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 using BozonStore.Models.ProductModel.CommonClass;
 
-namespace BozonStore.Models.ProductModel.Product.Electronics
+namespace BozonStore.Models.ProductModel.Products.Electronics
 {
-    public class Television : BaseProduct, IElectronics,IColor
+    public class Television : Product, IElectronics,IColor
     {
         public ElectronicType ElectronicType => ElectronicType.TV;
         public Color Color { get; set; }

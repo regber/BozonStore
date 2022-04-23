@@ -12,6 +12,6 @@ namespace BozonStore.Models
         public int SellerId {get;set;}
         public Seller Seller { get; set; }
 
-        public ICollection<BaseProduct> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

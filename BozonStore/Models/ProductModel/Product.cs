@@ -1,12 +1,13 @@
-﻿using BozonStore.Models.ProductModel.ProdCommonInterfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 
-namespace BozonStore.Models.PurchasModel
+
+
+namespace BozonStore.Models.ProductModel
 {
-    public class PurchasProduct : IBaseProduct
+    public class Product:IBaseProduct
     {
         public int Id { get; set; }
-
 
         public string Title { get; set; }
         public string Discription { get; set; }

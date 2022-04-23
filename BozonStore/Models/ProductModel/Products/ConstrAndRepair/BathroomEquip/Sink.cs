@@ -1,5 +1,5 @@
 ﻿
-namespace BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip
+namespace BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip
 {
     public class Sink:SanitaryWare
     {

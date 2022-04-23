@@ -8,9 +8,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace BozonStore.Models.ProductModel.Product.Electronics
+namespace BozonStore.Models.ProductModel.Products.Electronics
 {
-    public class Smartphone : BaseProduct, IElectronics, IColor
+    public class Smartphone : Product, IElectronics, IColor
     {
         public ElectronicType ElectronicType => ElectronicType.Smartphone;
         public Color Color { get; set; }

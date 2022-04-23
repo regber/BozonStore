@@ -1,8 +1,8 @@
 ﻿using BozonStore.Models.ProductModel;
 using Microsoft.EntityFrameworkCore;
-using BozonStore.Models.ProductModel.Product.HomeAppliances;
-using BozonStore.Models.ProductModel.Product.Electronics;
-using ConstrAndRepair = BozonStore.Models.ProductModel.Product.ConstrAndRepair;
+using BozonStore.Models.ProductModel.Products.HomeAppliances;
+using BozonStore.Models.ProductModel.Products.Electronics;
+using ConstrAndRepair = BozonStore.Models.ProductModel.Products.ConstrAndRepair;
 using BozonStore.Models.PurchasModel;
 using System;
 
@@ -21,7 +21,7 @@ namespace BozonStore.Models
         public DbSet<Purchas> Purchases { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
 
-        public DbSet<BaseProduct> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
         //HomeAppliances
         public DbSet<Fridge> Fridges { get; set; }
         public DbSet<Stove> Stoves { get; set; }
@@ -59,7 +59,7 @@ namespace BozonStore.Models
 
         private void IncludeBaseProductTPT(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BaseProduct>().ToTable("BaseProducts");
+            modelBuilder.Entity<Product>().ToTable("BaseProducts");
         }
         private void IncludePurchasModelTPT(ModelBuilder modelBuilder)
         {

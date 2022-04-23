@@ -3,9 +3,9 @@ using BozonStore.Models.ProductModel.ProdTypeEnums;
 using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 using BozonStore.Models.ProductModel.CommonClass;
 
-namespace BozonStore.Models.ProductModel.Product.HomeAppliances
+namespace BozonStore.Models.ProductModel.Products.HomeAppliances
 {
-    public class WashingMachine : BaseProduct, IHomeAppliances,IColor, IEmbedded,IEnergyClass,ISize
+    public class WashingMachine : Product, IHomeAppliances,IColor, IEmbedded,IEnergyClass,ISize
     {
         public HomeApplianceType HomeApplianceType => HomeApplianceType.WashingMachine;
 
