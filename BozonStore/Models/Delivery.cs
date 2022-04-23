@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace BozonStore.Models
 {
-    public class Delivery
+    public class Delivery:User
     {
-        public int Id { get; set; }
+        
     }
 }

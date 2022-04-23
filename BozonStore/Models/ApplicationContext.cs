@@ -18,10 +18,17 @@ namespace BozonStore.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
         public DbSet<Seller> Sellers { get; set; }
-        public DbSet<Purchas> Purchases { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<Purchas> Purchases { get; set; }
+
+        //Purchas Model
+        public DbSet<PurchasProduct> PurchasProducts { get; set; }
+        public DbSet<PurchasSeller> PurchasSellers { get; set; }
+        public DbSet<PurchasSellerShop> PurchasSellerShops { get; set; }
+
         //HomeAppliances
         public DbSet<Fridge> Fridges { get; set; }
         public DbSet<Stove> Stoves { get; set; }
