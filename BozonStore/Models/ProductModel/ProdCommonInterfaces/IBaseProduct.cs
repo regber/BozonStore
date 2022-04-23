@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BozonStore.Models.ProductModel.ProdCommonInterfaces
 {
-    interface IBaseProduct
+    interface IBaseProduct<S>
     {
         public int Id { get; set; }
 
@@ -19,6 +19,6 @@ namespace BozonStore.Models.ProductModel.ProdCommonInterfaces
 
 
         public int SellerId { get; set; }
-        public Seller Seller { get; set; }
+        public S Seller { get; set; }
     }
 }

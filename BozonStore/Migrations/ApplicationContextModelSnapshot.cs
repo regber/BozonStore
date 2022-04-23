@@ -19,18 +19,6 @@ namespace BozonStore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("BozonStore.Models.Delivery", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Deliveries");
-                });
-
             modelBuilder.Entity("BozonStore.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -38,7 +26,10 @@ namespace BozonStore.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("BaseProductId")
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchasProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("Uri")
@@ -46,45 +37,11 @@ namespace BozonStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BaseProductId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchasProductId");
 
                     b.ToTable("Image");
-                });
-
-            modelBuilder.Entity("BozonStore.Models.ProductModel.BaseProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Discription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MainImageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SellerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SellerShopId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainImageId");
-
-                    b.HasIndex("SellerId");
-
-                    b.HasIndex("SellerShopId");
-
-                    b.ToTable("BaseProducts");
                 });
 
             modelBuilder.Entity("BozonStore.Models.ProductModel.CommonClass.Color", b =>
@@ -109,6 +66,42 @@ namespace BozonStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Color");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Discription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MainImageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainImageId");
+
+                    b.HasIndex("SellerId");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("BozonStore.Models.Purchas", b =>
@@ -143,7 +136,43 @@ namespace BozonStore.Migrations
                     b.ToTable("Purchases");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.SellerShop", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Discription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MainImageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchasShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainImageId");
+
+                    b.HasIndex("PurchasShopId");
+
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("PurchaseProducts");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasShop", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +192,30 @@ namespace BozonStore.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("SellerShop");
+                    b.ToTable("PurchasShops");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.Shop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("Shops");
                 });
 
             modelBuilder.Entity("BozonStore.Models.User", b =>
@@ -202,9 +254,9 @@ namespace BozonStore.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip.Mixer", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Mixer", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int?>("ColorId")
                         .HasColumnType("int");
@@ -223,9 +275,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Mixers");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip.Sink", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Sink", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int>("CupCount")
                         .HasColumnType("int");
@@ -242,9 +294,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Sinks");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.ElectricyTool.AngleGrinder", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.AngleGrinder", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int>("DiameterDisc")
                         .HasColumnType("int");
@@ -255,9 +307,9 @@ namespace BozonStore.Migrations
                     b.ToTable("AngleGrinders");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.ElectricyTool.Puncher", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.Puncher", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<string>("HolderType")
                         .HasColumnType("nvarchar(max)");
@@ -274,9 +326,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Punchers");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
@@ -293,9 +345,9 @@ namespace BozonStore.Migrations
                     b.ToTable("WallPanels");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<string>("Article")
                         .HasColumnType("nvarchar(max)");
@@ -312,9 +364,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Wallpapers");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Audio", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audio", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int?>("ColorId")
                         .HasColumnType("int");
@@ -324,9 +376,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Audios");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Computer", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Computer", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int?>("ColorId")
                         .HasColumnType("int");
@@ -360,9 +412,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Computers");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Smartphone", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Smartphone", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int>("BatteryVolume")
                         .HasColumnType("int");
@@ -403,9 +455,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Smartphones");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Television", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Television", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<string>("BracingType")
                         .HasColumnType("nvarchar(max)");
@@ -451,9 +503,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Televisions");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.HomeAppliances.Fridge", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.HomeAppliances.Fridge", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int?>("ColorId")
                         .HasColumnType("int");
@@ -496,9 +548,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Fridges");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.HomeAppliances.Stove", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.HomeAppliances.Stove", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<string>("BurnersType")
                         .HasColumnType("nvarchar(max)");
@@ -535,9 +587,9 @@ namespace BozonStore.Migrations
                     b.ToTable("Stoves");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.HomeAppliances.WashingMachine", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.HomeAppliances.WashingMachine", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
+                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int?>("ColorId")
                         .HasColumnType("int");
@@ -583,25 +635,29 @@ namespace BozonStore.Migrations
                     b.ToTable("WashingMachines");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
-                {
-                    b.HasBaseType("BozonStore.Models.ProductModel.BaseProduct");
-
-                    b.ToTable("PurchaseProducts");
-                });
-
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSellerShop", b =>
-                {
-                    b.HasBaseType("BozonStore.Models.SellerShop");
-
-                    b.ToTable("PurchasSellerShops");
-                });
-
             modelBuilder.Entity("BozonStore.Models.Buyer", b =>
                 {
                     b.HasBaseType("BozonStore.Models.User");
 
                     b.HasDiscriminator().HasValue("Buyer");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.Delivery", b =>
+                {
+                    b.HasBaseType("BozonStore.Models.User");
+
+                    b.HasDiscriminator().HasValue("Delivery");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSeller", b =>
+                {
+                    b.HasBaseType("BozonStore.Models.User");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("PurchasSeller_Title");
+
+                    b.HasDiscriminator().HasValue("PurchasSeller");
                 });
 
             modelBuilder.Entity("BozonStore.Models.Seller", b =>
@@ -614,21 +670,18 @@ namespace BozonStore.Migrations
                     b.HasDiscriminator().HasValue("Seller");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSeller", b =>
-                {
-                    b.HasBaseType("BozonStore.Models.Seller");
-
-                    b.HasDiscriminator().HasValue("PurchasSeller");
-                });
-
             modelBuilder.Entity("BozonStore.Models.Image", b =>
                 {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("BaseProductId");
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("BozonStore.Models.PurchasModel.PurchasProduct", null)
+                        .WithMany("Images")
+                        .HasForeignKey("PurchasProductId");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.BaseProduct", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Product", b =>
                 {
                     b.HasOne("BozonStore.Models.Image", "MainImage")
                         .WithMany()
@@ -640,9 +693,9 @@ namespace BozonStore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BozonStore.Models.SellerShop", null)
+                    b.HasOne("BozonStore.Models.Shop", null)
                         .WithMany("Products")
-                        .HasForeignKey("SellerShopId");
+                        .HasForeignKey("ShopId");
 
                     b.Navigation("MainImage");
 
@@ -663,7 +716,7 @@ namespace BozonStore.Migrations
                         .WithMany()
                         .HasForeignKey("SellerId");
 
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasSellerShop", "SellerShop")
+                    b.HasOne("BozonStore.Models.PurchasModel.PurchasShop", "SellerShop")
                         .WithMany()
                         .HasForeignKey("SellerShopId");
 
@@ -674,10 +727,31 @@ namespace BozonStore.Migrations
                     b.Navigation("SellerShop");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.SellerShop", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
                 {
-                    b.HasOne("BozonStore.Models.Seller", "Seller")
-                        .WithMany("SellersShops")
+                    b.HasOne("BozonStore.Models.Image", "MainImage")
+                        .WithMany()
+                        .HasForeignKey("MainImageId");
+
+                    b.HasOne("BozonStore.Models.PurchasModel.PurchasShop", null)
+                        .WithMany("Products")
+                        .HasForeignKey("PurchasShopId");
+
+                    b.HasOne("BozonStore.Models.PurchasModel.PurchasSeller", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MainImage");
+
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasShop", b =>
+                {
+                    b.HasOne("BozonStore.Models.PurchasModel.PurchasSeller", "Seller")
+                        .WithMany("Shops")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -685,195 +759,198 @@ namespace BozonStore.Migrations
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip.Mixer", b =>
+            modelBuilder.Entity("BozonStore.Models.Shop", b =>
+                {
+                    b.HasOne("BozonStore.Models.Seller", "Seller")
+                        .WithMany("Shops")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Mixer", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip.Mixer", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Mixer", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip.Sink", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Sink", b =>
                 {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.ConstrAndRepair.BathroomEquip.Sink", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Sink", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.ElectricyTool.AngleGrinder", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.AngleGrinder", b =>
                 {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.ConstrAndRepair.ElectricyTool.AngleGrinder", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.AngleGrinder", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.ElectricyTool.Puncher", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.Puncher", b =>
                 {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.ConstrAndRepair.ElectricyTool.Puncher", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.Puncher", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", b =>
                 {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", b =>
                 {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Audio", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audio", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.Electronics.Audio", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Audio", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Computer", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Computer", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.Electronics.Computer", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Computer", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Smartphone", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Smartphone", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.Electronics.Smartphone", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Smartphone", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.Electronics.Television", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Television", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.Electronics.Television", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Television", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.HomeAppliances.Fridge", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.HomeAppliances.Fridge", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.HomeAppliances.Fridge", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.HomeAppliances.Fridge", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.HomeAppliances.Stove", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.HomeAppliances.Stove", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.HomeAppliances.Stove", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.HomeAppliances.Stove", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Product.HomeAppliances.WashingMachine", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.HomeAppliances.WashingMachine", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
 
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
+                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Product.HomeAppliances.WashingMachine", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.HomeAppliances.WashingMachine", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
-                {
-                    b.HasOne("BozonStore.Models.ProductModel.BaseProduct", null)
-                        .WithOne()
-                        .HasForeignKey("BozonStore.Models.PurchasModel.PurchasProduct", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSellerShop", b =>
-                {
-                    b.HasOne("BozonStore.Models.SellerShop", null)
-                        .WithOne()
-                        .HasForeignKey("BozonStore.Models.PurchasModel.PurchasSellerShop", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BozonStore.Models.ProductModel.BaseProduct", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Product", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.SellerShop", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
+                {
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasShop", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.Shop", b =>
                 {
                     b.Navigation("Products");
                 });
@@ -883,9 +960,14 @@ namespace BozonStore.Migrations
                     b.Navigation("Purchases");
                 });
 
+            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSeller", b =>
+                {
+                    b.Navigation("Shops");
+                });
+
             modelBuilder.Entity("BozonStore.Models.Seller", b =>
                 {
-                    b.Navigation("SellersShops");
+                    b.Navigation("Shops");
                 });
 #pragma warning restore 612, 618
         }

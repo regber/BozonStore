@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BozonStore.Models.ProductModel.Products.HomeAppliances;
 using BozonStore.Models.ProductModel.Products.Electronics;
 using ConstrAndRepair = BozonStore.Models.ProductModel.Products.ConstrAndRepair;
-using BozonStore.Models.PurchasModel;
+using BozonStore.Models.PurchaseModel;
 using System;
 
 namespace BozonStore.Models
@@ -18,16 +18,18 @@ namespace BozonStore.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
         public DbSet<Seller> Sellers { get; set; }
+        public DbSet<Shop> Shops { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
+
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<Purchas> Purchases { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         //Purchas Model
-        public DbSet<PurchasProduct> PurchasProducts { get; set; }
-        public DbSet<PurchasSeller> PurchasSellers { get; set; }
-        public DbSet<PurchasSellerShop> PurchasSellerShops { get; set; }
+        public DbSet<PurchaseProduct> PurchasProducts { get; set; }
+        public DbSet<PurchaseSeller> PurchasSellers { get; set; }
+        public DbSet<PurchaseShop> PurchasShops { get; set; }
 
         //HomeAppliances
         public DbSet<Fridge> Fridges { get; set; }
@@ -66,13 +68,11 @@ namespace BozonStore.Models
 
         private void IncludeBaseProductTPT(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().ToTable("BaseProducts");
+            modelBuilder.Entity<Product>().ToTable("Products");
         }
         private void IncludePurchasModelTPT(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PurchasProduct>().ToTable("PurchaseProducts");
-            //modelBuilder.Entity<PurchasSeller>().ToTable("PurchasSellers");
-            modelBuilder.Entity<PurchasSellerShop>().ToTable("PurchasSellerShops");
+            modelBuilder.Entity<PurchaseProduct>().ToTable("PurchaseProducts");
         }
         private void IncludeHomeAppliancesTPT(ModelBuilder modelBuilder)
         {

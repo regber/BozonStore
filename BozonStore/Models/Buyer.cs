@@ -7,6 +7,6 @@ namespace BozonStore.Models
 {
     public class Buyer:User
     {
-        public ICollection<Purchas> Purchases { get; set; }
+        public ICollection<Purchase> Purchases { get; set; }
     }
 }

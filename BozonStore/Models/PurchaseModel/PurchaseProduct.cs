@@ -1,9 +1,9 @@
 ﻿using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 using System.Collections.Generic;
 
-namespace BozonStore.Models.PurchasModel
+namespace BozonStore.Models.PurchaseModel
 {
-    public class PurchasProduct : IBaseProduct
+    public class PurchaseProduct : IBaseProduct<PurchaseSeller>
     {
         public int Id { get; set; }
 
@@ -18,6 +18,6 @@ namespace BozonStore.Models.PurchasModel
 
 
         public int SellerId { get; set; }
-        public Seller Seller { get; set; }
+        public PurchaseSeller Seller { get; set; }
     }
 }
