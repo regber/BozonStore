@@ -29,9 +29,6 @@ namespace BozonStore.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PurchasProductId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Uri")
                         .HasColumnType("nvarchar(max)");
 
@@ -39,9 +36,7 @@ namespace BozonStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("PurchasProductId");
-
-                    b.ToTable("Image");
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("BozonStore.Models.ProductModel.CommonClass.Color", b =>
@@ -104,7 +99,7 @@ namespace BozonStore.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Purchas", b =>
+            modelBuilder.Entity("BozonStore.Models.Purchase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,7 +131,27 @@ namespace BozonStore.Migrations
                     b.ToTable("Purchases");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("PurchaseProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Uri")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseProductId");
+
+                    b.ToTable("PurchaseImages");
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,11 +167,12 @@ namespace BozonStore.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PurchasShopId")
+                    b.Property<int?>("PurchaseShopId")
                         .HasColumnType("int");
 
                     b.Property<int>("SellerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PurchaseSellerId");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -165,14 +181,14 @@ namespace BozonStore.Migrations
 
                     b.HasIndex("MainImageId");
 
-                    b.HasIndex("PurchasShopId");
+                    b.HasIndex("PurchaseShopId");
 
                     b.HasIndex("SellerId");
 
                     b.ToTable("PurchaseProducts");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasShop", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseShop", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,10 +244,6 @@ namespace BozonStore.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -250,8 +262,6 @@ namespace BozonStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
             modelBuilder.Entity("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Mixer", b =>
@@ -639,25 +649,24 @@ namespace BozonStore.Migrations
                 {
                     b.HasBaseType("BozonStore.Models.User");
 
-                    b.HasDiscriminator().HasValue("Buyer");
+                    b.ToTable("Buyers");
                 });
 
             modelBuilder.Entity("BozonStore.Models.Delivery", b =>
                 {
                     b.HasBaseType("BozonStore.Models.User");
 
-                    b.HasDiscriminator().HasValue("Delivery");
+                    b.ToTable("Deliveries");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSeller", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseSeller", b =>
                 {
                     b.HasBaseType("BozonStore.Models.User");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("PurchasSeller_Title");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("PurchasSeller");
+                    b.ToTable("PurchaseSellers");
                 });
 
             modelBuilder.Entity("BozonStore.Models.Seller", b =>
@@ -667,18 +676,15 @@ namespace BozonStore.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("Seller");
+                    b.ToTable("Sellers");
                 });
 
             modelBuilder.Entity("BozonStore.Models.Image", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasProduct", null)
-                        .WithMany("Images")
-                        .HasForeignKey("PurchasProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BozonStore.Models.ProductModel.Product", b =>
@@ -702,21 +708,21 @@ namespace BozonStore.Migrations
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Purchas", b =>
+            modelBuilder.Entity("BozonStore.Models.Purchase", b =>
                 {
                     b.HasOne("BozonStore.Models.Buyer", null)
                         .WithMany("Purchases")
                         .HasForeignKey("BuyerId");
 
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasProduct", "Product")
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasSeller", "Seller")
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseSeller", "Seller")
                         .WithMany()
                         .HasForeignKey("SellerId");
 
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasShop", "SellerShop")
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseShop", "SellerShop")
                         .WithMany()
                         .HasForeignKey("SellerShopId");
 
@@ -727,17 +733,25 @@ namespace BozonStore.Migrations
                     b.Navigation("SellerShop");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseImage", b =>
                 {
-                    b.HasOne("BozonStore.Models.Image", "MainImage")
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseProduct", null)
+                        .WithMany("Images")
+                        .HasForeignKey("PurchaseProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseProduct", b =>
+                {
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseImage", "MainImage")
                         .WithMany()
                         .HasForeignKey("MainImageId");
 
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasShop", null)
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseShop", null)
                         .WithMany("Products")
-                        .HasForeignKey("PurchasShopId");
+                        .HasForeignKey("PurchaseShopId");
 
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasSeller", "Seller")
+                    b.HasOne("BozonStore.Models.Seller", "Seller")
                         .WithMany()
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -748,9 +762,9 @@ namespace BozonStore.Migrations
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasShop", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseShop", b =>
                 {
-                    b.HasOne("BozonStore.Models.PurchasModel.PurchasSeller", "Seller")
+                    b.HasOne("BozonStore.Models.PurchaseModel.PurchaseSeller", "Seller")
                         .WithMany("Shops")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -869,7 +883,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Smartphone", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -935,17 +949,53 @@ namespace BozonStore.Migrations
                     b.Navigation("Color");
                 });
 
+            modelBuilder.Entity("BozonStore.Models.Buyer", b =>
+                {
+                    b.HasOne("BozonStore.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BozonStore.Models.Buyer", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BozonStore.Models.Delivery", b =>
+                {
+                    b.HasOne("BozonStore.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BozonStore.Models.Delivery", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseSeller", b =>
+                {
+                    b.HasOne("BozonStore.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BozonStore.Models.PurchaseModel.PurchaseSeller", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BozonStore.Models.Seller", b =>
+                {
+                    b.HasOne("BozonStore.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BozonStore.Models.Seller", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BozonStore.Models.ProductModel.Product", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasProduct", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseProduct", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasShop", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseShop", b =>
                 {
                     b.Navigation("Products");
                 });
@@ -960,7 +1010,7 @@ namespace BozonStore.Migrations
                     b.Navigation("Purchases");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.PurchasModel.PurchasSeller", b =>
+            modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseSeller", b =>
                 {
                     b.Navigation("Shops");
                 });

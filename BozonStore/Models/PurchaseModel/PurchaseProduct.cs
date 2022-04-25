@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BozonStore.Models.PurchaseModel
 {
-    public class PurchaseProduct : IBaseProduct<PurchaseSeller>
+    public class PurchaseProduct : IBaseProduct<PurchaseSeller,PurchaseImage>
     {
         public int Id { get; set; }
 
@@ -13,11 +13,11 @@ namespace BozonStore.Models.PurchaseModel
         public int Price { get; set; }
 
 
-        public Image MainImage { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public PurchaseImage MainImage { get; set; }
+        public ICollection<PurchaseImage> Images { get; set; }
 
 
         public int SellerId { get; set; }
-        public PurchaseSeller Seller { get; set; }
+        public Seller Seller { get; set; }
     }
 }

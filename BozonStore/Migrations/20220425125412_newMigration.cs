@@ -2,7 +2,7 @@
 
 namespace BozonStore.Migrations
 {
-    public partial class TestMigration : Migration
+    public partial class newMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,14 +33,81 @@ namespace BozonStore.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PurchasSeller_Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NumberPhone = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Buyers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buyers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Buyers_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deliveries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deliveries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PurchaseSellers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseSellers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseSellers_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sellers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sellers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sellers_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,9 +124,9 @@ namespace BozonStore.Migrations
                 {
                     table.PrimaryKey("PK_PurchasShops", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PurchasShops_Users_SellerId",
+                        name: "FK_PurchasShops_PurchaseSellers_SellerId",
                         column: x => x.SellerId,
-                        principalTable: "Users",
+                        principalTable: "PurchaseSellers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -78,11 +145,45 @@ namespace BozonStore.Migrations
                 {
                     table.PrimaryKey("PK_Shops", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shops_Users_SellerId",
+                        name: "FK_Shops_Sellers_SellerId",
                         column: x => x.SellerId,
-                        principalTable: "Users",
+                        principalTable: "Sellers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    SellerId = table.Column<int>(type: "int", nullable: true),
+                    SellerShopId = table.Column<int>(type: "int", nullable: true),
+                    BuyerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_Buyers_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "Buyers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Purchases_PurchaseSellers_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "PurchaseSellers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Purchases_PurchasShops_SellerShopId",
+                        column: x => x.SellerShopId,
+                        principalTable: "PurchasShops",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -311,17 +412,17 @@ namespace BozonStore.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Products_Sellers_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Sellers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Products_Shops_ShopId",
                         column: x => x.ShopId,
                         principalTable: "Shops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Products_Users_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -341,6 +442,26 @@ namespace BozonStore.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Uri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -437,91 +558,44 @@ namespace BozonStore.Migrations
                     Discription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<int>(type: "int", nullable: false),
                     MainImageId = table.Column<int>(type: "int", nullable: true),
-                    SellerId = table.Column<int>(type: "int", nullable: false),
-                    PurchasShopId = table.Column<int>(type: "int", nullable: true)
+                    PurchaseSellerId = table.Column<int>(type: "int", nullable: false),
+                    PurchaseShopId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PurchaseProducts_PurchasShops_PurchasShopId",
-                        column: x => x.PurchasShopId,
+                        name: "FK_PurchaseProducts_PurchasShops_PurchaseShopId",
+                        column: x => x.PurchaseShopId,
                         principalTable: "PurchasShops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseProducts_Users_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "Users",
+                        name: "FK_PurchaseProducts_Sellers_PurchaseSellerId",
+                        column: x => x.PurchaseSellerId,
+                        principalTable: "Sellers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image",
+                name: "PurchaseImages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Uri = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
-                    PurchasProductId = table.Column<int>(type: "int", nullable: true)
+                    PurchaseProductId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.PrimaryKey("PK_PurchaseImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Image_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Image_PurchaseProducts_PurchasProductId",
-                        column: x => x.PurchasProductId,
+                        name: "FK_PurchaseImages_PurchaseProducts_PurchaseProductId",
+                        column: x => x.PurchaseProductId,
                         principalTable: "PurchaseProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchases",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
-                    SellerId = table.Column<int>(type: "int", nullable: true),
-                    SellerShopId = table.Column<int>(type: "int", nullable: true),
-                    BuyerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchases_PurchaseProducts_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "PurchaseProducts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Purchases_PurchasShops_SellerShopId",
-                        column: x => x.SellerShopId,
-                        principalTable: "PurchasShops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Purchases_Users_BuyerId",
-                        column: x => x.BuyerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Purchases_Users_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -540,14 +614,9 @@ namespace BozonStore.Migrations
                 column: "ColorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Image_ProductId",
-                table: "Image",
+                name: "IX_Images_ProductId",
+                table: "Images",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_PurchasProductId",
-                table: "Image",
-                column: "PurchasProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mixers_ColorId",
@@ -570,19 +639,24 @@ namespace BozonStore.Migrations
                 column: "ShopId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PurchaseImages_PurchaseProductId",
+                table: "PurchaseImages",
+                column: "PurchaseProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseProducts_MainImageId",
                 table: "PurchaseProducts",
                 column: "MainImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseProducts_PurchasShopId",
+                name: "IX_PurchaseProducts_PurchaseSellerId",
                 table: "PurchaseProducts",
-                column: "PurchasShopId");
+                column: "PurchaseSellerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseProducts_SellerId",
+                name: "IX_PurchaseProducts_PurchaseShopId",
                 table: "PurchaseProducts",
-                column: "SellerId");
+                column: "PurchaseShopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Purchases_BuyerId",
@@ -635,6 +709,14 @@ namespace BozonStore.Migrations
                 column: "ColorId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Purchases_PurchaseProducts_ProductId",
+                table: "Purchases",
+                column: "ProductId",
+                principalTable: "PurchaseProducts",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Audios_Products_Id",
                 table: "Audios",
                 column: "Id",
@@ -672,7 +754,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Stoves_Products_Id",
@@ -699,18 +781,18 @@ namespace BozonStore.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Products_Image_MainImageId",
+                name: "FK_Products_Images_MainImageId",
                 table: "Products",
                 column: "MainImageId",
-                principalTable: "Image",
+                principalTable: "Images",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_PurchaseProducts_Image_MainImageId",
+                name: "FK_PurchaseProducts_PurchaseImages_MainImageId",
                 table: "PurchaseProducts",
                 column: "MainImageId",
-                principalTable: "Image",
+                principalTable: "PurchaseImages",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -718,12 +800,24 @@ namespace BozonStore.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Image_Products_ProductId",
-                table: "Image");
+                name: "FK_Images_Products_ProductId",
+                table: "Images");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Image_PurchaseProducts_PurchasProductId",
-                table: "Image");
+                name: "FK_PurchaseSellers_Users_Id",
+                table: "PurchaseSellers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Sellers_Users_Id",
+                table: "Sellers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PurchaseProducts_Sellers_PurchaseSellerId",
+                table: "PurchaseProducts");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PurchaseImages_PurchaseProducts_PurchaseProductId",
+                table: "PurchaseImages");
 
             migrationBuilder.DropTable(
                 name: "AngleGrinders");
@@ -733,6 +827,9 @@ namespace BozonStore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Computers");
+
+            migrationBuilder.DropTable(
+                name: "Deliveries");
 
             migrationBuilder.DropTable(
                 name: "Fridges");
@@ -768,25 +865,37 @@ namespace BozonStore.Migrations
                 name: "WashingMachines");
 
             migrationBuilder.DropTable(
+                name: "Buyers");
+
+            migrationBuilder.DropTable(
                 name: "Color");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
                 name: "Shops");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Sellers");
 
             migrationBuilder.DropTable(
                 name: "PurchaseProducts");
 
             migrationBuilder.DropTable(
-                name: "Image");
+                name: "PurchaseImages");
 
             migrationBuilder.DropTable(
                 name: "PurchasShops");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "PurchaseSellers");
         }
     }
 }

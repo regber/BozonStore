@@ -23,14 +23,14 @@ namespace BozonStore.Models
 
 
         public DbSet<Product> Products { get; set; }
-
+        
         public DbSet<Purchase> Purchases { get; set; }
-
+        
         //Purchas Model
         public DbSet<PurchaseProduct> PurchasProducts { get; set; }
         public DbSet<PurchaseSeller> PurchasSellers { get; set; }
         public DbSet<PurchaseShop> PurchasShops { get; set; }
-
+        /*
         //HomeAppliances
         public DbSet<Fridge> Fridges { get; set; }
         public DbSet<Stove> Stoves { get; set; }
@@ -47,20 +47,26 @@ namespace BozonStore.Models
         public DbSet<ConstrAndRepair.ElectricyTool.Puncher> Punchers { get; set; }
         public DbSet<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel> WallPanels { get; set; }
         public DbSet<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper> Wallpapers { get; set; }
-
+        */
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
+            modelBuilder.Entity<Seller>().ToTable("Sellers");
+            modelBuilder.Entity<Buyer>().ToTable("Buyers");
+            modelBuilder.Entity<Delivery>().ToTable("Deliveries");
+
+
+            
 
             IncludeBaseProductTPT(modelBuilder);
-            IncludePurchasModelTPT(modelBuilder);
+            IncludePurchaseModelTPT(modelBuilder);
             IncludeHomeAppliancesTPT(modelBuilder);
             IncludeElectronicsTPT(modelBuilder);
             IncludeConstrAndRepairTPT(modelBuilder);
-
+            
             base.OnModelCreating(modelBuilder);
         }
 
@@ -69,10 +75,24 @@ namespace BozonStore.Models
         private void IncludeBaseProductTPT(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().ToTable("Products");
+            modelBuilder.Entity<Image>().ToTable("Images");
+            modelBuilder.Entity<Product>().HasMany(p => p.Images).WithOne().OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Seller>().HasOne<User>().WithOne().HasForeignKey<Seller>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
         }
-        private void IncludePurchasModelTPT(ModelBuilder modelBuilder)
+        private void IncludePurchaseModelTPT(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PurchaseProduct>().ToTable("PurchaseProducts");
+            modelBuilder.Entity<PurchaseImage>().ToTable("PurchaseImages");
+
+            modelBuilder.Entity<PurchaseSeller>().ToTable("PurchaseSellers");
+
+            modelBuilder.Entity<PurchaseProduct>().Property(p => p.SellerId).HasColumnName("PurchaseSellerId");
+
+            modelBuilder.Entity<PurchaseProduct>().HasMany(p => p.Images).WithOne().OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PurchaseSeller>().HasOne<User>().WithOne().HasForeignKey<PurchaseSeller>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
+
         }
         private void IncludeHomeAppliancesTPT(ModelBuilder modelBuilder)
         {

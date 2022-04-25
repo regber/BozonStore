@@ -5,7 +5,7 @@ using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 
 namespace BozonStore.Models.ProductModel
 {
-    public class Product:IBaseProduct<Seller>
+    public class Product:IBaseProduct<Seller,Image>
     {
         public int Id { get; set; }
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BozonStore.Models
+namespace BozonStore.Models.CommonInterface
 {
-    public class Image
+    interface IImage
     {
         public int Id { get; set; }
         public Uri Uri { get; set; }
