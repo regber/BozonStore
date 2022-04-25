@@ -71,30 +71,8 @@ namespace BozonStore.Models
             modelBuilder.Entity<PurchaseImage>().ToTable("PurchaseImages");
             modelBuilder.Entity<PurchaseProduct>().Property(p => p.SellerId).HasColumnName("PurchaseSellerId");
             modelBuilder.Entity<PurchaseProduct>().HasMany(p => p.Images).WithOne().OnDelete(DeleteBehavior.Cascade);
-
-            //IncludeCommonTPT(modelBuilder);
-            //IncludeBaseProductTPT(modelBuilder);
-            //IncludePurchaseModelTPT(modelBuilder);
-            //IncludeHomeAppliancesTPT(modelBuilder);
-            //IncludeElectronicsTPT(modelBuilder);
-            //IncludeConstrAndRepairTPT(modelBuilder);
             
             base.OnModelCreating(modelBuilder);
-        }
-
-        private void IncludeCommonTPT(ModelBuilder modelBuilder) 
-        {
-            /*
-            modelBuilder.Entity<Seller>().ToTable("Sellers");
-            modelBuilder.Entity<Buyer>().ToTable("Buyers");
-            modelBuilder.Entity<Delivery>().ToTable("Deliveries");
-            */
-            //modelBuilder.Entity<Seller>().HasOne<User>().WithOne().HasForeignKey<Seller>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<Buyer>().HasOne<User>().WithOne().HasForeignKey<Buyer>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<Delivery>().HasOne<User>().WithOne().HasForeignKey<Delivery>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-
-            
-
         }
 
         public static void ConfigureChildrenEntities<ParentType>(ModelBuilder modelBuilder) where ParentType : class
@@ -139,68 +117,5 @@ namespace BozonStore.Models
         }
 
 
-
-
-
-
-        private void IncludeBaseProductTPT(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<Product>().ToTable("Products");
-            modelBuilder.Entity<Image>().ToTable("Images");
-            modelBuilder.Entity<Product>().HasMany(p => p.Images).WithOne().OnDelete(DeleteBehavior.Cascade);
-        }
-        private void IncludePurchaseModelTPT(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<PurchaseProduct>().ToTable("PurchaseProducts");
-            modelBuilder.Entity<PurchaseImage>().ToTable("PurchaseImages");
-            //modelBuilder.Entity<PurchaseSeller>().ToTable("PurchaseSellers");
-
-            modelBuilder.Entity<PurchaseProduct>().Property(p => p.SellerId).HasColumnName("PurchaseSellerId");
-
-            modelBuilder.Entity<PurchaseProduct>().HasMany(p => p.Images).WithOne().OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<PurchaseSeller>().HasOne<User>().WithOne().HasForeignKey<PurchaseSeller>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-
-        }
-        private void IncludeHomeAppliancesTPT(ModelBuilder modelBuilder)
-        {/*
-            //HomeAppliances
-            modelBuilder.Entity<Fridge>().ToTable("Fridges");
-            modelBuilder.Entity<Stove>().ToTable("Stoves");
-            modelBuilder.Entity<WashingMachine>().ToTable("WashingMachines");
-
-            modelBuilder.Entity<Fridge>().HasOne<Product>().WithOne().HasForeignKey<Fridge>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Stove>().HasOne<Product>().WithOne().HasForeignKey<Stove>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<WashingMachine>().HasOne<Product>().WithOne().HasForeignKey<WashingMachine>(p => p.Id).OnDelete(DeleteBehavior.Cascade);*/
-        }
-        private void IncludeElectronicsTPT(ModelBuilder modelBuilder)
-        {/*
-            //Electronics
-            modelBuilder.Entity<Audio>().ToTable("Audios");
-            modelBuilder.Entity<Computer>().ToTable("Computers");
-            modelBuilder.Entity<Smartphone>().ToTable("Smartphones");
-            modelBuilder.Entity<Television>().ToTable("Televisions");
-
-            modelBuilder.Entity<Audio>().HasOne<Product>().WithOne().HasForeignKey<Audio>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Computer>().HasOne<Product>().WithOne().HasForeignKey<Computer>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Smartphone>().HasOne<Product>().WithOne().HasForeignKey<Smartphone>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Television>().HasOne<Product>().WithOne().HasForeignKey<Television>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-        */}
-        private void IncludeConstrAndRepairTPT(ModelBuilder modelBuilder)
-        {/*
-            //ConstrAndRepair
-            modelBuilder.Entity<ConstrAndRepair.BathroomEquip.Mixer>().ToTable("Mixers");
-            modelBuilder.Entity<ConstrAndRepair.BathroomEquip.Sink>().ToTable("Sinks");
-            modelBuilder.Entity<ConstrAndRepair.ElectricyTool.AngleGrinder>().ToTable("AngleGrinders");
-            modelBuilder.Entity<ConstrAndRepair.ElectricyTool.Puncher>().ToTable("Punchers");
-            modelBuilder.Entity<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel>().ToTable("WallPanels");
-            modelBuilder.Entity<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper>().ToTable("Wallpapers");
-
-            modelBuilder.Entity<ConstrAndRepair.BathroomEquip.Mixer>().HasOne<Product>().WithOne().HasForeignKey<ConstrAndRepair.BathroomEquip.Mixer>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ConstrAndRepair.BathroomEquip.Sink>().HasOne<Product>().WithOne().HasForeignKey<ConstrAndRepair.BathroomEquip.Sink>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ConstrAndRepair.ElectricyTool.AngleGrinder>().HasOne<Product>().WithOne().HasForeignKey<ConstrAndRepair.ElectricyTool.AngleGrinder>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ConstrAndRepair.ElectricyTool.Puncher>().HasOne<Product>().WithOne().HasForeignKey<ConstrAndRepair.ElectricyTool.Puncher>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel>().HasOne<Product>().WithOne().HasForeignKey<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper>().HasOne<Product>().WithOne().HasForeignKey<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper>(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-        */}
     }
 }
