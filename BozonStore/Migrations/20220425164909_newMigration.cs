@@ -54,24 +54,24 @@ namespace BozonStore.Migrations
                         column: x => x.Id,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Deliveries",
+                name: "Deliverys",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Deliveries", x => x.Id);
+                    table.PrimaryKey("PK_Deliverys", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Deliveries_Users_Id",
+                        name: "FK_Deliverys_Users_Id",
                         column: x => x.Id,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -441,7 +441,7 @@ namespace BozonStore.Migrations
                         column: x => x.Id,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -482,7 +482,7 @@ namespace BozonStore.Migrations
                         column: x => x.Id,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -503,7 +503,7 @@ namespace BozonStore.Migrations
                         column: x => x.Id,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -524,7 +524,7 @@ namespace BozonStore.Migrations
                         column: x => x.Id,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -545,7 +545,7 @@ namespace BozonStore.Migrations
                         column: x => x.Id,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -722,7 +722,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Computers_Products_Id",
@@ -730,7 +730,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Fridges_Products_Id",
@@ -738,7 +738,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Mixers_Products_Id",
@@ -746,7 +746,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Smartphones_Products_Id",
@@ -762,7 +762,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Televisions_Products_Id",
@@ -770,7 +770,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_WashingMachines_Products_Id",
@@ -778,7 +778,7 @@ namespace BozonStore.Migrations
                 column: "Id",
                 principalTable: "Products",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Products_Images_MainImageId",
@@ -829,7 +829,7 @@ namespace BozonStore.Migrations
                 name: "Computers");
 
             migrationBuilder.DropTable(
-                name: "Deliveries");
+                name: "Deliverys");
 
             migrationBuilder.DropTable(
                 name: "Fridges");

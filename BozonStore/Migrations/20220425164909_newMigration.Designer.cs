@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BozonStore.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220425125412_newMigration")]
+    [Migration("20220425164909_newMigration")]
     partial class newMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -658,7 +658,7 @@ namespace BozonStore.Migrations
                 {
                     b.HasBaseType("BozonStore.Models.User");
 
-                    b.ToTable("Deliveries");
+                    b.ToTable("Deliverys");
                 });
 
             modelBuilder.Entity("BozonStore.Models.PurchaseModel.PurchaseSeller", b =>
@@ -795,7 +795,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Mixer", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -806,7 +806,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.BathroomEquip.Sink", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -815,7 +815,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.AngleGrinder", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -824,7 +824,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.ElectricyTool.Puncher", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -833,7 +833,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.WallPanel", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -842,7 +842,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -855,7 +855,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Audio", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -870,7 +870,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Computer", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -900,7 +900,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Television", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -915,7 +915,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.HomeAppliances.Fridge", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -930,7 +930,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.HomeAppliances.Stove", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -945,7 +945,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.ProductModel.Products.HomeAppliances.WashingMachine", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Color");
@@ -956,7 +956,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.User", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.Buyer", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -965,7 +965,7 @@ namespace BozonStore.Migrations
                     b.HasOne("BozonStore.Models.User", null)
                         .WithOne()
                         .HasForeignKey("BozonStore.Models.Delivery", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

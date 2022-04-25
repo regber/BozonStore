@@ -4,14 +4,16 @@ using BozonStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BozonStore.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220425165517_newMigration2")]
+    partial class newMigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -683,8 +685,7 @@ namespace BozonStore.Migrations
                 {
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("BozonStore.Models.ProductModel.Product", b =>
@@ -712,8 +713,7 @@ namespace BozonStore.Migrations
                 {
                     b.HasOne("BozonStore.Models.Buyer", null)
                         .WithMany("Purchases")
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BuyerId");
 
                     b.HasOne("BozonStore.Models.PurchaseModel.PurchaseProduct", "Product")
                         .WithMany()
