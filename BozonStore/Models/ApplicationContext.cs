@@ -52,8 +52,6 @@ namespace BozonStore.Models
         public DbSet<ConstrAndRepair.FinishingMat.WallpaperAndCoatings.Wallpaper> Wallpapers { get; set; }
         
 
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
@@ -75,7 +73,7 @@ namespace BozonStore.Models
             base.OnModelCreating(modelBuilder);
         }
 
-        public static void ConfigureChildrenEntities<ParentType>(ModelBuilder modelBuilder) where ParentType : class
+        private static void ConfigureChildrenEntities<ParentType>(ModelBuilder modelBuilder) where ParentType : class
         {
             var childrenTypes = GetLastChildrenClass(typeof(ParentType));
 
