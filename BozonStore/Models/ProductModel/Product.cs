@@ -5,7 +5,7 @@ using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 
 namespace BozonStore.Models.ProductModel
 {
-    public class Product:IBaseProduct<Seller,Image>
+    public class Product
     {
         public int Id { get; set; }
 
@@ -16,9 +16,5 @@ namespace BozonStore.Models.ProductModel
 
         public Image MainImage { get; set; }
         public ICollection<Image> Images { get; set; }
-
-
-        public int SellerId { get; set; }
-        public Seller Seller { get; set; }
     }
 }

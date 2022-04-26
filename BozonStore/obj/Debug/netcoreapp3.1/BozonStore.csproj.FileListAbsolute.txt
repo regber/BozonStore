@@ -75,4 +75,3 @@ C:\Users\Zevas\source\repos\BozonStore\BozonStore\obj\Debug\netcoreapp3.1\BozonS
 C:\Users\Zevas\source\repos\BozonStore\BozonStore\obj\Debug\netcoreapp3.1\BozonStore.dll
 C:\Users\Zevas\source\repos\BozonStore\BozonStore\obj\Debug\netcoreapp3.1\BozonStore.pdb
 C:\Users\Zevas\source\repos\BozonStore\BozonStore\obj\Debug\netcoreapp3.1\BozonStore.genruntimeconfig.cache
-C:\Users\Zevas\source\repos\BozonStore\BozonStore\obj\Debug\netcoreapp3.1\BozonStore.csproj.AssemblyReference.cache
