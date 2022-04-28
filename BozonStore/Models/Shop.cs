@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BozonStore.Models.ProductModel;
+using BozonStore.Models.UserModel;
 
 namespace BozonStore.Models
 {

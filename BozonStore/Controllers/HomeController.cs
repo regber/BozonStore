@@ -45,7 +45,7 @@ namespace BozonStore.Controllers
             db.PurchasShops.Add(sh);
             db.SaveChanges();*/
             
-            
+            /*
             //var seller = db.PurchasSellers.Include(p => p.Shops).First();
             BozonStore.Models.ProductModel.Products.Electronics.Smartphone phone =
                 new BozonStore.Models.ProductModel.Products.Electronics.Smartphone
@@ -69,7 +69,7 @@ namespace BozonStore.Controllers
                 };
 
             Purchase ph = new Purchase() { Product = phone };
-
+            */
 
             //var seller = db.Sellers.Include(p=>p.Shops).First();
             //var shops = seller.Shops.First();

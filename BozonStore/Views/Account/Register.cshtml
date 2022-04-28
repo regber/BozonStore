@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Register Page";
+}
+<h2>Регистрация пользователя</h2>
+
+<div>
+    <p>Выберите тип пользователя и заполните форму:</p>
+    <label>Тип пользователя:</label>
+    <select id="selector" asp-items="Html.GetEnumSelectList<UserType>()"></select>
+</div>
+
+<div id="userForm"></div>
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#selector').change(function (e) {
+                e.preventDefault();
+                var userTypeId = $('#selector').val();
+                name=encodeURIComponent(name);
+                $('#userForm').load('@Url.Action("RegisterUser", "Account")?userTypeId=' + userTypeId)
+            });
+        });
+        $('#userForm').load('@Url.Action("RegisterUser", "Account")?userTypeId='+0)
+    </script>
+}
+
+<script>
+
+
+
+    document.getElementById("selector").addEventListener("change", function () {
+
+
+
+
+        if (this.value == '0') {
+            //ViewData["PartialView"] = "_RegisterBuyer";
+            //document.getElementById("form").innerHTML = "<h3>_RegisterBuyer</h3>";
+            //window.location.href = "@Url.Action("Register", "Account", new Buyer() { Name="Slava" },null)";
+        }
+        if (this.value == '1') {
+            //ViewData["PartialView"] = "_RegisterSeller";
+            //window.location.href = "@Url.Action("Register", "Account", new Seller() { Name="Stas" },null)";
+            //document.getElementById("form").innerHTML = "<h3>_RegisterSeller</h3>";
+        }
+        if (this.value == '2') {
+            //ViewData["PartialView"] ="_RegisterDelivery";
+            //document.getElementById("form").innerHTML = "<h3>_RegisterDelivery</h3>";
+        }
+
+    });
+</script>

@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using BozonStore.Models.UserModel;
 
 namespace BozonStore.Models
 {
@@ -28,11 +29,6 @@ namespace BozonStore.Models
         
         public DbSet<Purchase> Purchases { get; set; }
         
-        //Purchas Model
-        /*public DbSet<PurchaseProduct> PurchasProducts { get; set; }
-        public DbSet<PurchaseSeller> PurchasSellers { get; set; }
-        public DbSet<PurchaseShop> PurchasShops { get; set; }
-        public DbSet<PurchaseUser> PurchaseUsers { get; set; }*/
 
         //HomeAppliances
         public DbSet<Fridge> Fridges { get; set; }
@@ -56,7 +52,7 @@ namespace BozonStore.Models
         {
             modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
 
-            //Генерируем для указанных базовых типов(User,Product,PurchaseProduct) отдельные таблицы в базе для их производных
+            //Генерируем для указанных базовых типов(User,Product) отдельные таблицы в базе для их производных
             //типов, а также указываем что производные типы имеют каскадное удаление при удалении из базы записи базового типа
             ConfigureChildrenEntities<User>(modelBuilder);
             ConfigureChildrenEntities<Product>(modelBuilder);
