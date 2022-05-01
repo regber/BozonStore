@@ -6,12 +6,47 @@
 @model Seller
 <h3>Регистрация продавца</h3>
 
-<form method="post" asp-action="Register" asp-controller="Account">
+<form method="post" asp-action="RegisterSeller" asp-controller="Account" asp-antiforgery="true">
     <div>
+        <div>
+            <label asp-for="Login"></label>
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="ConfirmPassword"></label>
+            <input asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
 
-        <label asp-for="Name"></label>
-        <input asp-for="Name"  />
-        <label asp-for="Title"></label>
-        <input asp-for="Title"  />
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label asp-for="NumberPhone"></label>
+            <input asp-for="NumberPhone" />
+            <span asp-validation-for="NumberPhone"></span>
+        </div>
+        <div>
+            <label asp-for="Title"></label>
+            <input asp-for="Title" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        <input type="submit" value="Register" />
     </div>
 </form>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

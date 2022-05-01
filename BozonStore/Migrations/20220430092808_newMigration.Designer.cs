@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BozonStore.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220426142922_newMigration")]
+    [Migration("20220430092808_newMigration")]
     partial class newMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,7 +147,7 @@ namespace BozonStore.Migrations
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.User", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,18 +158,22 @@ namespace BozonStore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumberPhone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -558,25 +562,30 @@ namespace BozonStore.Migrations
                     b.ToTable("WashingMachines");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Buyer", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Buyer", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.User");
+                    b.HasBaseType("BozonStore.Models.UserModel.User");
 
                     b.ToTable("Buyers");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Delivery", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Delivery", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.User");
+                    b.HasBaseType("BozonStore.Models.UserModel.User");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Deliverys");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Seller", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Seller", b =>
                 {
-                    b.HasBaseType("BozonStore.Models.User");
+                    b.HasBaseType("BozonStore.Models.UserModel.User");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Sellers");
@@ -606,7 +615,7 @@ namespace BozonStore.Migrations
 
             modelBuilder.Entity("BozonStore.Models.Purchase", b =>
                 {
-                    b.HasOne("BozonStore.Models.Buyer", null)
+                    b.HasOne("BozonStore.Models.UserModel.Buyer", null)
                         .WithMany("Purchases")
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -620,7 +629,7 @@ namespace BozonStore.Migrations
 
             modelBuilder.Entity("BozonStore.Models.Shop", b =>
                 {
-                    b.HasOne("BozonStore.Models.Seller", "Seller")
+                    b.HasOne("BozonStore.Models.UserModel.Seller", "Seller")
                         .WithMany("Shops")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -794,29 +803,29 @@ namespace BozonStore.Migrations
                     b.Navigation("Color");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Buyer", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Buyer", b =>
                 {
-                    b.HasOne("BozonStore.Models.User", null)
+                    b.HasOne("BozonStore.Models.UserModel.User", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.Buyer", "Id")
+                        .HasForeignKey("BozonStore.Models.UserModel.Buyer", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Delivery", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Delivery", b =>
                 {
-                    b.HasOne("BozonStore.Models.User", null)
+                    b.HasOne("BozonStore.Models.UserModel.User", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.Delivery", "Id")
+                        .HasForeignKey("BozonStore.Models.UserModel.Delivery", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Seller", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Seller", b =>
                 {
-                    b.HasOne("BozonStore.Models.User", null)
+                    b.HasOne("BozonStore.Models.UserModel.User", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.Seller", "Id")
+                        .HasForeignKey("BozonStore.Models.UserModel.Seller", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -831,12 +840,12 @@ namespace BozonStore.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Buyer", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Buyer", b =>
                 {
                     b.Navigation("Purchases");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.Seller", b =>
+            modelBuilder.Entity("BozonStore.Models.UserModel.Seller", b =>
                 {
                     b.Navigation("Shops");
                 });

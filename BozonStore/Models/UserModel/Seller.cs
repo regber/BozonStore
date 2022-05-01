@@ -5,9 +5,11 @@ namespace BozonStore.Models.UserModel
 {
     public class Seller : User
     {
-        [Required]
+        [Required(ErrorMessage = "Поле не заполнено")]
         [Display( Name ="Название компании")]
         public string Title { get; set; }
+
+
         public ICollection<Shop> Shops { get; set; }
     }
 }
