@@ -10,6 +10,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BozonStore.ViewModels.Account;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using BozonStore.Extension;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using BozonStore.Models.PageModel;
+
 
 
 
@@ -17,9 +23,6 @@ namespace BozonStore.Controllers
 {
     public class AccountController : Controller
     {
-        private static User _user;
-        private static ModelStateDictionary _modelState;
-
         ApplicationContext db;
 
         public AccountController(ApplicationContext context)
@@ -28,6 +31,7 @@ namespace BozonStore.Controllers
         }
 
         [HttpGet]
+
         public IActionResult Register()
         {
             return View();
@@ -67,6 +71,15 @@ namespace BozonStore.Controllers
         {
             CheckUser(ModelState, buyer);
 
+            //TempData["bubu"] = "dada";
+            //TempData.Put<User>("User", buyer);
+            /*
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream();
+            bf.Serialize(ms, buyer);
+            
+            HttpContext.Session.Set("user", ms.ToArray());*/
+
             if (ModelState.IsValid)
             {
                 db.Buyers.Add(buyer);
@@ -76,8 +89,9 @@ namespace BozonStore.Controllers
             }
             else
             {
-                _user = buyer;
-                _modelState = ModelState;
+                TempData.Put("Buyer", buyer);
+                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+
                 return View("Register");
             }
         }
@@ -88,7 +102,7 @@ namespace BozonStore.Controllers
         public IActionResult RegisterSeller(Seller seller)
         {
             CheckUser(ModelState, seller);
-
+            
             if (ModelState.IsValid)
             {
                 db.Sellers.Add(seller);
@@ -98,8 +112,9 @@ namespace BozonStore.Controllers
             }
             else
             {
-                _user = seller;
-                _modelState = ModelState;
+                TempData.Put("Seller", seller);
+                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+
                 return View("Register");
             }
         }
@@ -120,25 +135,52 @@ namespace BozonStore.Controllers
             }
             else
             {
+                TempData.Put("Delivery", delivery);
+                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+
                 return View("Register");
             }
         }
-
+        public void GetInfo(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dic)
+        {
+            var data = dic;
+            var context = ViewData.ModelState;
+        }
         public IActionResult UserTypeSelector(int userTypeId)
         {
+            //string a =TempData.Peek("bubu")?.ToString();
+            /*var b = TempData.Get<User>("User");
+            var user = TempData.Get<Buyer>("User");
+            var S = TempData.Get<Seller>("User");
+            */
+            /*try
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+
+                byte[] arr;
+                HttpContext.Session.TryGetValue("user", out arr);
+                Stream stream = new MemoryStream(arr);
+
+                var us = (Buyer)bf.Deserialize(stream);
+            }
+            catch { }*/
+
+
+
             AddErrorsInToPartialView(ModelState);
 
             if (userTypeId == 0)
-                return PartialView("_RegisterBuyer", _user);
+                return PartialView("_RegisterBuyer", TempData.Get<Buyer>("Buyer"));
 
             if (userTypeId == 1)
-                return PartialView("_RegisterSeller", _user);
+                return PartialView("_RegisterSeller", TempData.Get<Seller>("Seller"));
 
             if (userTypeId == 2)
-                return PartialView("_RegisterDelivery", _user);
+                return PartialView("_RegisterDelivery", TempData.Get<Delivery>("Delivery"));
 
             return NotFound();
         }
+
 
 
         private void CheckUser(ModelStateDictionary modelState, User user)
@@ -156,18 +198,22 @@ namespace BozonStore.Controllers
         {
             return db.Users.Any(u => u.Login == login);
         }
+        private Dictionary<string,string> ModelStateErrorToDic(ModelStateDictionary modelState)
+        {
+            return modelState.ToDictionary(key => key.Key, val => val.Value.Errors?.FirstOrDefault()?.ErrorMessage.ToString());
+        }
 
         private void AddErrorsInToPartialView(ModelStateDictionary modelState)
         {
-            var errors = _modelState?.ToList().Where(c => c.Value.Errors.Count > 0) ?? Enumerable.Empty<KeyValuePair<string, ModelStateEntry>>();
+            var errors = TempData.Get<Dictionary<string,string>>("ModelState");
 
-            foreach (var error in errors)
+            if(errors!=null)
             {
-                var key = error.Key;
-                var errorMessage = error.Value.Errors?.FirstOrDefault().ErrorMessage.ToString();
-
-                if (errorMessage != null)
-                    ModelState.AddModelError(key, errorMessage);
+                foreach (var error in errors)
+                {
+                    if(error.Value!=null)
+                        ModelState.AddModelError(error.Key, error.Value);
+                }
             }
         }
 
@@ -190,4 +236,5 @@ namespace BozonStore.Controllers
             return RedirectToAction("Index", "Home");
         }
     }
+
 }

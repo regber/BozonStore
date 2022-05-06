@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BozonStore.Models.UserModel
 {
+    [System.Serializable]
     public class User
     {
         public int Id { get; set; }

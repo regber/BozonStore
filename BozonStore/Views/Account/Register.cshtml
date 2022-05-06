@@ -6,22 +6,29 @@
 <div>
     <p>Выберите тип пользователя и заполните форму:</p>
     <label>Тип пользователя:</label>
+
     <select id="selector" asp-items="Html.GetEnumSelectList<UserType>()"></select>
 </div>
 
-
-
 <div id="userRegistrationForm"></div>
+@*<p class="log"></p>*@
 
 @section Scripts{
 
     <script>
+        //var i = 0
+
+        //$(document).ajaxSend(function () {
+        //    $(".log").text("Triggered ajaxSend handler." + i );
+        //    i++;
+        //});
         var userTypeId;
         $(document).ready(function () {
             $('#selector').change(function (e) {
                 e.preventDefault();
+
                 userTypeId = $('#selector').val();
-                name=encodeURIComponent(name);
+
                 $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' + userTypeId)
             });
             $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' + $('#selector').val());
