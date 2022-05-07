@@ -1,5 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Register Page";
+
+    //defaultTypeId необходим для выбора позиции выпадающего списка после редиректа
+    if (!ViewData.ContainsKey("defaultTypeId"))
+    {
+        ViewData["defaultTypeId"] = 0;
+    }
+
 }
 <h2>Регистрация пользователя</h2>
 
@@ -11,17 +18,10 @@
 </div>
 
 <div id="userRegistrationForm"></div>
-@*<p class="log"></p>*@
 
 @section Scripts{
 
-    <script>
-        //var i = 0
-
-        //$(document).ajaxSend(function () {
-        //    $(".log").text("Triggered ajaxSend handler." + i );
-        //    i++;
-        //});
+    <script type="text/javascript">
         var userTypeId;
         $(document).ready(function () {
             $('#selector').change(function (e) {
@@ -31,7 +31,9 @@
 
                 $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' + userTypeId)
             });
-            $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' + $('#selector').val());
+
+            $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' +@ViewData["defaultTypeId"]  );
+            $('#selector').val(@ViewData["defaultTypeId"]);
         });
     </script>
 }

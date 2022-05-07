@@ -31,7 +31,6 @@ namespace BozonStore.Controllers
         }
 
         [HttpGet]
-
         public IActionResult Register()
         {
             return View();
@@ -71,15 +70,6 @@ namespace BozonStore.Controllers
         {
             CheckUser(ModelState, buyer);
 
-            //TempData["bubu"] = "dada";
-            //TempData.Put<User>("User", buyer);
-            /*
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, buyer);
-            
-            HttpContext.Session.Set("user", ms.ToArray());*/
-
             if (ModelState.IsValid)
             {
                 db.Buyers.Add(buyer);
@@ -91,6 +81,7 @@ namespace BozonStore.Controllers
             {
                 TempData.Put("Buyer", buyer);
                 TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+                ViewData["defaultTypeId"] = 0;
 
                 return View("Register");
             }
@@ -114,6 +105,7 @@ namespace BozonStore.Controllers
             {
                 TempData.Put("Seller", seller);
                 TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+                ViewData["defaultTypeId"] = 1;
 
                 return View("Register");
             }
@@ -137,36 +129,14 @@ namespace BozonStore.Controllers
             {
                 TempData.Put("Delivery", delivery);
                 TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+                ViewData["defaultTypeId"] = 2;
 
                 return View("Register");
             }
         }
-        public void GetInfo(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dic)
-        {
-            var data = dic;
-            var context = ViewData.ModelState;
-        }
+
         public IActionResult UserTypeSelector(int userTypeId)
         {
-            //string a =TempData.Peek("bubu")?.ToString();
-            /*var b = TempData.Get<User>("User");
-            var user = TempData.Get<Buyer>("User");
-            var S = TempData.Get<Seller>("User");
-            */
-            /*try
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-
-                byte[] arr;
-                HttpContext.Session.TryGetValue("user", out arr);
-                Stream stream = new MemoryStream(arr);
-
-                var us = (Buyer)bf.Deserialize(stream);
-            }
-            catch { }*/
-
-
-
             AddErrorsInToPartialView(ModelState);
 
             if (userTypeId == 0)
@@ -188,7 +158,11 @@ namespace BozonStore.Controllers
             if (CheckOccupiedEmail(user.Email))
                 ModelState.AddModelError(nameof(user.Email), "Почта занята");
             if (CheckOccupiedLogin(user.Login))
-                ModelState.AddModelError(nameof(user.Login), "Пользователь с таким логином уже есть");
+                ModelState.AddModelError(nameof(user.Login), "Логин занят");
+            if(user is Seller seller && CheckOccupiedSellerTitle(seller.Title))
+                ModelState.AddModelError(nameof(seller.Title), "Продавец с таким названием уже есть");
+            if (user is Delivery delivery && CheckOccupiedDeliveryTitle(delivery.Title))
+                ModelState.AddModelError(nameof(delivery.Title), "Доставщик с таким названием уже есть");
         }
         private bool CheckOccupiedEmail(string email)
         {
@@ -197,6 +171,14 @@ namespace BozonStore.Controllers
         private bool CheckOccupiedLogin(string login)
         {
             return db.Users.Any(u => u.Login == login);
+        }
+        private bool CheckOccupiedSellerTitle(string sellerTitle)
+        {
+            return db.Sellers.Any(s => s.Title == sellerTitle);
+        }
+        private bool CheckOccupiedDeliveryTitle(string deliveryTitle)
+        {
+            return db.Deliveries.Any(d => d.Title == deliveryTitle);
         }
         private Dictionary<string,string> ModelStateErrorToDic(ModelStateDictionary modelState)
         {
