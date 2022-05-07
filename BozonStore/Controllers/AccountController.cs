@@ -14,7 +14,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using BozonStore.Extension;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using BozonStore.Models.PageModel;
+using BozonStore.Common;
+
 
 
 
@@ -46,17 +47,17 @@ namespace BozonStore.Controllers
         {
             if(ModelState.IsValid)
             {
-                User user = db.Users.FirstOrDefault(u => u.Login == model.Login && u.Password == model.Password);
+                User user = db.Users.FirstOrDefault(u => u.Login == model.Login && u.Password == HashString.Hash(model.Password));
 
                 if(user!=null)
                 {
                     Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Не верно указан логин или пароль");
+                else
+                {
+                    ModelState.AddModelError("", "Не верно указан логин или пароль");
+                }
             }
 
             return View(model);
@@ -157,10 +158,13 @@ namespace BozonStore.Controllers
         {
             if (CheckOccupiedEmail(user.Email))
                 ModelState.AddModelError(nameof(user.Email), "Почта занята");
+
             if (CheckOccupiedLogin(user.Login))
                 ModelState.AddModelError(nameof(user.Login), "Логин занят");
+
             if(user is Seller seller && CheckOccupiedSellerTitle(seller.Title))
                 ModelState.AddModelError(nameof(seller.Title), "Продавец с таким названием уже есть");
+
             if (user is Delivery delivery && CheckOccupiedDeliveryTitle(delivery.Title))
                 ModelState.AddModelError(nameof(delivery.Title), "Доставщик с таким названием уже есть");
         }

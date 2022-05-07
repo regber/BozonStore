@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BozonStore.Common;
 
 namespace BozonStore.Models.UserModel
 {
@@ -16,7 +17,18 @@ namespace BozonStore.Models.UserModel
         [Required(ErrorMessage = "Поле не заполнено")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
-        public string Password { get; set; }
+        public string Password
+        {
+            get
+            {
+                return _Password;
+            }
+            set
+            {
+                _Password = HashString.Hash(value);
+            }
+        }
+        private string _Password;
 
 
         [Required(ErrorMessage = "Поле не заполнено")]
@@ -24,7 +36,18 @@ namespace BozonStore.Models.UserModel
         [Display(Name = "Повтор пароля")]
         [Compare("Password", ErrorMessage = "Пароль введен не верно")]
         [NotMapped]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword 
+        {
+            get
+            {
+                return _ConfirmPassword;
+            }
+            set
+            {
+                _ConfirmPassword= HashString.Hash(value);
+            }
+        }
+        private string _ConfirmPassword;
 
 
         [Required(ErrorMessage = "Поле не заполнено")]
