@@ -32,7 +32,7 @@ namespace BozonStore
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=> 
             { 
-                options.AccessDeniedPath= new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                //options.AccessDeniedPath= new Microsoft.AspNetCore.Http.PathString("/Account/Login1");
                 options.LoginPath=new Microsoft.AspNetCore.Http.PathString("/Account/Login");
             });
             services.AddDistributedMemoryCache();

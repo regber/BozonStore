@@ -36,9 +36,16 @@ namespace BozonStore.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
+        }
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -75,6 +82,7 @@ namespace BozonStore.Controllers
             {
                 db.Buyers.Add(buyer);
                 db.SaveChanges();
+                Authenticate(buyer);
 
                 return View("RegistrationConfirm");
             }
@@ -99,6 +107,7 @@ namespace BozonStore.Controllers
             {
                 db.Sellers.Add(seller);
                 db.SaveChanges();
+                Authenticate(seller);
 
                 return View("RegistrationConfirm");
             }
@@ -123,6 +132,7 @@ namespace BozonStore.Controllers
             {
                 db.Deliveries.Add(delivery);
                 db.SaveChanges();
+                Authenticate(delivery);
 
                 return View("RegistrationConfirm");
             }
@@ -207,8 +217,8 @@ namespace BozonStore.Controllers
         {
             var claims = new List<Claim> 
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType,user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType,user.GetType().ToString())
+                new Claim(ClaimsIdentity.DefaultNameClaimType,user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType,user.GetType().Name)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
@@ -216,11 +226,6 @@ namespace BozonStore.Controllers
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
         }
 
-        private IActionResult Logout()
-        {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
     }
 
 }
