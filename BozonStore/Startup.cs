@@ -28,17 +28,17 @@ namespace BozonStore
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options=>options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=> 
-            { 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
                 //options.AccessDeniedPath= new Microsoft.AspNetCore.Http.PathString("/Account/Login1");
-                options.LoginPath=new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
             });
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddControllersWithViews();
-            
+            services.AddControllersWithViews(options=>options.EnableEndpointRouting=false);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,13 +63,15 @@ namespace BozonStore
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+            app.UseMvc(endpoint => {
+                endpoint.MapRoute(
+                    name:"default", 
+                    template: "{controller=Home}/{action=Index}/{id?}");
+                
+                endpoint.MapAreaRoute(
+                    name: "user_area",
+                    areaName:"user",
+                    template: "{area:exists}/{controller}/{action}");
             });
         }
     }

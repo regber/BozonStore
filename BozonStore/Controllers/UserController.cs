@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BozonStore.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
-        [Authorize]
         public IActionResult PersonalPage()
         {
             var role = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
-            
+
             if (role == "Buyer")
             {
                 return View("BuyerPage");
@@ -30,7 +30,5 @@ namespace BozonStore.Controllers
 
             return NotFound();
         }
-
-
     }
 }

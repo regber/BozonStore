@@ -17,6 +17,10 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div>
+                    <a class="nav-item" asp-area="" asp-controller="Home" asp-action="Search">Search</a>
+                    <input id="SearchText" type="text"/>
+                </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     @if (!User.Identity.IsAuthenticated)
                     {

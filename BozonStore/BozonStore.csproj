@@ -20,4 +20,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\User\Views\Delivery\" />
+    <Folder Include="Views\User\Buyer\" />
+    <Folder Include="Views\User\Delivery\" />
+  </ItemGroup>
+
 </Project>
