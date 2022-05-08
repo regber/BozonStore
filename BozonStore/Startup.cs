@@ -37,7 +37,7 @@ namespace BozonStore
             });
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddControllersWithViews(options=>options.EnableEndpointRouting=false);
+            services.AddControllersWithViews(options => options.EnableEndpointRouting = false);
 
         }
 
@@ -63,15 +63,18 @@ namespace BozonStore
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMvc(endpoint => {
-                endpoint.MapRoute(
-                    name:"default", 
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                
+            app.UseMvc(endpoint =>
+            {
                 endpoint.MapAreaRoute(
                     name: "user_area",
-                    areaName:"user",
-                    template: "{area:exists}/{controller}/{action}");
+                    areaName: "user",
+                    template: "user/{controller}/{action}");
+
+                endpoint.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+
             });
         }
     }
