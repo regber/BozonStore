@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BozonStore.Controllers
@@ -13,7 +13,7 @@ namespace BozonStore.Controllers
     {
         public IActionResult PersonalPage()
         {
-            var role = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
+            var role = User.Claims.FirstOrDefault(c => c.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
 
             if (role == "Buyer")
             {
