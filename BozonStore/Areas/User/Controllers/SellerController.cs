@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BozonStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace BozonStore.Controllers
 {
@@ -14,6 +15,7 @@ namespace BozonStore.Controllers
     public class SellerController : Controller
     {
         ApplicationContext db;
+
         public SellerController(ApplicationContext context)
         {
             db = context;
@@ -33,10 +35,46 @@ namespace BozonStore.Controllers
         [HttpPost]
         public IActionResult CreateShop(Shop shop)
         {
-            db.Sellers.Include(s=>s.Shops).FirstOrDefault(s => s.Login == User.Identity.Name).Shops.Add(shop);
+            db.Sellers.Include(s=>s.Shops)
+                      .FirstOrDefault(s => s.Login == User.Identity.Name)
+                      .Shops.Add(shop);
+
             db.SaveChanges();
 
             return RedirectToAction("Shops");
+        }
+        [HttpGet]
+        public IActionResult Shop(int id)
+        {
+            var seller = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == id).Seller;
+
+            if (seller.Login==User.Identity.Name)
+            {
+                                
+                var shop = db.Shops.Include(s => s.Products)
+                                   .ThenInclude(prod => prod.MainImage)
+                                   .FirstOrDefault(s => s.Id == id);
+
+                var products = shop.Products;
+
+                return View(products);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
+            
+        }
+        public void DeleteProduct(int id)
+        {
+            db.Products.ToList().RemoveAt(id);
+            db.SaveChanges();
+        }
+
+        public IActionResult CreateProduct()
+        {
+            return View();
         }
     }
 }
