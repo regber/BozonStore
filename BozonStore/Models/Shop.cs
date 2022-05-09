@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BozonStore.Models.ProductModel;
 using BozonStore.Models.UserModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BozonStore.Models
 {
@@ -8,8 +9,13 @@ namespace BozonStore.Models
     {
         public int Id { get; set; }
 
-
+        [Required(ErrorMessage = "Поле не заполнено")]
+        [Display(Name = "Название магазина")]
         public string Title { get; set; }
+
+
+        [Required(ErrorMessage = "Поле не заполнено")]
+        [Display(Name = "Адрес магазина")]
         public string Address { get; set; }
 
 
