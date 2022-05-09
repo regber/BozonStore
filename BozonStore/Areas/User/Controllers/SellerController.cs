@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BozonStore.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace BozonStore.Controllers
 {
@@ -33,7 +33,7 @@ namespace BozonStore.Controllers
         [HttpPost]
         public IActionResult CreateShop(Shop shop)
         {
-            db.Sellers.FirstOrDefault(s => s.Login == User.Identity.Name).Shops.Add(shop);
+            db.Sellers.Include(s=>s.Shops).FirstOrDefault(s => s.Login == User.Identity.Name).Shops.Add(shop);
             db.SaveChanges();
 
             return RedirectToAction("Shops");
