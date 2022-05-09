@@ -3,5 +3,22 @@
 *@
 @{
 }
-
+@model Shop
 <h3>Страница создания магазина</h3>
+
+<form asp-action="CreateShop" asp-controller="Seller">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="@Model.Title"></label>
+        <input asp-for="@Model.Title" />
+        <span asp-validation-for="@Model.Title"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Address"></label>
+        <input asp-for="@Model.Address" />
+        <span asp-validation-for="@Model.Address"></span>
+    </div>
+    <div>
+        <input type="submit" value="Send" />
+    </div>
+</form>

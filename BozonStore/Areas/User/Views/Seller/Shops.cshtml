@@ -3,5 +3,19 @@
 *@
 @{
 }
-
+@model IEnumerable<Shop>
 <h3>Страница с магазинами</h3>
+
+<div>
+    @foreach (var shop in Model)
+    {
+        <div>
+                <a href="@Url.Action("Shop")">@shop.Title</a>
+
+        </div>
+    }
+
+        <div>
+            <a href="@Url.Action("CreateShop")">Добавить новый магазин</a>
+        </div>
+</div>
