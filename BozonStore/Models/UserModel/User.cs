@@ -25,7 +25,7 @@ namespace BozonStore.Models.UserModel
             }
             set
             {
-                _Password = HashString.Hash(value);
+                _Password = StrToHashStr.Hash(value);
             }
         }
         private string _Password;
@@ -44,7 +44,7 @@ namespace BozonStore.Models.UserModel
             }
             set
             {
-                _ConfirmPassword= HashString.Hash(value);
+                _ConfirmPassword= StrToHashStr.Hash(value);
             }
         }
         private string _ConfirmPassword;

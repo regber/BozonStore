@@ -54,7 +54,7 @@ namespace BozonStore.Controllers
         {
             if(ModelState.IsValid)
             {
-                User user = db.Users.FirstOrDefault(u => u.Login == model.Login && u.Password == HashString.Hash(model.Password));
+                User user = db.Users.FirstOrDefault(u => u.Login == model.Login && u.Password == StrToHashStr.Hash(model.Password));
 
                 if(user!=null)
                 {

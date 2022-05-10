@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BozonStore.Common
 {
-    public class HashString
+    public class StrToHashStr
     {
         public static string Hash(string str)
         {
