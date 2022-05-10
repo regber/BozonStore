@@ -7,21 +7,22 @@
 <div>
     @foreach (var prod in @Model)
     {
-    <div>
-        <div>@prod.Title</div>
         <div>
-            <img width="100" src="@Url.Action("GetImage","Common", new {path="/Content/Ads/"+@prod.Id+"/"+@prod.MainImage.Name, area="" })" />
+            <div>@prod.Title</div>
+            <div>
+                <img width="100" src="@Url.Action("GetImage","Common", new {path="/Content/Ads/"+@prod.Id+"/"+@prod.MainImage.Name, area="" })" />
+            </div>
+            <div>@prod.Price</div>
+            <div>
+                <a href="@Url.Action("ViewProduct","Product",new {id=prod.Id, area="Product" })">View</a>
+            </div>
+            <div>
+                <a href="@Url.Action("DeleteProduct","Product",new {id=prod.Id,area="Product"  })">Delete</a>
+            </div>
+
         </div>
-        <div>@prod.Price</div>
-        <div>
-            <a href="@Url.Action("ViewProduct",new {id=prod.Id })">View</a>
-        </div>
-        <div>
-            <a href="@Url.Action("DeleteProduct",new {id=prod.Id })">Delete</a>
-        </div>
-        <div>
-            <a href="@Url.Action("CreateProduct")">Add New Product</a>
-        </div>
-    </div>
     }
+    <div>
+        <a href="@Url.Action("CreateProduct","Product",new {area="Product"})">Add New Product</a>
+    </div>
 </div>

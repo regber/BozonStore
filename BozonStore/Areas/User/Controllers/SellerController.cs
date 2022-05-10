@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BozonStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
+using BozonStore.Models.ProductModel;
 
 namespace BozonStore.Controllers
 {
@@ -23,7 +23,7 @@ namespace BozonStore.Controllers
 
         public IActionResult Shops()
         {
-            IEnumerable<Shop> shops = db.Shops.Where(s => s.Seller.Login == User.Identity.Name).ToList();
+            var shops = db.Shops.Where(s => s.Seller.Login == User.Identity.Name);
             
             return View(shops);
         }
@@ -63,18 +63,6 @@ namespace BozonStore.Controllers
             {
                 return NotFound();
             }
-            
-            
-        }
-        public void DeleteProduct(int id)
-        {
-            db.Products.ToList().RemoveAt(id);
-            db.SaveChanges();
-        }
-
-        public IActionResult CreateProduct()
-        {
-            return View();
         }
     }
 }
