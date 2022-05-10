@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BozonStore.Models;
-using ProductModel=BozonStore.Models.ProductModel;
+using ProductModel = BozonStore.Models.ProductModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using BozonStore.Models.PageModel;
+using System.Reflection;
 
 namespace BozonStore.Areas.Product.Controllers
 {
@@ -28,6 +31,8 @@ namespace BozonStore.Areas.Product.Controllers
         [HttpGet]
         public IActionResult CreateProduct()
         {
+            ViewBag.ProdTypeSelectList = GetProdTypeSelectList();
+
             return View();
         }
 
@@ -36,5 +41,34 @@ namespace BozonStore.Areas.Product.Controllers
         {
             return RedirectToAction();
         }
+        private SelectList GetProdTypeSelectList()
+        {
+            var interfaces = GetProdTypeInfo();
+
+            var prodTypeList = new List<ProductType>();
+
+            for (int i = 0; i < interfaces.Count(); i++)
+            {
+                var name = ((BozonStore.Common.InterfaceNameAnnotation)(interfaces[i]
+                            .GetCustomAttributes(false)
+                            .First(c => c.GetType() == typeof(BozonStore.Common.InterfaceNameAnnotation)))).Name;
+
+                prodTypeList.Add(new ProductType { Id = i, ProdTypeName = name });
+            }
+
+
+            var selectList = new SelectList(prodTypeList, "Id", "ProdTypeName");
+            return selectList;
+        }
+        private ArraySegment<TypeInfo> GetProdTypeInfo()
+        {
+            var interfaces = Assembly.GetEntryAssembly()
+                                     .DefinedTypes
+                                     .Where(t => t.FullName.Contains(nameof(BozonStore.Models.ProductModel.ProdTypeInterfaces)))
+                                     .ToArray();
+
+            return interfaces;
+        }
+
     }
 }

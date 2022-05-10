@@ -7,7 +7,8 @@
 @model Product
 <h3>Добавить товар в выбранный магазин</h3>
 
-<select id="selector" asp-items="Html.GetEnumSelectList<ElectronicType>()"></select>
+
+<select id="selector" asp-items="@ViewBag.ProdTypeSelectList"></select>
 <div id="createProdForm">
 
 </div>
