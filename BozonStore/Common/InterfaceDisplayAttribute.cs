@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace BozonStore.Common
 {
     [System.AttributeUsage(System.AttributeTargets.Interface)]
-    public class InterfaceNameAnnotation : System.Attribute
+    public class InterfaceDisplayAttribute : System.Attribute
     {
-        public InterfaceNameAnnotation(string Name)
+        public InterfaceDisplayAttribute(string Name)
         {
             this.Name = Name;
         }
