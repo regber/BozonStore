@@ -6,10 +6,12 @@ using System.Linq;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace BozonStore.Models.ProductModel.Products.Electronics
 {
+    [Display(Name ="Смартфон")]
     public class Smartphone : Product, IElectronics, IColor
     {
         public ElectronicType ElectronicType => ElectronicType.Smartphone;

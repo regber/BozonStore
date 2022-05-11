@@ -2,9 +2,11 @@
 using BozonStore.Models.ProductModel.ProdTypeEnums;
 using BozonStore.Models.ProductModel.ProdCommonInterfaces;
 using BozonStore.Models.ProductModel.CommonClass;
+using System.ComponentModel.DataAnnotations;
 
 namespace BozonStore.Models.ProductModel.Products.Electronics
 {
+    [Display(Name ="Компьютер")]
     public class Computer : Product, IElectronics,IColor
     {
         public ElectronicType ElectronicType => ElectronicType.PC;
