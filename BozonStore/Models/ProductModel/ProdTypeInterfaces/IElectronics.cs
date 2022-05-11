@@ -3,7 +3,7 @@ using BozonStore.Common;
 
 namespace BozonStore.Models.ProductModel.ProdTypeInterfaces
 {
-    [InterfaceNameAnnotation(Name: "Электроника")]
+    [InterfaceDisplay(Name: "Электроника")]
     public interface IElectronics
     {
         public ElectronicType ElectronicType { get; }
