@@ -3,5 +3,13 @@
 *@
 @{
 }
-
 <h3>Заполните форму выбранного типа товара</h3>
+
+<div>
+    @await Component.InvokeAsync("_CreateForm", new {type= ViewBag.Type })
+</div>
+
+@*<form asp-action="CreateProduct" asp-controller="Product" asp-area="Product">
+    @Html.EditorForModel()
+    <input type="submit" value="Create" />
+</form>*@
