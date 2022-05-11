@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace BozonStore.Common
 {
@@ -9,17 +10,15 @@ namespace BozonStore.Common
     {
         private static string GetClassDisplayName(Type type)
         {
-            string name = ((System.ComponentModel.DataAnnotations.DisplayAttribute)type
-                        .GetCustomAttributes(false)
-                        .First(c => c.GetType() == typeof(System.ComponentModel.DataAnnotations.DisplayAttribute))).Name;
+            string name = ((type.GetCustomAttributes(false)
+                                .FirstOrDefault(c => c.GetType() == typeof(DisplayAttribute))) as DisplayAttribute)?.Name;
 
             return name == null ? string.Empty : name;
         }
         private static string GetInterfaceDisplayName(Type type)
         {
-            string name = ((BozonStore.Common.InterfaceDisplayAttribute)(type
-                            .GetCustomAttributes(false)
-                            .First(c => c.GetType() == typeof(BozonStore.Common.InterfaceDisplayAttribute)))).Name;
+            string name = (type.GetCustomAttributes(false)
+                               .FirstOrDefault(c => c.GetType() == typeof(InterfaceDisplayAttribute)) as InterfaceDisplayAttribute)?.Name;
 
             return name == null ? string.Empty : name;
         }

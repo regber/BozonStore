@@ -6,9 +6,22 @@
 
   <ItemGroup>
     <Compile Remove="ViewModels\Account\UserViewModel\**" />
+    <Compile Remove="Views\User\Buyer\**" />
+    <Compile Remove="Views\User\Delivery\**" />
     <Content Remove="ViewModels\Account\UserViewModel\**" />
+    <Content Remove="Views\User\Buyer\**" />
+    <Content Remove="Views\User\Delivery\**" />
     <EmbeddedResource Remove="ViewModels\Account\UserViewModel\**" />
+    <EmbeddedResource Remove="Views\User\Buyer\**" />
+    <EmbeddedResource Remove="Views\User\Delivery\**" />
     <None Remove="ViewModels\Account\UserViewModel\**" />
+    <None Remove="Views\User\Buyer\**" />
+    <None Remove="Views\User\Delivery\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Content\Ads\1\Jellyfish.jpg" />
+    <Content Include="Content\Ads\2\Koala.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,8 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\User\Views\Delivery\" />
-    <Folder Include="Views\User\Buyer\" />
-    <Folder Include="Views\User\Delivery\" />
   </ItemGroup>
 
 </Project>

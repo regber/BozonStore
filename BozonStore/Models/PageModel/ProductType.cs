@@ -7,7 +7,7 @@ namespace BozonStore.Models.PageModel
 {
     public class ProductType
     {
-        public int Id { get; set; }
-        public string ProdTypeName { get; set; }
+        public string TypeDisplayName { get; set; }
+        public string TypeName { get; set; }
     }
 }

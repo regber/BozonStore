@@ -4,51 +4,24 @@
 @{
 }
 
-@model Product
 <h3>Добавить товар в выбранный магазин</h3>
 
 
-<select id="selector" asp-items="@ViewBag.ProdTypeSelectList"></select>
-<div id="createProdForm">
+<select id="selector" asp-items="@ViewBag.SelectList"></select>
+<div id="createProdForm"></div>
 
-</div>
-<div class="dudu">
+@section Scripts{
 
-</div>
-@await Html.PartialAsync("_CreatePartial")
-@*@section Scripts{
+    <script>
+        
+        $(document).ready(function () {
+        $('#selector').change(function (e) {
 
-        <script>
-            //$(document).ready(function () {
+            var selectorValue=$('#selector').val()
 
-            //    $('#selector').change(function (e) {
+            $('#createProdForm').load('@Url.Action("PartialPage", "Product", new {  area="Product"  })?parentType=' + selectorValue);
 
-            //        /*ProdType = $('#selector').val();*/
-
-            //        $('#createProdForm').children().append("<h3>ProdType</h3>");
-            //    });
-            //    });
-
-            $(document).ready(function () {
-                $('#selector').change(function (e) {
-
-                    //var B = document.createElement('b');
-                    //B.appendChild(document.createTextNode("abb"));
-                    var newElems = $("<div class='dcell'>baba</div>");
-
-                    $('#createProdForm').append(newElems);
-                    $('div.dudu').append(newElems);
-                    /*                document.getElementById("createProdForm").appendChild(newElems);*/
-                    //var newElems = $("<div class='dcell'></div>")
-                    //    .append("<img src='http://professorweb.ru/downloads/jquery/lily.png'/>")
-                    //    .append("<label for='lily'>Лилии:</label>")
-                    //    .append("<input name='lily' value='0' required />");
-
-                    //newElems.css("border", "thick solid red");
-
-                    //$('#createProdForm').append(newElems);
-                });
-            });
-        </script>
-
-    }*@
+        });
+    });
+    </script>
+    }

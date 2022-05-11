@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BozonStore.Models.PageModel;
 using System.Reflection;
+using BozonStore.Common;
 
 namespace BozonStore.Areas.Product.Controllers
 {
@@ -31,7 +32,8 @@ namespace BozonStore.Areas.Product.Controllers
         [HttpGet]
         public IActionResult CreateProduct()
         {
-            ViewBag.ProdTypeSelectList = GetProdTypeSelectList();
+            var children = GetProdTypeInfo();
+            ViewBag.SelectList = GenerateSelectList(children);
 
             return View();
         }
@@ -41,25 +43,23 @@ namespace BozonStore.Areas.Product.Controllers
         {
             return RedirectToAction();
         }
-        private SelectList GetProdTypeSelectList()
+
+        public IActionResult PartialPage(string parentType)
         {
-            var interfaces = GetProdTypeInfo();
-
-            var prodTypeList = new List<ProductType>();
-
-            for (int i = 0; i < interfaces.Count(); i++)
+            var children = ExtraTypeInfo.GetFirstChildrenOfType(parentType);
+            if(children.Count()>0)
             {
-                var name = ((BozonStore.Common.InterfaceNameAnnotation)(interfaces[i]
-                            .GetCustomAttributes(false)
-                            .First(c => c.GetType() == typeof(BozonStore.Common.InterfaceNameAnnotation)))).Name;
+                ViewBag.SelectList = GenerateSelectList(children);
 
-                prodTypeList.Add(new ProductType { Id = i, ProdTypeName = name });
+                return PartialView("_CreateSelector");
             }
-
-
-            var selectList = new SelectList(prodTypeList, "Id", "ProdTypeName");
-            return selectList;
+            else
+            {
+                return PartialView("_CreateForm");
+            }
         }
+
+
         private ArraySegment<TypeInfo> GetProdTypeInfo()
         {
             var interfaces = Assembly.GetEntryAssembly()
@@ -69,6 +69,19 @@ namespace BozonStore.Areas.Product.Controllers
 
             return interfaces;
         }
+        private SelectList GenerateSelectList(IEnumerable<Type> types)
+        {
+            var prodTypeList = new List<ProductType>();
 
+            foreach (var type in types)
+            {
+                var name = ExtraTypeInfo.GetDisplayName(type);
+
+                prodTypeList.Add(new ProductType {TypeName = type.Name, TypeDisplayName = name });
+            }
+
+            var selectList = new SelectList(prodTypeList,"TypeName", "TypeDisplayName");
+            return selectList;
+        }
     }
 }
