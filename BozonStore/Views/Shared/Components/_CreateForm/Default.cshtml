@@ -9,6 +9,7 @@
 
 
 <form asp-action="CreateProduct" asp-controller="Product" asp-area="Product">
+    <input name="ProductType" type="hidden" value="@ViewBag.ProductType" />
     @Html.EditorForModel()
     <input type="submit" value="Create" />
 </form>

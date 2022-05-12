@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BozonStore.Models.PageModel;
 using System.Reflection;
 using BozonStore.Common;
+using Newtonsoft.Json;
 
 namespace BozonStore.Areas.Product.Controllers
 {
@@ -40,13 +41,12 @@ namespace BozonStore.Areas.Product.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateProduct<T>([FromForm]T prod) where T:ProductModel.Product
+        public IActionResult CreateProduct(Dictionary<string, string> productFormProperty)
         {
-            var d = prod.GetType();
-            if (prod is ProductModel.Products.Electronics.Smartphone phone)
-            {
-                var b = phone;
-            }
+            var productType = Assembly.GetExecutingAssembly().GetType(productFormProperty["ProductType"]);
+
+            var product = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(productFormProperty), productType);
+
             return RedirectToAction();
         }
 
@@ -62,7 +62,7 @@ namespace BozonStore.Areas.Product.Controllers
             }
             else
             {
-                ViewBag.Type = parentType;
+                ViewBag.ProductType = parentType;
                 return PartialView("_CreateForm");
             }
         }
@@ -85,7 +85,7 @@ namespace BozonStore.Areas.Product.Controllers
             {
                 var name = ExtraTypeInfo.GetDisplayName(type);
 
-                prodTypeList.Add(new ProductType {TypeName = type.Name, TypeDisplayName = name });
+                prodTypeList.Add(new ProductType {TypeName = type.FullName, TypeDisplayName = name });
             }
 
             var selectList = new SelectList(prodTypeList,"TypeName", "TypeDisplayName");

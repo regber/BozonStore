@@ -6,7 +6,7 @@
 <h3>Заполните форму выбранного типа товара</h3>
 
 <div>
-    @await Component.InvokeAsync("_CreateForm", new {type= ViewBag.Type })
+    @await Component.InvokeAsync("_CreateForm", new { productType = ViewBag.ProductType })
 </div>
 
 @*<form asp-action="CreateProduct" asp-controller="Product" asp-area="Product">

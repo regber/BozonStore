@@ -12,25 +12,15 @@ namespace BozonStore.Areas.Product.Views.Product
     public class _CreateForm : ViewComponent
     {
 
-        public IViewComponentResult Invoke(string type)
+        public IViewComponentResult Invoke(string productType)
         {
-            Type t = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(t => t.Name == type);
+            Type t = Assembly.GetExecutingAssembly().GetType(productType);//.GetTypes().FirstOrDefault(t => t.FullName == type);
             
             MethodInfo method = typeof(_CreateForm).GetMethod(nameof(_CreateForm.GetView));
             MethodInfo generic = method.MakeGenericMethod(t);
-            var view = (ViewViewComponentResult)generic.Invoke(this, null);
+            var view =(ViewViewComponentResult)generic.Invoke(this, null);
 
             return view;
-            /*
-            return new HtmlContentViewComponentResult(new HtmlString("@model ProductModel.Products.Electronics.Smartphone" + $"<p>" +
-                    $"Текущее время:" +
-                    $"<b>" +
-                        $"{DateTime.Now.ToString("HH:mm:ss")}" +
-                    $"</b>" +
-                $"</p>"+
-                "<div>" +
-                "@Html.EditorForModel()" +
-                "</div>"));*/
         }
 
         public ViewViewComponentResult GetView<T>() where T:BozonStore.Models.ProductModel.Product

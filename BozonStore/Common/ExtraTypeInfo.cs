@@ -41,8 +41,8 @@ namespace BozonStore.Common
         {
             var children = Assembly.GetExecutingAssembly()
                                    .GetTypes()
-                                   .Where(t => t.GetInterfaces().Any(i => i.Name == parentTypeName) ||
-                                               t.BaseType?.Name == parentTypeName);
+                                   .Where(t => t.GetInterfaces().Any(i => i.FullName == parentTypeName) ||
+                                               t.BaseType?.FullName == parentTypeName);
 
             return children == null ? Enumerable.Empty<Type>() : children;
         }

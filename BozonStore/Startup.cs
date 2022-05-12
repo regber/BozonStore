@@ -68,12 +68,12 @@ namespace BozonStore
                 endpoint.MapAreaRoute(
                     name: "user_area",
                     areaName: "user",
-                    template: "user/{controller}/{action}");
+                    template: "User/{controller}/{action}");
 
                 endpoint.MapAreaRoute(
                     name: "product_area",
                     areaName: "product",
-                    template: "product/{controller}/{action}");
+                    template: "Product/{controller}/{action}");
 
                 endpoint.MapRoute(
                     name: "default",
