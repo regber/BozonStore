@@ -4,14 +4,16 @@ using BozonStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BozonStore.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220512175705_newMigration2")]
+    partial class newMigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,78 +296,16 @@ namespace BozonStore.Migrations
                     b.ToTable("Wallpapers");
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audios.Headphones", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audio", b =>
                 {
                     b.HasBaseType("BozonStore.Models.ProductModel.Product");
 
                     b.Property<int?>("ColorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ControlType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Design")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxFrequency")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("MicroAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MinFrequency")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("NoiseReduction")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Resistance")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasIndex("ColorId");
 
-                    b.ToTable("Headphoness");
-                });
-
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audios.Speakers", b =>
-                {
-                    b.HasBaseType("BozonStore.Models.ProductModel.Product");
-
-                    b.Property<string>("BodyMaterialType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ColorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DesignFeature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntriesInterfaces")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxPower")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TypeOfPowerSupply")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("ColorId");
-
-                    b.ToTable("Speakerss");
+                    b.ToTable("Audios");
                 });
 
             modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Computer", b =>
@@ -382,26 +322,21 @@ namespace BozonStore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("OSType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProcessorName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RAMType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RAMVolume")
                         .HasColumnType("int");
 
                     b.Property<string>("VideoCard")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VideoCardType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("ColorId");
@@ -436,7 +371,6 @@ namespace BozonStore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("MemoryCardType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RAMVolume")
@@ -775,7 +709,7 @@ namespace BozonStore.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audios.Headphones", b =>
+            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audio", b =>
                 {
                     b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
                         .WithMany()
@@ -783,22 +717,7 @@ namespace BozonStore.Migrations
 
                     b.HasOne("BozonStore.Models.ProductModel.Product", null)
                         .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Audios.Headphones", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Color");
-                });
-
-            modelBuilder.Entity("BozonStore.Models.ProductModel.Products.Electronics.Audios.Speakers", b =>
-                {
-                    b.HasOne("BozonStore.Models.ProductModel.CommonClass.Color", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId");
-
-                    b.HasOne("BozonStore.Models.ProductModel.Product", null)
-                        .WithOne()
-                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Audios.Speakers", "Id")
+                        .HasForeignKey("BozonStore.Models.ProductModel.Products.Electronics.Audio", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

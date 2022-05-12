@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using BozonStore.Models.UserModel;
+using BozonStore.Models.ProductModel.Products.Electronics.Audios;
 
 namespace BozonStore.Models
 {
@@ -36,7 +37,8 @@ namespace BozonStore.Models
         public DbSet<Stove> Stoves { get; set; }
         public DbSet<WashingMachine> WashingMachines { get; set; }
         //Electronics
-        public DbSet<Audio> Audios { get; set; }
+        public DbSet<Headphones> Headphones { get; set; }
+        public DbSet<Speakers> Speakers { get; set; }
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Smartphone> Smartphones { get; set; }
         public DbSet<Television> Televisions { get; set; }
