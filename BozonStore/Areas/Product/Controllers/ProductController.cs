@@ -45,7 +45,11 @@ namespace BozonStore.Areas.Product.Controllers
         {
             var productType = Assembly.GetExecutingAssembly().GetType(productFormProperty["ProductType"]);
 
-            var product = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(productFormProperty), productType);
+            dynamic product = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(productFormProperty), productType);
+
+            db.Products.Add(product);
+            db.SaveChanges();
+
 
             return RedirectToAction();
         }
