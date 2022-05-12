@@ -14,7 +14,7 @@ namespace BozonStore.Areas.Product.Views.Product
 
         public IViewComponentResult Invoke(string productType)
         {
-            Type t = Assembly.GetExecutingAssembly().GetType(productType);//.GetTypes().FirstOrDefault(t => t.FullName == type);
+            Type t = Assembly.GetExecutingAssembly().GetType(productType);
             
             MethodInfo method = typeof(_CreateForm).GetMethod(nameof(_CreateForm.GetView));
             MethodInfo generic = method.MakeGenericMethod(t);
