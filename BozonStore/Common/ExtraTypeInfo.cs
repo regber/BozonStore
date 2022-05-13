@@ -38,13 +38,15 @@ namespace BozonStore.Common
             }
         }
         public static IEnumerable<Type> GetFirstChildrenOfType(string parentTypeName)
-        {
-            var children = Assembly.GetExecutingAssembly()
-                                   .GetTypes()
-                                   .Where(t => t.GetInterfaces().Any(i => i.FullName == parentTypeName) ||
-                                               t.BaseType?.FullName == parentTypeName);
+        {            
+            var types = Assembly.GetExecutingAssembly()
+                                .GetTypes()
+                                .Where(t => t.GetInterfaces().Any(i=>i.FullName == parentTypeName) || 
+                                            t.BaseType?.FullName == parentTypeName);
+            
+            var firstChild = types.Where(t => !types.Contains(t.BaseType));
 
-            return children == null ? Enumerable.Empty<Type>() : children;
+            return firstChild == null ? Enumerable.Empty<Type>() : firstChild;
         }
     }
 }
