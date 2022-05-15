@@ -6,10 +6,5 @@
 <h3>Заполните форму выбранного типа товара</h3>
 
 <div>
-    @await Component.InvokeAsync("_CreateForm", new { productType = ViewBag.ProductType })
+    @await Component.InvokeAsync("CreateFormVC", new { productType = ViewBag.ProductType })
 </div>
-
-@*<form asp-action="CreateProduct" asp-controller="Product" asp-area="Product">
-    @Html.EditorForModel()
-    <input type="submit" value="Create" />
-</form>*@
