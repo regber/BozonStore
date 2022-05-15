@@ -7,16 +7,18 @@
 <h3>partial selector</h3>
 <select class="selector" asp-items="@ViewBag.SelectList"></select>
 
-<div class="createProdForm"></div>
+<div class="prodForm"></div>
 
 
 <script>
     $(document).ready(function () {
+
+        var currentSelector = $(".selector").last();
+        var currentProdForm = $('.prodForm').last();
+
         $('.selector').change(function (e) {
-
-            var selectorValue = $('.selector').last().val();
-
-            $('.createProdForm').last().load('@Url.Action("PartialPage", "Product",new {area="Product"  })?parentType=' + selectorValue);
+            var selectorValue = currentSelector.val();
+            currentProdForm.load('@Url.Action("PartialPage", "Product",new {area="Product"  })?parentType=' + selectorValue);
         });
     });
 </script>
