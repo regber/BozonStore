@@ -7,6 +7,7 @@ using BozonStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BozonStore.Models.ProductModel;
+using BozonStore.Extension;
 
 namespace BozonStore.Controllers
 {
@@ -47,6 +48,7 @@ namespace BozonStore.Controllers
         public IActionResult Shop(int id)
         {
             var seller = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == id).Seller;
+            TempData["ShopId"]=id;
 
             if (seller.Login==User.Identity.Name)
             {

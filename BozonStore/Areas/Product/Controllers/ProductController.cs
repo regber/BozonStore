@@ -11,6 +11,7 @@ using BozonStore.Models.PageModel;
 using System.Reflection;
 using BozonStore.Common;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace BozonStore.Areas.Product.Controllers
 {
@@ -26,7 +27,9 @@ namespace BozonStore.Areas.Product.Controllers
 
         public void DeleteProduct(int id)
         {
-            db.Products.ToList().RemoveAt(id);
+            var product = db.Products.Find(id);
+
+            db.Products.Remove(product);
             db.SaveChanges();
         }
 
@@ -41,17 +44,37 @@ namespace BozonStore.Areas.Product.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateProduct(Dictionary<string, string> productFormProperty)
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateProduct(Dictionary<string, string> productFormProperties)
         {
-            var productType = Assembly.GetExecutingAssembly().GetType(productFormProperty["ProductType"]);
-
-            dynamic product = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(productFormProperty), productType);
-
-            db.Products.Add(product);
-            db.SaveChanges();
+            var shopId = (int)TempData["ShopId"];
+            var seller = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == shopId).Seller;
 
 
-            return RedirectToAction();
+            if (seller.Login == User.Identity.Name)
+            {
+                if (ModelState.IsValid)
+                {
+                    var productType = Assembly.GetExecutingAssembly().GetType(productFormProperties["ProductType"]);
+
+                    dynamic product = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(productFormProperties), productType);
+
+                    db.Shops.Include(s => s.Products).FirstOrDefault(shop => shop.Id == shopId).Products.Add(product);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Shop","Seller", new {id= shopId, area="user" });
+                }
+                else
+                {
+                    return RedirectToAction();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
         }
 
         public IActionResult PartialPage(string parentType)
