@@ -1,5 +1,5 @@
 ﻿
-<form asp-action="CreateProduct" asp-controller="Product" asp-area="Product">
+<form asp-action="CreateProduct" asp-controller="Product" asp-area="Product" asp-antiforgery="true">
     <input name="ProductType" type="hidden" value="@ViewBag.ProductType" />
     @Html.EditorForModel()
     <input type="submit" value="Create" />
