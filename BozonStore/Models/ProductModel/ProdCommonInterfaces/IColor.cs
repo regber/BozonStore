@@ -1,9 +1,9 @@
-﻿using BozonStore.Models.ProductModel.CommonClass;
+﻿using BozonStore.Common;
 
 namespace BozonStore.Models.ProductModel.ProdCommonInterfaces
 {
-    interface IColor
+    public interface IColor
     {
-        public Color Color { get; set; }
+        public string Color { get; set; }
     }
 }

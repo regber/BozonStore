@@ -11,7 +11,9 @@ namespace BozonStore.Models.ProductModel.Products.Electronics.Audios
     [Display(Name = "Наушники")]
     public class Headphones : Audio, IColor
     {
-        public Color Color { get; set; }
+        [UIHint("Color")]
+        [Display(Name = "Цвет")]
+        public string Color { get; set; }
 
         [Required(ErrorMessage = "Поле не заполнено")]
         [Display(Name = "Тип")]

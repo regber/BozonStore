@@ -12,7 +12,9 @@ namespace BozonStore.Models.ProductModel.Products.Electronics
         [ScaffoldColumn(false)]
         public ElectronicType ElectronicType => ElectronicType.PC;
 
-        public Color Color { get; set; }
+        [UIHint("Color")]
+        [Display(Name = "Цвет")]
+        public string Color { get; set; }
 
 
         [Required(ErrorMessage = "Поле не заполнено")]

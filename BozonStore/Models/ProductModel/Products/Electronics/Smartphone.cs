@@ -1,7 +1,7 @@
 ﻿using BozonStore.Models.ProductModel.ProdTypeInterfaces;
 using BozonStore.Models.ProductModel.ProdTypeEnums;
 using BozonStore.Models.ProductModel.ProdCommonInterfaces;
-using BozonStore.Models.ProductModel.CommonClass;
+using BozonStore.Common;
 using System.Linq;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +17,9 @@ namespace BozonStore.Models.ProductModel.Products.Electronics
         public ElectronicType ElectronicType => ElectronicType.Smartphone;
 
 
-        public Color Color { get; set; }
+        [UIHint("Color")]
+        [Display(Name = "Цвет")]
+        public string Color { get; set; }
 
 
         [Required(ErrorMessage = "Поле не заполнено")]

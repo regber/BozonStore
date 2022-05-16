@@ -13,8 +13,9 @@ namespace BozonStore.Models.ProductModel.Products.Electronics
         [ScaffoldColumn(false)]
         public ElectronicType ElectronicType => ElectronicType.TV;
 
-
-        public Color Color { get; set; }
+        [UIHint("Color")]
+        [Display(Name = "Цвет")]
+        public string Color { get; set; }
 
         [Required(ErrorMessage = "Поле не заполнено")]
         [Display(Name = "Диагональ, дюймы")]
