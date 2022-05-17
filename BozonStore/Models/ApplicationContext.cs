@@ -17,7 +17,6 @@ namespace BozonStore.Models
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             //Database.EnsureCreated();
-            var a = GetLastChildrenClass(typeof(User));
         }
 
         public DbSet<User> Users { get; set; }
