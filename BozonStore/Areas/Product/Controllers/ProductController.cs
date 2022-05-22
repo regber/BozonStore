@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using BozonStore.Areas.Product.ViewsModel;
 
 
 namespace BozonStore.Areas.Product.Controllers
@@ -35,31 +36,49 @@ namespace BozonStore.Areas.Product.Controllers
             db = context;
             this.env = env;
         }
-
-        public IActionResult DeleteProduct(int id)
+        [HttpGet]
+        public IActionResult DeleteProduct(int id, int shopId)
         {
-            var product = db.Products.Find(id);
-            var shop = db.Shops.Include(s=>s.Seller).FirstOrDefault(s => s.Products.Contains(product));
+            var shop = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id== shopId);
+            var product = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == id);
 
-            if(shop.Seller.Login== User.Identity.Name)
-            {
-                var productContentPath = env.ContentRootPath + ContentAdsPath + product.Id;
-
-                if (Directory.Exists(productContentPath))
-                {
-                    Directory.Delete(productContentPath, true);
-                }
-
-                db.Products.Remove(product);
-                db.SaveChanges();
-
-
-                return RedirectToAction("Shop", "Seller", new { area = "User", id = shop.Id });
-            }
-            else
+            if(shop==null|| product==null)
             {
                 return NotFound();
             }
+
+            if (shop.Seller.Login == User.Identity.Name)
+            {
+                var shopProduct = new ShopProduct { ShopId = shopId, Product = product };
+
+                return View(shopProduct);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost]
+        [ActionName("DeleteProduct")]
+        public IActionResult DeleteProductPage(int id)
+        {
+            var product = db.Products.Find(id);
+            var shop = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Products.Contains(product));
+
+            var productContentPath = env.ContentRootPath + ContentAdsPath + product.Id;
+
+            if (Directory.Exists(productContentPath))
+            {
+                Directory.Delete(productContentPath, true);
+            }
+
+            db.Products.Remove(product);
+            db.SaveChanges();
+
+
+            return RedirectToAction("Shop", "Seller", new { area = "User", id = shop.Id });
+
 
         }
 

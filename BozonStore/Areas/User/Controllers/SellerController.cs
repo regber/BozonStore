@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BozonStore.Models.ProductModel;
 using BozonStore.Extension;
+using BozonStore.Areas.User.ViewsModel;
 
 namespace BozonStore.Controllers
 {
@@ -48,18 +49,18 @@ namespace BozonStore.Controllers
         public IActionResult Shop(int id)
         {
             var seller = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == id).Seller;
-            TempData["ShopId"]=id;
-
+            
             if (seller.Login==User.Identity.Name)
             {
-                                
+                TempData["ShopId"] = id;
                 var shop = db.Shops.Include(s => s.Products)
                                    .ThenInclude(prod => prod.MainImage)
                                    .FirstOrDefault(s => s.Id == id);
 
-                var products = shop.Products;
+                var shopProducts = new ShopProducts { ShopId = id, Products = shop.Products };
 
-                return View(products);
+
+                return View(shopProducts);
             }
             else
             {

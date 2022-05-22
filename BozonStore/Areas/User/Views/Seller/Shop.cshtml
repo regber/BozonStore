@@ -1,11 +1,11 @@
 ﻿@{
 }
 
-@model IEnumerable<Product>
+@model ShopProducts
 
 <h3>Товары в магазине</h3>
 <div>
-    @foreach (var prod in @Model)
+    @foreach (var prod in @Model.Products)
     {
         <div>
             <div>@prod.Title</div>
@@ -14,10 +14,10 @@
             </div>
             <div>@prod.Price</div>
             <div>
-                <a href="@Url.Action("ViewProduct","Product",new {id=prod.Id, area="Product" })">View</a>
+                <a href="@Url.Action("EditProduct","Product",new {id=prod.Id, area="Product" })">Edit</a>
             </div>
             <div>
-                <a href="@Url.Action("DeleteProduct","Product",new {id=prod.Id,area="Product"  })">Delete</a>
+                <a href="@Url.Action("DeleteProduct","Product",new {id=prod.Id , shopId=Model.ShopId,area="Product"  })">Delete</a>
             </div>
 
         </div>

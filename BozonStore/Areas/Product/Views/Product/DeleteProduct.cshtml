@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model ShopProduct
+
+<form asp-action="DeleteProduct" asp-controller="Product" asp-area="Product" method="post">
+    <input type="hidden" name="id" value="@Model.Product.Id" />
+    <div>
+        <label asp-for="Product.Title"></label>
+        <input asp-for="Product.Title" disabled="" />
+    </div>
+    <div>
+        <img width="100" src="@Url.Action("GetImage","Common", new {path="/Content/Ads/"+@Model.Product.Id+"/"+@Model.Product.MainImage?.Name, area="" })" />
+    </div>
+    <div>
+        <label asp-for="Product.Price"></label>
+        <input asp-for="Product.Price" disabled="" />
+    </div>
+    <button href="@Url.Action(" Shop","User",new {area="User" ,id=Model.ShopId })">Back</button>
+    <input type="submit" value="Delete" />
+</form>
+
