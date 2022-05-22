@@ -1,0 +1,109 @@
+﻿
+<form id="productForm" asp-action="CreateProduct" asp-controller="Product" asp-area="Product" asp-antiforgery="true">
+    <input name="ProductType" type="hidden" value="@ViewBag.ProductType" />
+    @Html.EditorForModel()
+    <input id="imagesFileInput" type="file" multiple value="Upload" />
+    <div id="previewImages"></div>
+    <input type="submit" value="Create" />
+</form>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/handlebars.js/handlebars.js"></script>
+<script src="~/js/handtemp.js"></script>
+<script>
+    $(document).ready(function () {
+        var imageFiles;
+        $("#productForm").submit(function (event) {
+
+            var selectedClass = ["selectedImageContainer"];
+            var allImagesContainers = $(document).find('.imageContainer');
+            var mainImageIndex = 0;
+
+            allImagesContainers.each(function (idx) {
+                if ($(this).hasClass(selectedClass)) {
+                    mainImageIndex = idx;
+                }
+            });
+
+            var formData = new FormData();
+
+            $.each(imageFiles, function (idx, file) {
+                if (idx != mainImageIndex) {
+                    formData.append('images[]', file);
+                }
+                else {
+                    formData.append('mainImage', file);
+                }
+            });
+
+            
+            $.ajax({
+                type: "POST",
+                url: "UploadFile",
+                data: formData,
+                enctype: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false
+            });
+
+            return true;
+        });
+
+        $("#imagesFileInput").change(function () {
+
+            $("#previewImages").empty();
+
+            imageFiles = $('#imagesFileInput').prop('files');
+
+            $.each(imageFiles, function (idx, file) {
+
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function (event) {
+
+                        CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result });
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script type="text/x-handlebars-template" id="imgTemplate">
+    <div class="imageContainer">
+
+        <img class="imagePreview" height="100" src="{{src}}">
+        <span>{{filename}}</span>
+
+        <script>
+            $(document).ready(function () {
+
+                var thisImageContainer = $(document).find('.imageContainer').last();
+
+                var selectedClass = ["selectedImageContainer"];
+
+                thisImageContainer.click(function (e) {
+                    thisImageContainer = $(e.target).parent();
+                    thisImageContainer.addClass(selectedClass);
+
+                    var allImagesContainers = $(document).find('.imageContainer');
+
+                    allImagesContainers.each(function () {
+                        if (thisImageContainer.find(".imagePreview").first().attr("src") != $(this).find(".imagePreview").first().attr("src")) {
+                            $(this).removeClass(selectedClass);
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</script>
+
+
+

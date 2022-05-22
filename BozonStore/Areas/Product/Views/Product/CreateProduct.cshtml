@@ -5,7 +5,7 @@
 }
 
 <h3>Добавить товар в выбранный магазин</h3>
-
+<h4>Выберите категорию</h4>
 
 <select id="selector" asp-items="@ViewBag.SelectList"></select>
 <div id="createProdForm"></div>
@@ -19,7 +19,7 @@
 
             var selectorValue=$('#selector').val()
 
-            $('#createProdForm').load('@Url.Action("PartialPage", "Product", new {  area="Product"  })?parentType=' + selectorValue);
+            $('#createProdForm').load('@Url.Action("ChildTypeView", "Product", new {  area="Product"  })?parentType=' + selectorValue);
 
         });
     });

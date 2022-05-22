@@ -26,6 +26,7 @@ namespace BozonStore.Areas.Product.Controllers
     [Authorize(Roles = "Seller")]
     public class ProductController : Controller
     {
+        private const string ContentAdsPath = "\\Content\\Ads\\";
         ApplicationContext db;
         IWebHostEnvironment env;
 
@@ -35,21 +36,49 @@ namespace BozonStore.Areas.Product.Controllers
             this.env = env;
         }
 
-        public void DeleteProduct(int id)
+        public IActionResult DeleteProduct(int id)
         {
             var product = db.Products.Find(id);
+            var shop = db.Shops.Include(s=>s.Seller).FirstOrDefault(s => s.Products.Contains(product));
 
-            db.Products.Remove(product);
-            db.SaveChanges();
+            if(shop.Seller.Login== User.Identity.Name)
+            {
+                var productContentPath = env.ContentRootPath + ContentAdsPath + product.Id;
+
+                if (Directory.Exists(productContentPath))
+                {
+                    Directory.Delete(productContentPath, true);
+                }
+
+                db.Products.Remove(product);
+                db.SaveChanges();
+
+
+                return RedirectToAction("Shop", "Seller", new { area = "User", id = shop.Id });
+            }
+            else
+            {
+                return NotFound();
+            }
+
         }
 
         [HttpGet]
         public IActionResult CreateProduct()
         {
-            var children = GetProdTypeInfo();
-            ViewBag.SelectList = GenerateSelectList(children);
+            if (TempData["ShopId"] != null)
+            {
+                var children = GetProdTypeInfo();
+                ViewBag.SelectList = GenerateSelectList(children);
 
-            return View();
+                return View();
+            }
+            else
+            {
+                var shops = db.Shops.Where(s => s.Seller.Login == User.Identity.Name);
+
+                return RedirectToAction("Shops", "Seller", new { model = shops, area = "user" });
+            }
         }
 
 
@@ -57,7 +86,9 @@ namespace BozonStore.Areas.Product.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateProduct(Dictionary<string, string> productFormProperties)
         {
+
             var shopId = (int)TempData["ShopId"];
+
             var seller = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == shopId).Seller;
 
             if (seller.Login == User.Identity.Name)
@@ -77,6 +108,8 @@ namespace BozonStore.Areas.Product.Controllers
             {
                 return NotFound();
             }
+
+
         }
 
         private void AddProductInToShop(int shopId, Dictionary<string, string> productFormProperties)
@@ -94,34 +127,43 @@ namespace BozonStore.Areas.Product.Controllers
 
         private void AddImagesInToProduct(ProductModel.Product product)
         {
-            var productImages = TempData.Get<Dictionary<string, string>>("tempImages");
+            var productTempImages = TempData.Get<List<TempImage>>("tempImages");
 
             var currentProduct = db.Products.Find(product.Id);
 
             List<Image> images = new List<Image>();
+            Image mainImage = new Image();
 
-            foreach (var image in productImages)
+            foreach (var tempImage in productTempImages)
             {
-                CopyTempImageToProductAd(image, product);
+                CopyTempImageToProductAd(tempImage, product);
 
-                images.Add(new Image { Name = image.Key });
+                if (tempImage.MainImage)
+                {
+                    mainImage = new Image { Name = tempImage.FileName };
+                }
+                else
+                {
+                    images.Add(new Image { Name = tempImage.FileName });
+                }
             }
 
+            currentProduct.MainImage = mainImage;
             currentProduct.Images = images;
 
             db.SaveChanges();
-            
+
         }
-        private void CopyTempImageToProductAd(KeyValuePair<string, string> image, ProductModel.Product product)
+        private void CopyTempImageToProductAd(TempImage tempImage, ProductModel.Product product)
         {
-            var tempImagePath = image.Value;
-            var newImageDirectory = env.ContentRootPath + "\\Content\\Ads\\" + product.Id;
+            var tempImagePath = tempImage.FilePath;
+            var newImageDirectory = env.ContentRootPath + ContentAdsPath + product.Id;
 
             CreateDirIfItNotExist(newImageDirectory);
 
-            var newImagePath = newImageDirectory + "\\" + image.Key;
+            var newImagePath = newImageDirectory + "\\" + tempImage.FileName;
 
-            System.IO.File.Copy(tempImagePath, newImagePath);
+            System.IO.File.Move(tempImagePath, newImagePath);
         }
         private void CreateDirIfItNotExist(string directory)
         {
@@ -131,7 +173,7 @@ namespace BozonStore.Areas.Product.Controllers
             }
         }
 
-        public IActionResult PartialPage(string parentType)
+        public IActionResult ChildTypeView(string parentType)
         {
             var children = ExtraTypeInfo.GetFirstChildrenOfType(parentType);
 
@@ -173,13 +215,10 @@ namespace BozonStore.Areas.Product.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadLargeFile()
-         {
+        public async Task<IActionResult> UploadFile()
+        {
             var request = HttpContext.Request;
 
-            // validation of Content-Type
-            // 1. first, it must be a form-data request
-            // 2. a boundary should be found in the Content-Type
             if (!request.HasFormContentType ||
                 !MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeader) ||
                 string.IsNullOrEmpty(mediaTypeHeader.Boundary.Value))
@@ -190,10 +229,8 @@ namespace BozonStore.Areas.Product.Controllers
             var reader = new MultipartReader(mediaTypeHeader.Boundary.Value, request.Body);
             var section = await reader.ReadNextSectionAsync();
 
-            Dictionary<string, string> tempImages = new Dictionary<string, string>();
+            List<TempImage> tempImages = new List<TempImage>();
 
-            // This sample try to get the first file from request and save it
-            // Make changes according to your needs in actual use
             while (section != null)
             {
                 var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition,
@@ -202,16 +239,17 @@ namespace BozonStore.Areas.Product.Controllers
                 if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
                     !string.IsNullOrEmpty(contentDisposition.FileName.Value))
                 {
-                    // Don't trust any file name, file extension, and file data from the request unless you trust them completely
-                    // Otherwise, it is very likely to cause problems such as virus uploading, disk filling, etc
-                    // In short, it is necessary to restrict and verify the upload
-                    // Here, we just use the temporary folder and a random file name
-
-                    // Get the temporary folder, and combine a random file name with it
                     var fileName = Path.GetRandomFileName();
                     var saveToPath = Path.Combine(Path.GetTempPath(), fileName);
 
-                    tempImages.Add(contentDisposition.FileName.Value, saveToPath);
+                    if (contentDisposition.Name == "mainImage")
+                    {
+                        tempImages.Add(new TempImage { FileName = contentDisposition.FileName.Value, FilePath = saveToPath, MainImage = true });
+                    }
+                    else
+                    {
+                        tempImages.Add(new TempImage { FileName = contentDisposition.FileName.Value, FilePath = saveToPath, MainImage = false });
+                    }
 
                     using (var targetStream = System.IO.File.Create(saveToPath))
                     {
@@ -228,9 +266,14 @@ namespace BozonStore.Areas.Product.Controllers
                 }
             }
 
-            // If the code runs to this location, it means that no files have been saved
             return BadRequest("No files data in the request.");
         }
     }
 
+    class TempImage
+    {
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public bool MainImage { get; set; }
+    }
 }

@@ -9,15 +9,15 @@ using System.Linq;
 
 namespace BozonStore.Areas.Product.Views.Product
 {
-    public class CreateFormVC : ViewComponent
+    public class CreateForm : ViewComponent
     {
 
         public IViewComponentResult Invoke(string productType)
         {
-            Type t = Assembly.GetExecutingAssembly().GetType(productType);
+            Type type = Assembly.GetExecutingAssembly().GetType(productType);
             
-            MethodInfo method = typeof(CreateFormVC).GetMethod(nameof(CreateFormVC.GetView));
-            MethodInfo generic = method.MakeGenericMethod(t);
+            MethodInfo method = typeof(CreateForm).GetMethod(nameof(CreateForm.GetView));
+            MethodInfo generic = method.MakeGenericMethod(type);
             var view =(ViewViewComponentResult)generic.Invoke(this, null);
 
             return view;

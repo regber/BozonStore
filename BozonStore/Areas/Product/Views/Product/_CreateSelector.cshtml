@@ -3,8 +3,7 @@
 *@
 @{
 }
-
-<h3>partial selector</h3>
+<h4>Выберите категорию</h4>
 <select class="selector" asp-items="@ViewBag.SelectList"></select>
 
 <div class="prodForm"></div>
@@ -18,7 +17,7 @@
 
         $('.selector').change(function (e) {
             var selectorValue = currentSelector.val();
-            currentProdForm.load('@Url.Action("PartialPage", "Product",new {area="Product"  })?parentType=' + selectorValue);
+            currentProdForm.load('@Url.Action("ChildTypeView", "Product",new {area="Product"  })?parentType=' + selectorValue);
         });
     });
 </script>

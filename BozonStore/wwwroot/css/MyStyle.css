@@ -1,1 +1,4 @@
-﻿
+﻿.selectedImageContainer > .imagePreview {
+    outline: 3px solid red;
+    margin: 3px
+}
