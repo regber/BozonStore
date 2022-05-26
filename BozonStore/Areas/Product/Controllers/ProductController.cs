@@ -52,6 +52,7 @@ namespace BozonStore.Areas.Product.Controllers
             {
                 ViewBag.ProductType = product.GetType().FullName;
                 ViewBag.Product = product;
+                TempData["ShopId"] = shop.Id;
 
                 return View();
             }
@@ -60,30 +61,33 @@ namespace BozonStore.Areas.Product.Controllers
                 return Unauthorized();
             }
         }
+
         [HttpPost]
         public IActionResult EditProduct(Dictionary<string, string> productFormProperties)
         {
 
             var seller = db.Sellers.FirstOrDefault(s=>s.Login== User.Identity.Name);
 
-            //if (seller.Login == User.Identity.Name)
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        AddProductInToShop(shopId, productFormProperties);
+            var shopId = (int)TempData["ShopId"];
 
-            //        return RedirectToAction("Shop", "Seller", new { id = shopId, area = "user" });
-            //    }
-            //    else
-            //    {
-            //        return RedirectToAction();
-            //    }
-            //}
-            //else
-            //{
-            //    return NotFound();
-            //}
-            return NotFound();
+            if (seller.Login == User.Identity.Name)
+            {
+                if (ModelState.IsValid)
+                {
+                    EditProductInShop(shopId, productFormProperties);
+
+                    return RedirectToAction("Shop", "Seller", new { id = shopId, area = "user" });
+                }
+                else
+                {
+                    return RedirectToAction();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+
         }
 
         [HttpGet]
@@ -180,6 +184,17 @@ namespace BozonStore.Areas.Product.Controllers
 
         }
 
+        private void EditProductInShop(int shopId, Dictionary<string, string> productFormProperties)
+        {
+            var productType = Assembly.GetExecutingAssembly().GetType(productFormProperties["ProductType"]);
+
+            dynamic product = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(productFormProperties), productType);
+
+            db.Products.Update(product);
+            db.SaveChanges();
+
+            AddImagesInToProduct(product);
+        }
         private void AddProductInToShop(int shopId, Dictionary<string, string> productFormProperties)
         {
             var productType = Assembly.GetExecutingAssembly().GetType(productFormProperties["ProductType"]);
@@ -207,13 +222,13 @@ namespace BozonStore.Areas.Product.Controllers
                 productTempImages.FirstOrDefault().MainImage = true;
             }
 
-            var currentProduct = db.Products.Find(product.Id);
+            var currentProduct = db.Products.Include(p=>p.Images).FirstOrDefault(p=>p.Id==product.Id);
 
             List<Image> images = new List<Image>();
 
             foreach (var tempImage in productTempImages)
             {
-                CopyTempImageToProductAd(tempImage, product);
+                CopyTempImageToProduct(tempImage, product);
 
                 if (tempImage.MainImage)
                 {
@@ -225,23 +240,29 @@ namespace BozonStore.Areas.Product.Controllers
                 }
             }
 
-
             currentProduct.Images = images;
 
             db.SaveChanges();
 
         }
 
-        private void CopyTempImageToProductAd(TempImage tempImage, ProductModel.Product product)
+        private void CopyTempImageToProduct(TempImage tempImage, ProductModel.Product product)
         {
             var tempImagePath = tempImage.FilePath;
             var newImageDirectory = env.ContentRootPath + ContentAdsPath + product.Id;
 
             CreateDirIfItNotExist(newImageDirectory);
 
+
             var newImagePath = newImageDirectory + "\\" + tempImage.FileName;
 
+            if(System.IO.File.Exists(newImagePath))
+            {
+                System.IO.File.Delete(newImagePath);
+            }
+
             System.IO.File.Move(tempImagePath, newImagePath);
+
         }
         private void CreateDirIfItNotExist(string directory)
         {
@@ -250,6 +271,7 @@ namespace BozonStore.Areas.Product.Controllers
                 Directory.CreateDirectory(directory);
             }
         }
+
 
         public IActionResult ChildTypeView(string parentType)
         {
