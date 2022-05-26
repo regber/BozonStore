@@ -5,23 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Content\Ads\1\**" />
+    <Compile Remove="Content\Ads\2\**" />
     <Compile Remove="ViewModels\Account\UserViewModel\**" />
     <Compile Remove="Views\User\Buyer\**" />
     <Compile Remove="Views\User\Delivery\**" />
+    <Content Remove="Content\Ads\1\**" />
+    <Content Remove="Content\Ads\2\**" />
     <Content Remove="ViewModels\Account\UserViewModel\**" />
     <Content Remove="Views\User\Buyer\**" />
     <Content Remove="Views\User\Delivery\**" />
+    <EmbeddedResource Remove="Content\Ads\1\**" />
+    <EmbeddedResource Remove="Content\Ads\2\**" />
     <EmbeddedResource Remove="ViewModels\Account\UserViewModel\**" />
     <EmbeddedResource Remove="Views\User\Buyer\**" />
     <EmbeddedResource Remove="Views\User\Delivery\**" />
+    <None Remove="Content\Ads\1\**" />
+    <None Remove="Content\Ads\2\**" />
     <None Remove="ViewModels\Account\UserViewModel\**" />
     <None Remove="Views\User\Buyer\**" />
     <None Remove="Views\User\Delivery\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Content\Ads\1\Jellyfish.jpg" />
-    <Content Include="Content\Ads\2\Koala.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\User\Views\Delivery\" />
+    <Folder Include="Content\Ads\" />
   </ItemGroup>
 
 </Project>

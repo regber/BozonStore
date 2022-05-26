@@ -13,7 +13,7 @@
         <input asp-for="Product.Title" disabled="" />
     </div>
     <div>
-        <img width="100" src="@Url.Action("GetImage","Common", new {path="/Content/Ads/"+@Model.Product.Id+"/"+@Model.Product.MainImage?.Name, area="" })" />
+        <img width="100" src="@Url.Action("GetImage","Common", new {path="/Content/Ads/"+@Model.Product.Id+"/"+@Model.Product.Images.FirstOrDefault(i=>i.MainImage)?.Name, area="" })" />
     </div>
     <div>
         <label asp-for="Product.Price"></label>

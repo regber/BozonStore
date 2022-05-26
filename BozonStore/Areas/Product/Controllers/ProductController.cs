@@ -36,6 +36,56 @@ namespace BozonStore.Areas.Product.Controllers
             db = context;
             this.env = env;
         }
+
+        [HttpGet]
+        public IActionResult EditProduct(int id, int shopId)
+        {
+            var product = db.Products.Include(p=>p.Images).FirstOrDefault(p => p.Id == id);
+            var shop = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == shopId);
+
+            if (product==null || shop == null)
+            {
+                return NotFound();
+            }
+
+            if (shop.Seller.Login == User.Identity.Name)
+            {
+                ViewBag.ProductType = product.GetType().FullName;
+                ViewBag.Product = product;
+
+                return View();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+        [HttpPost]
+        public IActionResult EditProduct(Dictionary<string, string> productFormProperties)
+        {
+
+            var seller = db.Sellers.FirstOrDefault(s=>s.Login== User.Identity.Name);
+
+            //if (seller.Login == User.Identity.Name)
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        AddProductInToShop(shopId, productFormProperties);
+
+            //        return RedirectToAction("Shop", "Seller", new { id = shopId, area = "user" });
+            //    }
+            //    else
+            //    {
+            //        return RedirectToAction();
+            //    }
+            //}
+            //else
+            //{
+            //    return NotFound();
+            //}
+            return NotFound();
+        }
+
         [HttpGet]
         public IActionResult DeleteProduct(int id, int shopId)
         {
@@ -85,7 +135,7 @@ namespace BozonStore.Areas.Product.Controllers
         [HttpGet]
         public IActionResult CreateProduct()
         {
-            if (TempData["ShopId"] != null)
+            if (TempData.ContainsKey("ShopId"))
             {
                 var children = GetProdTypeInfo();
                 ViewBag.SelectList = GenerateSelectList(children);
@@ -102,7 +152,6 @@ namespace BozonStore.Areas.Product.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult CreateProduct(Dictionary<string, string> productFormProperties)
         {
 
@@ -148,10 +197,19 @@ namespace BozonStore.Areas.Product.Controllers
         {
             var productTempImages = TempData.Get<List<TempImage>>("tempImages");
 
+            if(productTempImages==null)
+            {
+                return;
+            }
+
+            if(!productTempImages.Any(i=>i.MainImage))
+            {
+                productTempImages.FirstOrDefault().MainImage = true;
+            }
+
             var currentProduct = db.Products.Find(product.Id);
 
             List<Image> images = new List<Image>();
-            Image mainImage = new Image();
 
             foreach (var tempImage in productTempImages)
             {
@@ -159,20 +217,21 @@ namespace BozonStore.Areas.Product.Controllers
 
                 if (tempImage.MainImage)
                 {
-                    mainImage = new Image { Name = tempImage.FileName };
+                    images.Add(new Image { Name = tempImage.FileName, MainImage=true });
                 }
                 else
                 {
-                    images.Add(new Image { Name = tempImage.FileName });
+                    images.Add(new Image { Name = tempImage.FileName, MainImage=false });
                 }
             }
 
-            currentProduct.MainImage = mainImage;
+
             currentProduct.Images = images;
 
             db.SaveChanges();
 
         }
+
         private void CopyTempImageToProductAd(TempImage tempImage, ProductModel.Product product)
         {
             var tempImagePath = tempImage.FilePath;
@@ -236,6 +295,8 @@ namespace BozonStore.Areas.Product.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFile()
         {
+            TempData.Remove("tempImages");
+
             var request = HttpContext.Request;
 
             if (!request.HasFormContentType ||

@@ -53,8 +53,9 @@ namespace BozonStore.Controllers
             if (seller.Login==User.Identity.Name)
             {
                 TempData["ShopId"] = id;
+
                 var shop = db.Shops.Include(s => s.Products)
-                                   .ThenInclude(prod => prod.MainImage)
+                                   .ThenInclude(prod => prod.Images)
                                    .FirstOrDefault(s => s.Id == id);
 
                 var shopProducts = new ShopProducts { ShopId = id, Products = shop.Products };

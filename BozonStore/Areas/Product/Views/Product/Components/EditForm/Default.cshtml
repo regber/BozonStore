@@ -5,17 +5,19 @@
 }
 @model Product
 
-<form id="productForm" asp-action="CreateProduct" asp-controller="Product" asp-area="Product">
+<form id="productForm" asp-action="EditProduct" asp-controller="Product" asp-area="Product">
 
     <input name="ProductType" type="hidden" value="@ViewBag.ProductType" />
+    <input name="Id" type="hidden" value="@Model.Id" />
 
     @Html.EditorForModel()
     @Html.EditorFor(m => m.Images)
 
-    <input type="submit" value="Create" />
+    <input type="submit" value="Save" />
 </form>
 
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
@@ -26,33 +28,19 @@
 <script>
     $(document).ready(function () {
 
-        RenderLoadFileEvent();
         SubmitLoadFileEvent();
+
+        RenderLoadFileEvent();
+
+        LoadImagesEditableProduct();
+
     });
 </script>
+
 <script>
+    var MainImageName;
     const selectedClass = ["selectedImageContainer"];
 
-    function RenderLoadFileEvent() {
-        $("#imagesFileInput").change(function () {
-
-            $("#previewImages").empty();
-
-            imageFiles = $('#imagesFileInput').prop('files');
-
-            $.each(imageFiles, function (idx, file) {
-
-                if (file) {
-                    let reader = new FileReader();
-                    reader.onload = function (event) {
-
-                        CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result });
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    }
     function SubmitLoadFileEvent() {
         $("#productForm").submit(function (event) {
 
@@ -91,6 +79,62 @@
             return true;
         });
     }
+    function RenderLoadFileEvent() {
+        $("#imagesFileInput").change(function () {
+
+            $("#previewImages").empty();
+
+            imageFiles = $('#imagesFileInput').prop('files');
+
+            $.each(imageFiles, function (idx, file) {
+
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function (event) {
+
+                        if (file.name == MainImageName) {
+                            CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result, selected: selectedClass });
+                        }
+                        else {
+                            CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result });
+                        }
+                        
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    }
+    function LoadImagesEditableProduct() {
+        var id =@Html.Raw(Model.Id);
+        var images = @Html.Raw(@JsonConvert.SerializeObject(Model.Images));
+
+
+        $.each(images, function (idx, img) {
+            if (img.MainImage) {
+                MainImageName = img.Name;
+            }
+        });
+
+        const dt = new DataTransfer();
+
+        document.querySelector('#imagesFileInput').files = dt.files;
+
+        $.each(images, function (idx, img) {
+
+            fetch("@Url.Action("GetImage","Common", new {path="/Content/Ads/", area="" })" + id + "/" + img.Name)
+                .then(response => response.blob())
+                .then(blobFile => new File([blobFile], img.Name, { type: "image/*" }))
+                .then(file => {
+
+                    dt.items.add(file);
+
+                    if (dt.items.length == images.length) {
+                        $("#imagesFileInput").trigger("change");
+                    }
+                });
+        });
+    }
 
     $(document).on('click', '.imageContainer', function () {
         var thisImageContainer = $(this);
@@ -109,7 +153,7 @@
 </script>
 
 <script type="text/x-handlebars-template" id="imgTemplate">
-    <div class="imageContainer">
+    <div class="imageContainer {{selected}}">
 
         <img class="imagePreview" height="100" src="{{src}}" filename="{{filename}}">
         <span>{{filename}}</span>

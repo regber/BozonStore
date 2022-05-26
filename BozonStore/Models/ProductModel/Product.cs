@@ -26,7 +26,8 @@ namespace BozonStore.Models.ProductModel
         public int Price { get; set; }
 
 
-        public Image MainImage { get; set; }
+        [UIHint("Images")]
+        [Display(Name ="images", Order = -97)]
         public ICollection<Image> Images { get; set; }
     }
 }
