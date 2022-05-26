@@ -19,7 +19,8 @@
         <label asp-for="Product.Price"></label>
         <input asp-for="Product.Price" disabled="" />
     </div>
-    <button href="@Url.Action(" Shop","User",new {area="User" ,id=Model.ShopId })">Back</button>
+    <a class="btn-primary" href="@Url.Action("Shop","Seller",new {area="User",id=Model.ShopId })">Cancel</a>
     <input type="submit" value="Delete" />
 </form>
+
 
