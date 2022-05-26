@@ -19,6 +19,7 @@ using Microsoft.Net.Http.Headers;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using BozonStore.Areas.Product.ViewsModel;
+using BozonStore.Areas.Product.Model;
 
 
 namespace BozonStore.Areas.Product.Controllers
@@ -370,12 +371,5 @@ namespace BozonStore.Areas.Product.Controllers
 
             return BadRequest("No files data in the request.");
         }
-    }
-
-    class TempImage
-    {
-        public string FileName { get; set; }
-        public string FilePath { get; set; }
-        public bool MainImage { get; set; }
     }
 }
