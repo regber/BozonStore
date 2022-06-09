@@ -41,4 +41,8 @@
     <Folder Include="Content\Ads\" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="npm run build" />
+  </Target>
+
 </Project>
