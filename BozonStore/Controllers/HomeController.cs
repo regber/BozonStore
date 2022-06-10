@@ -43,5 +43,17 @@ namespace BozonStore.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public JsonResult GetProducts()
+        {
+            var products = db.Products.Include(p=>p.Images);
+
+            //var shop = db.Shops.Include(s => s.Products)
+            //       .ThenInclude(prod => prod.Images)
+            //       .FirstOrDefault(s => s.Id == id);
+
+            return Json(products);
+            //return Json(new {name="Stas",age="34" });
+        }
     }
 }

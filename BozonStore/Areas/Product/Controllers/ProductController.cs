@@ -28,7 +28,7 @@ namespace BozonStore.Areas.Product.Controllers
     [Authorize(Roles = "Seller")]
     public class ProductController : Controller
     {
-        private const string ContentAdsPath = "\\Content\\Ads\\";
+        private const string ContentAdsPath = "\\Content\\Proposal\\";
         ApplicationContext db;
         IWebHostEnvironment env;
 

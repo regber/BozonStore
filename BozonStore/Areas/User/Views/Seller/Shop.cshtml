@@ -10,7 +10,7 @@
         <div>
             <div>@prod.Title</div>
             <div>
-                <img width="100" src="@Url.Action("GetImage","Common", new {path="/Content/Ads/"+@prod.Id+"/"+@prod.Images.FirstOrDefault(i=>i.MainImage)?.Name, area="" })" />
+                <img width="100" src="@Url.Action("GetProposalImage","Common", new {prodId=@prod.Id,imageName=@prod.Images.FirstOrDefault(i=>i.MainImage)?.Name, area="" })" />
             </div>
             <div>@prod.Price</div>
             <div>
@@ -19,7 +19,6 @@
             <div>
                 <a href="@Url.Action("DeleteProduct","Product",new {id=prod.Id , shopId=Model.ShopId,area="Product"  })">Delete</a>
             </div>
-
         </div>
     }
     <div>

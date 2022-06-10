@@ -15,12 +15,12 @@ namespace BozonStore.Controllers
         public CommonController(IWebHostEnvironment env)
         {
             this.env = env;
-            
         }
-        public IActionResult GetImage(string path)
+        [HttpGet]
+        public IActionResult GetProposalImage(string prodId,string imageName)
         {
-            var imageDir = env.ContentRootPath.Replace("\\","/");
-            var fullPath = imageDir + path;
+            var imageDir = env.ContentRootPath.Replace("\\","/")+"/Content/Proposal/";
+            var fullPath = imageDir + prodId+"/"+ imageName;
             return PhysicalFile(fullPath, "image/*");
         }
     }

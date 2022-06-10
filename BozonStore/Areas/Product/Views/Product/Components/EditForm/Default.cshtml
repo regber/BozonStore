@@ -98,7 +98,7 @@
                         else {
                             CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result });
                         }
-                        
+
                     }
                     reader.readAsDataURL(file);
                 }
@@ -122,7 +122,7 @@
 
         $.each(images, function (idx, img) {
 
-            fetch("@Url.Action("GetImage","Common", new {path="/Content/Ads/", area="" })" + id + "/" + img.Name)
+            fetch("@Url.Action("GetProposalImage","Common", new {area="" })" + "?prodId=" + id +"&imageName=" + img.Name)
                 .then(response => response.blob())
                 .then(blobFile => new File([blobFile], img.Name, { type: "image/*" }))
                 .then(file => {
