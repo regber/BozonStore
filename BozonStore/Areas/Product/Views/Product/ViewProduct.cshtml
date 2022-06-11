@@ -1,0 +1,12 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<h3>Просмотр товара</h3>
+
+<div>
+    @await Component.InvokeAsync("ViewForm", new { productType = ViewBag.ProductType, product = ViewBag.Product })
+</div>

@@ -187,9 +187,19 @@ namespace BozonStore.Areas.Product.Controllers
 
         public IActionResult ViewProduct(int id)
         {
-            var product = db.Products.Find(id);
+            var product = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == id);
 
-            return View(product);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                ViewBag.ProductType = product.GetType().FullName;
+                ViewBag.Product = product;
+
+                return View(product);
+            }
         }
 
         private void EditProductInShop(int shopId, Dictionary<string, string> productFormProperties)
