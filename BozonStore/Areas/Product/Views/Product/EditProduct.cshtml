@@ -4,8 +4,8 @@
 @{
 }
 
-<h3>Просмотр и редактирование товара</h3>
+<h3>Редактирование товара</h3>
 
 <div>
-    @await Html.PartialAsync("_EditForm")
+    @await Component.InvokeAsync("EditForm", new { productType = ViewBag.ProductType, product = ViewBag.Product })
 </div>

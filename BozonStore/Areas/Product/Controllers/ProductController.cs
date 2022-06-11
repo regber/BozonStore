@@ -185,6 +185,13 @@ namespace BozonStore.Areas.Product.Controllers
 
         }
 
+        public IActionResult ViewProduct(int id)
+        {
+            var product = db.Products.Find(id);
+
+            return View(product);
+        }
+
         private void EditProductInShop(int shopId, Dictionary<string, string> productFormProperties)
         {
             var productType = Assembly.GetExecutingAssembly().GetType(productFormProperties["ProductType"]);
@@ -371,5 +378,7 @@ namespace BozonStore.Areas.Product.Controllers
 
             return BadRequest("No files data in the request.");
         }
+
+
     }
 }
