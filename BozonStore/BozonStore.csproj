@@ -32,8 +32,4 @@
     <Folder Include="Areas\User\Views\Delivery\" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="npm run build" />
-  </Target>
-
 </Project>
