@@ -21,21 +21,15 @@
 
     <script>
         window.onscroll =  function () {
-           
-             GetProd(4);
-            
+             AddProdsRow(4);
         }
 
         window.onresize= function(){
-           
-             GetProd(4);
-            
+             AddProdsRow(4);
         };
 
         $(document).ready( function () {
-
-             GetProd(4);
-            
+             AddProdsRow(4);
         });
     </script>
 
@@ -49,42 +43,39 @@
 
         var ProdRunOut = false;
 
-        async function GetProd(prodCount) {
+        async function AddProdsRow(prodCountInRow) {
 
 
-            if (BundleOnLoad == false) {
+            if (!BundleOnLoad && !ProdRunOut) {
                 BundleOnLoad = true;
 
-                while (ProdRunOut == false && (document.documentElement.scrollHeight * 0.98 < (document.documentElement.scrollTop + window.innerHeight))) {
-                    for (let i = 0; i < prodCount; i++) {
-                        await GetNextProd();
+                while (ProdRunOut==false &&(document.documentElement.scrollHeight * 0.98 < (document.documentElement.scrollTop + window.innerHeight))) {
+                    for (let i = 0; i < prodCountInRow; i++) {
+
+
+                        if(ProdBundle == null || ProdNumber >= ProdBundle.length)
+                        {
+                            ProdBundle = await GetProdBundle();
+
+                            BundleNumber++;
+                            ProdNumber = 0;
+                        }
+
+                        if(ProdBundle.length==0)
+                        {
+                            ProdRunOut=true;
+                            break;
+                        }
+                        else
+                        {
+                            AddProd(ProdBundle[ProdNumber]);
+                            ProdNumber++;
+                        }
                     }
                 }
 
                 BundleOnLoad = false;
             }
-        }
-
-        async function GetNextProd() {
-
-            if (ProdBundle == null || ProdNumber >= ProdBundle.length) {
-
-                ProdBundle = await GetProdBundle();
-
-                BundleNumber++;
-                ProdNumber = 0;
-
-                if (ProdBundle.length > 0) {
-                    await AddProd(ProdBundle[ProdNumber]);
-                }
-                else {
-                    ProdRunOut = true;
-                }
-            }
-            else {
-                await AddProd(ProdBundle[ProdNumber]);
-            }
-
         }
 
         async function GetProdBundle() {
@@ -102,7 +93,6 @@
             CreateFromTemplate("#ProductsWindow", "#prodTemplate", { title: prod.title, price: prod.price, id: prod.id });
 
             let mainImageFile = await GetMainImage(prod);
-            ProdNumber++;
 
             //Подгружаем изображение mainImageFile к товару
             const reader = new FileReader();
