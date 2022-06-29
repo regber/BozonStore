@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BozonStore.Models.ProductModel;
 
 using Microsoft.EntityFrameworkCore;
+using BozonStore.Common;
 
 namespace BozonStore.Controllers
 {
@@ -23,10 +24,10 @@ namespace BozonStore.Controllers
             db = context;
         }
 
-        public IActionResult Search()
-        {
-            return View("Index");
-        }
+        //public IActionResult Search(string searchString)
+        //{
+        //    return RedirectToAction("Index");
+        //}
 
         public IActionResult Index()
         {
@@ -42,18 +43,6 @@ namespace BozonStore.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public JsonResult GetProducts()
-        {
-            var products = db.Products.Include(p=>p.Images);
-
-            //var shop = db.Shops.Include(s => s.Products)
-            //       .ThenInclude(prod => prod.Images)
-            //       .FirstOrDefault(s => s.Id == id);
-
-            return Json(products);
-            //return Json(new {name="Stas",age="34" });
         }
     }
 }

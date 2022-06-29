@@ -2,3 +2,18 @@
     outline: 3px solid red;
     margin: 3px
 }
+
+#ProductsWindow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.prodContainer {
+    background-color: beige;
+    border: 2px solid gray;
+    border-radius: 5%;
+    padding: 10px;
+    aspect-ratio: 1 / 1;
+    height: 200px;
+}

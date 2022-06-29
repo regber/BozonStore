@@ -32,19 +32,42 @@ namespace BozonStore.Areas.Product.Controllers
         ApplicationContext db;
         IWebHostEnvironment env;
 
+
         public ProductController(ApplicationContext context, IWebHostEnvironment env)
         {
             db = context;
             this.env = env;
         }
+        public JsonResult GetProdBunle(int bundleNumber, string searchString)
+        {
+
+            var bundleSize = 100;
+            var skipProdCount = bundleNumber * bundleSize;
+
+            var prodBundle= db.Products.AsNoTracking()
+                                        .Include(p => p.Images)
+                                        .Skip(skipProdCount)
+                                        .Take(bundleSize)
+                                        .Where(p=>p.Title.Contains(searchString=="null"?"": searchString))
+                                        .ToList();
+
+            if(prodBundle.Count>0)
+            {
+                return Json(prodBundle);
+            }
+            else
+            {
+                return new JsonResult(string.Empty);
+            }
+        }
 
         [HttpGet]
         public IActionResult EditProduct(int id, int shopId)
         {
-            var product = db.Products.Include(p=>p.Images).FirstOrDefault(p => p.Id == id);
+            var product = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == id);
             var shop = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == shopId);
 
-            if (product==null || shop == null)
+            if (product == null || shop == null)
             {
                 return NotFound();
             }
@@ -67,7 +90,7 @@ namespace BozonStore.Areas.Product.Controllers
         public IActionResult EditProduct(Dictionary<string, string> productFormProperties)
         {
 
-            var seller = db.Sellers.FirstOrDefault(s=>s.Login== User.Identity.Name);
+            var seller = db.Sellers.FirstOrDefault(s => s.Login == User.Identity.Name);
 
             var shopId = (int)TempData["ShopId"];
 
@@ -94,10 +117,10 @@ namespace BozonStore.Areas.Product.Controllers
         [HttpGet]
         public IActionResult DeleteProduct(int id, int shopId)
         {
-            var shop = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id== shopId);
+            var shop = db.Shops.Include(s => s.Seller).FirstOrDefault(s => s.Id == shopId);
             var product = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == id);
 
-            if(shop==null|| product==null)
+            if (shop == null || product == null)
             {
                 return NotFound();
             }
@@ -133,7 +156,6 @@ namespace BozonStore.Areas.Product.Controllers
 
 
             return RedirectToAction("Shop", "Seller", new { area = "User", id = shop.Id });
-
 
         }
 
@@ -230,17 +252,17 @@ namespace BozonStore.Areas.Product.Controllers
         {
             var productTempImages = TempData.Get<List<TempImage>>("tempImages");
 
-            if(productTempImages==null)
+            if (productTempImages == null)
             {
                 return;
             }
 
-            if(!productTempImages.Any(i=>i.MainImage))
+            if (!productTempImages.Any(i => i.MainImage))
             {
                 productTempImages.FirstOrDefault().MainImage = true;
             }
 
-            var currentProduct = db.Products.Include(p=>p.Images).FirstOrDefault(p=>p.Id==product.Id);
+            var currentProduct = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == product.Id);
 
             List<Image> images = new List<Image>();
 
@@ -250,11 +272,11 @@ namespace BozonStore.Areas.Product.Controllers
 
                 if (tempImage.MainImage)
                 {
-                    images.Add(new Image { Name = tempImage.FileName, MainImage=true });
+                    images.Add(new Image { Name = tempImage.FileName, MainImage = true });
                 }
                 else
                 {
-                    images.Add(new Image { Name = tempImage.FileName, MainImage=false });
+                    images.Add(new Image { Name = tempImage.FileName, MainImage = false });
                 }
             }
 
@@ -274,7 +296,7 @@ namespace BozonStore.Areas.Product.Controllers
 
             var newImagePath = newImageDirectory + "\\" + tempImage.FileName;
 
-            if(System.IO.File.Exists(newImagePath))
+            if (System.IO.File.Exists(newImagePath))
             {
                 System.IO.File.Delete(newImagePath);
             }
@@ -388,6 +410,7 @@ namespace BozonStore.Areas.Product.Controllers
 
             return BadRequest("No files data in the request.");
         }
+
 
 
     }

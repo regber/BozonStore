@@ -2,6 +2,168 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    основное окно с товарами
+<div style="position:fixed">
+    <button onclick="GetNextProd()">alert</button>
+    <button onclick="RenderLoadFileEvent()">add</button>
 </div>
+
+<div id="temp">
+    <div id="ProductsWindow">
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/lib/handlebars.js/handlebars.js"></script>
+    <script src="~/js/handtemp.js"></script>
+
+
+    <script>
+        window.onscroll =  function () {
+           
+             GetProd(4);
+            
+        }
+
+        window.onresize= function(){
+           
+             GetProd(4);
+            
+        };
+
+        $(document).ready( function () {
+
+             GetProd(4);
+            
+        });
+    </script>
+
+    <script>
+            
+        var BundleOnLoad = false;
+        var ProdBundle = null;
+        var BundleNumber = 0;
+
+        var ProdNumber = 0;
+
+        var ProdRunOut = false;
+
+        async function GetProd(prodCount) {
+
+
+            if (BundleOnLoad == false) {
+                BundleOnLoad = true;
+
+                while (ProdRunOut == false && (document.documentElement.scrollHeight * 0.98 < (document.documentElement.scrollTop + window.innerHeight))) {
+                    for (let i = 0; i < prodCount; i++) {
+                        await GetNextProd();
+                    }
+                }
+
+                BundleOnLoad = false;
+            }
+        }
+
+        async function GetNextProd() {
+
+            if (ProdBundle == null || ProdNumber >= ProdBundle.length) {
+
+                ProdBundle = await GetProdBundle();
+
+                BundleNumber++;
+                ProdNumber = 0;
+
+                if (ProdBundle.length > 0) {
+                    await AddProd(ProdBundle[ProdNumber]);
+                }
+                else {
+                    ProdRunOut = true;
+                }
+            }
+            else {
+                await AddProd(ProdBundle[ProdNumber]);
+            }
+
+        }
+
+        async function GetProdBundle() {
+
+            var searchString = getQueryStringValues("searchString");
+
+            let url = 'product/product/GetProdBunle?bundleNumber=' + BundleNumber + "&searchString=" + searchString;
+            let response = await fetch(url);
+
+            return await response.json();;
+        }
+
+        async function AddProd(prod) {
+
+            CreateFromTemplate("#ProductsWindow", "#prodTemplate", { title: prod.title, price: prod.price, id: prod.id });
+
+            let mainImageFile = await GetMainImage(prod);
+            ProdNumber++;
+
+            //Подгружаем изображение mainImageFile к товару
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                $("[id = '" + prod.id +"'].prodContainer .prodImage").attr("src", event.target.result);
+            };
+            reader.readAsDataURL(mainImageFile);
+        }
+
+        async function GetMainImage(prod) {
+
+            let prodId = prod.id;
+            let mainImageName = "";
+
+            prod.images.forEach(function (image, index) {
+
+                if (image.mainImage == true) {
+                    
+                    mainImageName = image.name;
+                    
+                }
+            });
+
+            let file = await fetch("/Common/GetProposalImage?prodId=" + prodId + "&imageName=" + mainImageName)
+                .then(response => response.blob())
+                .then(blobFile => new File([blobFile], mainImageName, { type: "image/*" }))
+                .then(file => {
+                    return file;
+                });
+            return file;
+        }
+
+        function getQueryStringValues(key) {
+            var arrParamValues = [];
+            var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+            for (var i = 0; i < url.length; i++) {
+                var arrParamInfo = url[i].split('=');
+
+                if (arrParamInfo[0] == key || arrParamInfo[0] == key + '[]') {
+                    arrParamValues.push(arrParamInfo[1]);
+                }
+            }
+
+            return (arrParamValues.length > 0 ? (arrParamValues.length == 1 ? arrParamValues[0] : arrParamValues) : null);
+        }
+
+
+    </script>
+}
+
+<script type="text/x-handlebars-template" id="prodTemplate">
+    <div class="prodContainer" id="{{id}}" onclick="window.location.href='/Product/Product/ViewProduct?id='+{{id}}">
+        <div>
+            <img class="prodImage" height="100" src="{{src}}">
+        </div>
+        <div>
+            <h3 class="prodTitle">{{title}}</h3>
+        </div>
+        <div>
+            <h3 class="prodPrice">{{price}}</h3>
+        </div>
+    </div>
+</script>
