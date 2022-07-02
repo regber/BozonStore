@@ -20,6 +20,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using BozonStore.Areas.Product.ViewsModel;
 using BozonStore.Areas.Product.Model;
+using Newtonsoft.Json.Linq;
 
 
 namespace BozonStore.Areas.Product.Controllers
@@ -38,27 +39,105 @@ namespace BozonStore.Areas.Product.Controllers
             db = context;
             this.env = env;
         }
-        public JsonResult GetProdBunle(int bundleNumber, string searchString)
+
+        public JsonResult GetProdBunle(int bundleNumber,string queryFilters)
         {
 
-            var bundleSize = 100;
+            var bundleSize = 1000;
             var skipProdCount = bundleNumber * bundleSize;
 
             var prodBundle= db.Products.AsNoTracking()
                                         .Include(p => p.Images)
+                                        .AsEnumerable()
+                                        .Where(p=>Filtration(p,queryFilters))
                                         .Skip(skipProdCount)
-                                        .Take(bundleSize)
-                                        .Where(p=>p.Title.Contains(searchString=="null"?"": searchString))
-                                        .ToList();
+                                        .Take(bundleSize);
 
-            if(prodBundle.Count>0)
+
+            
+            return Json(prodBundle);
+        }
+
+        private bool Filtration(ProductModel.Product prod, string queryFilters)
+        {
+            //dynamic filters=JsonConvert.DeserializeObject<Dictionary<string,object>>(queryFilters);
+/*                         string name = filters["name"];
+            string address = filters["abra"][0];
+            int a = filters["abra"].Count;
+            var d = filters["name"].GetType()==typeof(string);
+            var keys = filters.Keys; */
+
+            //переместить в отдельный метод
+            var filters=JObject.Parse(queryFilters);
+
+            foreach(var filter in filters.Children())
             {
-                return Json(prodBundle);
+                var filterItems=filter.Children<JToken>();
+
+                foreach(var item in filterItems)
+                {
+                    if(item.Type==JTokenType.Array)
+                    {
+                        var itemName=item.Path;
+
+                        var minItemValue= item[0].Value<string>();
+                        var maxItemValue= item[1].Value<string>();
+
+                        if(!CheckProperty(prod,itemName,minItemValue,maxItemValue))
+                        {
+                            return false;
+                        }
+                    }
+
+                    if(item.Type== JTokenType.String)
+                    {
+                        var itemName = item.Path;
+                        var itemValue = item.Value<string>();
+
+                        if(!CheckProperty(prod,itemName,itemValue))
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+            }
+
+
+            return true;
+        }
+
+        private bool CheckProperty(ProductModel.Product prod,string propName, params string[] values)
+        {
+            var propValue=prod.GetType().GetProperties().First(p=>p.Name.ToLower()==propName.ToLower()).GetValue(prod,null);
+
+            if(values.Count()==1)
+            {
+                if(propValue is int propValueInt)
+                {
+                    return int.Parse(values[0])==propValueInt;
+                }
+                if(propValue is string propValueStr)
+                {
+                    return propValueStr.ToLower().Contains(values[0].ToLower());
+                }
+                
             }
             else
             {
-                return new JsonResult(string.Empty);
+                if(propValue is int propValueInt)
+                {
+                    var minValue=int.Parse(values[0]);
+                    var maxValue=int.Parse(values[1]);
+
+                    if(minValue>propValueInt || propValueInt>maxValue)
+                    {
+                        return false;
+                    }
+                }              
             }
+
+            return true;
         }
 
         [HttpGet]

@@ -6,5 +6,5 @@
 
 function Search() {
     var value = document.getElementById("SearchText").value;
-    window.location.href = "https://"+window.location.host+"?searchString=" + value;
+    window.location.href = "https://"+window.location.host+"?title=" + value;
 }

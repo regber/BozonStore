@@ -24,10 +24,10 @@ namespace BozonStore.Controllers
             db = context;
         }
 
-        //public IActionResult Search(string searchString)
-        //{
-        //    return RedirectToAction("Index");
-        //}
+        public IActionResult Search(string searchString)
+        {
+            return RedirectToAction("Index",new { title = searchString });
+        }
 
         public IActionResult Index()
         {
