@@ -39,7 +39,8 @@ namespace BozonStore.Areas.Product.Controllers
             db = context;
             this.env = env;
         }
-
+        
+        [AllowAnonymous]
         public JsonResult GetProdBunle(int bundleNumber,string queryFilters)
         {
 
@@ -368,7 +369,7 @@ namespace BozonStore.Areas.Product.Controllers
         private void CopyTempImageToProduct(TempImage tempImage, ProductModel.Product product)
         {
             var tempImagePath = tempImage.FilePath;
-            var newImageDirectory = env.ContentRootPath + ContentAdsPath + product.Id;
+            var newImageDirectory = env.WebRootPath + ContentAdsPath + product.Id;
 
             CreateDirIfItNotExist(newImageDirectory);
 

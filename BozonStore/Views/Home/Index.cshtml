@@ -17,7 +17,10 @@
 @section Scripts{
     <script src="~/lib/handlebars.js/handlebars.js"></script>
     <script src="~/js/handtemp.js"></script>
+<script>
+    
 
+</script>
 
     <script>
         window.onscroll =  function () {
@@ -80,16 +83,22 @@
 
         async function GetProdBundle() {
 
-            var queryFilters = JSON.stringify(getQueryStringValues());
-            @* var queryFilters={"Title":"Теле","Price":"1"};// = getQueryStringValues("title");
-            var searchString={"Title":"Tele","Price":"100"};//Descent?
-            var b = {Title: "Теле", Price:1}; *@
-            //var a =JSON.stringify(bb);
+            let queryFilters = JSON.stringify(getQueryStringValues());
 
-            let url = 'product/product/GetProdBunle?bundleNumber=' + BundleNumber + "&queryFilters=" + queryFilters;
-            let response = await fetch(url);
+            let url = 'product/product/GetProdBunle?bundleNumber=' + BundleNumber + "&queryFilters=" + queryFilters
+            let response;
+            let jsonResponse;
 
-            return await response.json();
+            if(sessionStorage.getItem(url)==null){
+                response = await fetch(url);
+                jsonResponse=await response.json()
+
+                sessionStorage.setItem('ProdBundle', jsonResponse);
+
+                return jsonResponse;
+            }
+
+            return sessionStorage.getItem("ProdBundle");
         }
 
         async function AddProd(prod) {
@@ -98,12 +107,7 @@
 
             let mainImageFile = await GetMainImage(prod);
 
-            //Подгружаем изображение mainImageFile к товару
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                $("[id = '" + prod.id +"'].prodContainer .prodImage").attr("src", event.target.result);
-            };
-            reader.readAsDataURL(mainImageFile);
+            $("[id = '" + prod.id +"'].prodContainer .prodImage").attr("src", mainImageFile);
         }
 
         async function GetMainImage(prod) {
@@ -119,14 +123,10 @@
                     
                 }
             });
-
-            let file = await fetch("/Common/GetProposalImage?prodId=" + prodId + "&imageName=" + mainImageName)
-                .then(response => response.blob())
-                .then(blobFile => new File([blobFile], mainImageName, { type: "image/*" }))
-                .then(file => {
-                    return file;
-                });
-            return file;
+            
+            let url = "/Content/Proposal/"+prodId+"/"+ mainImageName;
+            
+            return url;
         }
 
         function getQueryStringValues() {
@@ -166,15 +166,16 @@
 }
 
 <script type="text/x-handlebars-template" id="prodTemplate">
-    <div class="prodContainer" id="{{id}}" onclick="window.location.href='/Product/Product/ViewProduct?id='+{{id}}">
-        <div>
-            <img class="prodImage" height="100" src="{{src}}">
+        <div class="prodContainer" id="{{id}}" onclick="window.location.href='/Product/Product/ViewProduct?id='+{{id}}">
+            <div>
+                <img class="prodImage" height="100" src="{{src}}">
+            </div>
+            <div>
+                <h3 class="prodTitle">{{title}}</h3>
+            </div>
+            <div>
+                <h3 class="prodPrice">{{price}}</h3>
+            </div>
         </div>
-        <div>
-            <h3 class="prodTitle">{{title}}</h3>
-        </div>
-        <div>
-            <h3 class="prodPrice">{{price}}</h3>
-        </div>
-    </div>
+    
 </script>

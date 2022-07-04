@@ -18,12 +18,15 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div>
-                    <form asp-area="" asp-controller="Home" asp-action="Search">
-                        <input type="text" name="searchString" />
+                    <button>Каталог</button>
+                </div>
+                <div>
+                    <form asp-area="" asp-controller="Home" asp-action="TitleSearch">
+                        <input type="text" name="title" />
                         <input class="nav-item"  type="submit" value="Search" />
                     </form>
-@*                     <a class="nav-item" onclick="Search()">Search</a>
-                    <input id="SearchText" type="text" /> *@
+                    @*<a class="nav-item" onclick="Search()">Search</a>
+                    <input id="SearchText" type="text" />*@
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     @if (!User.Identity.IsAuthenticated)

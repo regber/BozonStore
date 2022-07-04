@@ -1,4 +1,5 @@
 ﻿@{
+    
 }
 
 @model ShopProducts
@@ -10,7 +11,7 @@
         <div>
             <div>@prod.Title</div>
             <div>
-                <img width="100" src="@Url.Action("GetProposalImage","Common", new {prodId=@prod.Id,imageName=@prod.Images.FirstOrDefault(i=>i.MainImage)?.Name, area="" })" />
+                <img width="100" src="@Url.Content("~/Content/Proposal/"+@prod.Id+"/"+ @prod.Images.FirstOrDefault(i=>i.MainImage)?.Name)"/>
             </div>
             <div>@prod.Price</div>
             <div>

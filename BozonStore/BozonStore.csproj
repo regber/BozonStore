@@ -20,6 +20,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Content\Proposal\1020\Chrysanthemum.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1020\Desert.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1020\Hydrangeas.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1021\Koala.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1021\Lighthouse.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1022\Penguins.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1022\Tulips.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1023\punch-club-гифки-милота-котейка-3479121.gif" />
+    <Content Remove="wwwroot\Content\Proposal\1024\Рипли-песочница-Чужой-(фильм)-Xenomorph-186754.jpeg" />
+    <Content Remove="wwwroot\Content\Proposal\1025\72hJis2Lvog.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1026\2012-07-09 17.15.49.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1027\2012-10-13 20.26.46.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1028\IMG_2290.JPG" />
+    <Content Remove="wwwroot\Content\Proposal\1029\IMG_2298.JPG" />
+    <Content Remove="wwwroot\Content\Proposal\1030\20140823_143817.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1031\20140823_145305.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1032\20140823_145505.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1033\20140823_143728.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\1034\20140823_145522.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\19\1.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\19\11.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\19\2.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\19\4.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\22\Jellyfish.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\22\Koala.jpg" />
+    <Content Remove="wwwroot\Content\Proposal\22\Lighthouse.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
@@ -30,6 +59,35 @@
 
   <ItemGroup>
     <Folder Include="Areas\User\Views\Delivery\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Content\Proposal\1020\Chrysanthemum.jpg" />
+    <None Include="wwwroot\Content\Proposal\1020\Desert.jpg" />
+    <None Include="wwwroot\Content\Proposal\1020\Hydrangeas.jpg" />
+    <None Include="wwwroot\Content\Proposal\1021\Koala.jpg" />
+    <None Include="wwwroot\Content\Proposal\1021\Lighthouse.jpg" />
+    <None Include="wwwroot\Content\Proposal\1022\Penguins.jpg" />
+    <None Include="wwwroot\Content\Proposal\1022\Tulips.jpg" />
+    <None Include="wwwroot\Content\Proposal\1023\punch-club-гифки-милота-котейка-3479121.gif" />
+    <None Include="wwwroot\Content\Proposal\1024\Рипли-песочница-Чужой-(фильм)-Xenomorph-186754.jpeg" />
+    <None Include="wwwroot\Content\Proposal\1025\72hJis2Lvog.jpg" />
+    <None Include="wwwroot\Content\Proposal\1026\2012-07-09 17.15.49.jpg" />
+    <None Include="wwwroot\Content\Proposal\1027\2012-10-13 20.26.46.jpg" />
+    <None Include="wwwroot\Content\Proposal\1028\IMG_2290.JPG" />
+    <None Include="wwwroot\Content\Proposal\1029\IMG_2298.JPG" />
+    <None Include="wwwroot\Content\Proposal\1030\20140823_143817.jpg" />
+    <None Include="wwwroot\Content\Proposal\1031\20140823_145305.jpg" />
+    <None Include="wwwroot\Content\Proposal\1032\20140823_145505.jpg" />
+    <None Include="wwwroot\Content\Proposal\1033\20140823_143728.jpg" />
+    <None Include="wwwroot\Content\Proposal\1034\20140823_145522.jpg" />
+    <None Include="wwwroot\Content\Proposal\19\1.jpg" />
+    <None Include="wwwroot\Content\Proposal\19\11.jpg" />
+    <None Include="wwwroot\Content\Proposal\19\2.jpg" />
+    <None Include="wwwroot\Content\Proposal\19\4.jpg" />
+    <None Include="wwwroot\Content\Proposal\22\Jellyfish.jpg" />
+    <None Include="wwwroot\Content\Proposal\22\Koala.jpg" />
+    <None Include="wwwroot\Content\Proposal\22\Lighthouse.jpg" />
   </ItemGroup>
 
 </Project>

@@ -24,9 +24,9 @@ namespace BozonStore.Controllers
             db = context;
         }
 
-        public IActionResult Search(string searchString)
+        public IActionResult TitleSearch(string title)
         {
-            return RedirectToAction("Index",new { title = searchString });
+            return RedirectToAction("Index",new { Title = title });
         }
 
         public IActionResult Index()
