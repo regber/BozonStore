@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/MyStyle.css" />
+    <link rel="stylesheet" href="~/css/catalog.css">
 </head>
 <body>
     <header>
@@ -18,7 +19,34 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div>
-                    <button>Каталог</button>
+                    <ul class="catalog">
+                        <li><a href="#">Каталог</a>
+                            <!-- первый уровень выпадающего списка -->
+                            <ul>
+                                <li><a href="#">Themes</a>
+                                    <ul>
+                                        <li><a href="#">Themes1</a></li>
+                                        <li><a href="#">Themes1</a></li>
+                                        <li><a href="#">Themes1</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Plugins</a>
+                                    <ul>
+                                        <li><a href="#">Themes1</a></li>
+                                        <li><a href="#">Themes1</a>
+                                            <ul>
+                                                <li><a href="#">Themes1</a></li>
+                                                <li><a href="#">Themes1</a></li>
+                                                <li><a href="#">Themes1</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Themes1</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Tutorials</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
                 <div>
                     <form asp-area="" asp-controller="Home" asp-action="TitleSearch">
