@@ -25,14 +25,13 @@ namespace BozonStore.TagHelpers
 
         private IHtmlContent CreateCatalog()
         {
-
             TagBuilder ul = new TagBuilder("ul");
 
             ul.AddCssClass("catalog");
 
             TagBuilder a = new TagBuilder("a");
             a.InnerHtml.Append("Каталог");
-            a.Attributes.Add("href", "/");
+            a.Attributes.Add("href", "?type=all");
 
             TagBuilder li = new TagBuilder("li");
             li.InnerHtml.AppendHtml(a);
