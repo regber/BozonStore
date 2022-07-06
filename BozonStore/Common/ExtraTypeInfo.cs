@@ -48,5 +48,12 @@ namespace BozonStore.Common
 
             return firstChildren == null ? Enumerable.Empty<Type>() : firstChildren;
         }
+
+        public static IEnumerable<Type> GetFirstChildrenOfType(Type type)
+        {
+            var childrenTypes = GetFirstChildrenOfType(type.FullName);
+
+            return childrenTypes;
+        }
     }
 }
