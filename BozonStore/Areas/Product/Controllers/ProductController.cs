@@ -61,13 +61,6 @@ namespace BozonStore.Areas.Product.Controllers
 
         private bool Filtration(ProductModel.Product prod, string queryFilters)
         {
-            //dynamic filters=JsonConvert.DeserializeObject<Dictionary<string,object>>(queryFilters);
-/*                         string name = filters["name"];
-            string address = filters["abra"][0];
-            int a = filters["abra"].Count;
-            var d = filters["name"].GetType()==typeof(string);
-            var keys = filters.Keys; */
-
             //переместить в отдельный метод
             var filters=JObject.Parse(queryFilters);
 
