@@ -244,7 +244,7 @@ namespace BozonStore.Areas.Product.Controllers
         {
             if (TempData.ContainsKey("ShopId"))
             {
-                var children = GetProdTypeInfo();
+                var children = ProdTypeInfo.GetProdTypeInfo();
                 ViewBag.SelectList = GenerateSelectList(children);
 
                 return View();
@@ -410,15 +410,15 @@ namespace BozonStore.Areas.Product.Controllers
         }
 
 
-        private ArraySegment<TypeInfo> GetProdTypeInfo()
-        {
-            var interfaces = Assembly.GetEntryAssembly()
-                                     .DefinedTypes
-                                     .Where(t => t.FullName.Contains(nameof(BozonStore.Models.ProductModel.ProdTypeInterfaces)))
-                                     .ToArray();
+        //private ArraySegment<TypeInfo> GetProdTypeInfo()
+        //{
+        //    var interfaces = Assembly.GetEntryAssembly()
+        //                             .DefinedTypes
+        //                             .Where(t => t.FullName.Contains(nameof(BozonStore.Models.ProductModel.ProdTypeInterfaces)))
+        //                             .ToArray();
 
-            return interfaces;
-        }
+        //    return interfaces;
+        //}
         private SelectList GenerateSelectList(IEnumerable<Type> types)
         {
             var prodTypeList = new List<ProductType>();
