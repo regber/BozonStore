@@ -31,7 +31,7 @@ namespace BozonStore.TagHelpers
 
             TagBuilder a = new TagBuilder("a");
             a.InnerHtml.Append("Каталог");
-            a.Attributes.Add("href", "?type=all");
+            a.Attributes.Add("href", "?catalogType=all");
 
             TagBuilder li = new TagBuilder("li");
             li.InnerHtml.AppendHtml(a);
@@ -60,7 +60,7 @@ namespace BozonStore.TagHelpers
             if (childTypes.Count() > 0)
             {
                 TagBuilder a = new TagBuilder("a");
-                a.Attributes.Add("href", "?type="+ type.Name);
+                a.Attributes.Add("href", "?catalogType="+ type.Name);
                 a.InnerHtml.Append(ExtraTypeInfo.GetDisplayName(type));
 
                 TagBuilder li = new TagBuilder("li");
@@ -82,7 +82,7 @@ namespace BozonStore.TagHelpers
             {
                 
                 TagBuilder a = new TagBuilder("a");
-                a.Attributes.Add("href", "?type=" + type.Name);
+                a.Attributes.Add("href", "?catalogType=" + type.Name);
                 a.InnerHtml.Append(ExtraTypeInfo.GetDisplayName(type));
 
                 TagBuilder li = new TagBuilder("li");

@@ -31,7 +31,16 @@ namespace BozonStore.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            
+            if(HttpContext.Request.Query.ContainsKey("catalogType"))
+            {
+                return Content("da est' type"+ HttpContext.Request.Query["catalogType"]);
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         public IActionResult Privacy()
