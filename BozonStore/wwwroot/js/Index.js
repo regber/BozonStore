@@ -1,10 +1,4 @@
-﻿////import "../lib/jquery/dist/jquery.min.js"
-
-////import "../js/handtemp.js";
-////import "../lib/handlebars.js/handlebars.js";
-
-
-window.onscroll = function () {
+﻿window.onscroll = function () {
     AddProdsRow(4);
 }
 

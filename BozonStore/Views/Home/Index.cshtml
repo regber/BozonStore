@@ -2,11 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model Product
-
-@if (Model != null)
+@if (Context.Request.Query.ContainsKey("catalogType"))
 {
+    <div>
+        <p>sdgsdgsdgs</p>
+    </div>
+    <div id="ProductsWindow">
 
+    </div>
 }
 else
 {
@@ -14,8 +17,6 @@ else
 
     </div>
 }
-
-
 
 
 
