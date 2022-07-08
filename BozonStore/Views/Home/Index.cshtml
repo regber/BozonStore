@@ -2,21 +2,15 @@
     ViewData["Title"] = "Home Page";
 }
 
-@if (Context.Request.Query.ContainsKey("catalogType"))
-{
-    <div>
-        <p>sdgsdgsdgs</p>
-    </div>
-    <div id="ProductsWindow">
 
-    </div>
-}
-else
-{
-    <div id="ProductsWindow">
+<div id="ProductsContainer">
+    @if (Context.Request.Query.ContainsKey("catalogType"))
+    {
+        @await Component.InvokeAsync("SearchForm", new { productType = Context.Request.Query["catalogType"].ToString() })
+    }
+    <div id="ProductsWindow"></div>
+</div>
 
-    </div>
-}
 
 
 
