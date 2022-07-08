@@ -279,7 +279,7 @@ namespace BozonStore.Areas.Product.Controllers
 
 
         }
-
+        [AllowAnonymous]
         public IActionResult ViewProduct(int id)
         {
             var product = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == id);
