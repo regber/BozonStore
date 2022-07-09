@@ -10,6 +10,8 @@
 <div id="ProductSearch">
     <h4>Фильтр</h4>
     <form>
+        <input type="hidden" value="@Context.Request.Query["catalogType"].ToString()" name="catalogType" />
+
         @Html.EditorForModel()
 
         <input type="submit" value="Найти" />
