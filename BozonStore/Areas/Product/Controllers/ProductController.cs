@@ -103,6 +103,11 @@ namespace BozonStore.Areas.Product.Controllers
 
         private bool CheckProperty(ProductModel.Product prod,string propName, params string[] values)
         {
+            if(!values.All(v=>v!=string.Empty))
+            {
+                return true;
+            }
+
             var propValue=prod.GetType().GetProperties().FirstOrDefault(p=>p.Name.ToLower()==propName.ToLower())?.GetValue(prod,null);
 
             if(values.Count()==1)
