@@ -12,11 +12,29 @@ namespace BozonStore.ViewComponents
     {
         public IViewComponentResult Invoke(string productType)
         {
-            Type type = Assembly.GetExecutingAssembly().GetTypes().First(t => t.Name == productType);
+            Type type = null;
+            MethodInfo generic = null;
+            MethodInfo method=null;
+            ViewViewComponentResult view;
 
-            MethodInfo method = typeof(SearchForm).GetMethod(nameof(SearchForm.GetView));
-            MethodInfo generic = method.MakeGenericMethod(type);
-            var view = (ViewViewComponentResult)generic.Invoke(this, null);
+            //Если тип дает возможность создать свой экземляр
+            try
+            {
+                type = Assembly.GetExecutingAssembly().GetTypes().First(t => t.Name == productType);
+                method = typeof(SearchForm).GetMethod(nameof(SearchForm.GetView));
+                generic = method.MakeGenericMethod(type);
+            }
+            //Если тип не дает возможности создать собственный экземпляр, например в качестве типа передан интерфейс
+            catch
+            {
+                type = Assembly.GetExecutingAssembly().GetTypes().First(t => t.Name == nameof(BozonStore.Models.ProductModel.Product));
+                method = typeof(SearchForm).GetMethod(nameof(SearchForm.GetView));
+                generic = method.MakeGenericMethod(type);
+            }
+            finally
+            {
+                view = (ViewViewComponentResult)generic.Invoke(this, null);
+            }
 
             return view;
         }
