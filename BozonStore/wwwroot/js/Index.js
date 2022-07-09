@@ -10,6 +10,34 @@ $(document).ready(function () {
     AddProdsRow(4);
 });
 
+function MustBeLoadedForSize()
+{
+    return (document.documentElement.scrollHeight * 0.98 < (document.documentElement.scrollTop + window.innerHeight));
+}
+
+function MustBeLoaded()
+{
+    var mustBe=false;
+
+    if(MustBeLoadedForSize())
+    {
+        mustBe=true;
+    }
+
+    let productSearch = document.getElementById("ProductSearch");
+    let productsWindow = document.getElementById("ProductsWindow");
+
+    if(productSearch!=null)
+    {
+        if(productSearch.scrollHeight>=productsWindow.scrollHeight)
+        {
+            mustBe=true;
+        }
+    }
+
+
+    return mustBe;
+}
 
 var BundleOnLoad = false;
 var ProdBundle = null;
@@ -20,12 +48,14 @@ var ProdNumber = 0;
 var ProdRunOut = false;
 
 async function AddProdsRow(prodCountInRow) {
-
-
+    
     if (!BundleOnLoad && !ProdRunOut) {
         BundleOnLoad = true;
 
-        while (ProdRunOut == false && (document.documentElement.scrollHeight * 0.98 < (document.documentElement.scrollTop + window.innerHeight))) {
+
+        while (ProdRunOut == false && MustBeLoaded()) {
+
+
             for (let i = 0; i < prodCountInRow; i++) {
 
 
