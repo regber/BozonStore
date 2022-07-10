@@ -18,73 +18,28 @@
 
 
 <script>
-    $(document).ready(function () {
-
-        RenderLoadFileEvent();
-        LoadImagesEditableProduct();
-    });
-</script>
-<script>
     const selectedClass = ["selectedImageContainer"];
 
-    function RenderLoadFileEvent() {
-        $("#imagesFileInput").change(function () {
+    $(document).ready(function () {
 
-            $("#previewImages").empty();
-
-            imageFiles = $('#imagesFileInput').prop('files');
-
-            $.each(imageFiles, function (idx, file) {
-
-                if (file) {
-                    let reader = new FileReader();
-                    reader.onload = function (event) {
-
-                        if (file.name == MainImageName) {
-                            CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result, selected: selectedClass });
-                        }
-                        else {
-                            CreateFromTemplate("#previewImages", "#imgTemplate", { filename: file.name, src: event.target.result });
-                        }
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    }
-
-    function LoadImagesEditableProduct() {
         var id =@Html.Raw(Model.Id);
         var images = @Html.Raw(@JsonConvert.SerializeObject(Model.Images));
 
-
         $.each(images, function (idx, img) {
+            
+            let url = "/Content/Proposal/" + id + "/" + img.Name;
+
             if (img.MainImage) {
-                MainImageName = img.Name;
+                CreateFromTemplate("#previewImages", "#imgTemplate", { filename: img.Name, src: url, selected: selectedClass });
+            }
+            else
+            {
+                CreateFromTemplate("#previewImages", "#imgTemplate", { filename: img.name, src: url});
             }
         });
-
-        const dt = new DataTransfer();
-
-        document.querySelector('#imagesFileInput').files = dt.files;
-
-        $.each(images, function (idx, img) {
-
-            fetch("@Url.Action("GetProposalImage","Common", new {area="" })" + "?prodId=" + id +"&imageName=" + img.Name)
-                .then(response => response.blob())
-                .then(blobFile => new File([blobFile], img.Name, { type: "image/*" }))
-                .then(file => {
-
-                    dt.items.add(file);
-
-                    if (dt.items.length == images.length) {
-                        $("#imagesFileInput").trigger("change");
-                    }
-                });
-        });
-    }
-
+    });
 </script>
+
 
 <script type="text/x-handlebars-template" id="imgTemplate">
     <div class="imageContainer {{selected}}">
