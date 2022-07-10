@@ -84,7 +84,7 @@ async function AddProdsRow(prodCountInRow) {
 async function GetProdBundle() {
 
     let queryFilters = JSON.stringify(getQueryStringValues());
-
+    
     let url = 'product/product/GetProdBunle?bundleNumber=' + BundleNumber + "&queryFilters=" + queryFilters
     let response;
     let jsonResponse;
@@ -132,13 +132,14 @@ async function GetMainImage(prod) {
 function getQueryStringValues() {
 
     const queryObject = Object.create(null);
-
-    var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    
+    var decodedUrl=decodeURI(window.location.href);
+    var urlQuery = decodedUrl.slice(decodedUrl.indexOf('?') + 1).split('&');
     var regex = /\[[0-9]*\]/;
 
-    for (var i = 0; i < url.length; i++) {
+    for (var i = 0; i < urlQuery.length; i++) {
 
-        var arrParamInfo = url[i].split('=');
+        var arrParamInfo = urlQuery[i].split('=');
 
         if (regex.test(arrParamInfo[0])) {
             var arrName = arrParamInfo[0].replace(regex, '');
