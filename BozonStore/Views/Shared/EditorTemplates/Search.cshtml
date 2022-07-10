@@ -5,17 +5,26 @@
 }
 <div>
     
-        @foreach (var a in ViewData.ModelMetadata.Properties)
+        @foreach (var prop in ViewData.ModelMetadata.Properties)
         {
-            @if (a.ModelType == typeof(string))
+
+            @if (prop.ModelType == typeof(string))
             {
-                <label>@a.DisplayName</label>
-                <input name=@a.PropertyName />
+                var propName = prop.PropertyName;
+                var propDisplay = prop.DisplayName;
+
+                <label>@propDisplay</label>
+                <input name=@propName value="@Context.Request.Query[propName]"/>
             }
-            @if (a.ModelType == typeof(int) && a.ShowForEdit)
+            @if (prop.ModelType == typeof(int) && prop.ShowForEdit)
             {
+                var propName = prop.PropertyName;
+                var propNameFirst = string.Concat(propName, "[0]");
+                var propNameSecond = string.Concat(propName, "[1]");
+                var propDisplay = prop.DisplayName;
+
             <div>
-                <label>@a.DisplayName</label>
+                <label>@propDisplay</label>
                 <div class="ranges">
                     <div class="ranges-line"></div>
                     <input step="any" type="range" />
@@ -23,14 +32,14 @@
                 </div>
                 <div class="fields">
                     <p>от</p>
-                    <input name=@string.Concat(a.PropertyName, "[0]") />
+                    <input name=@propNameFirst value="@Context.Request.Query[propNameFirst]"/>
                     <p>до</p>
-                    <input name=@string.Concat(a.PropertyName, "[1]") />
+                    <input name=@propNameSecond value="@Context.Request.Query[propNameSecond]"/>
                 </div>
             </div>
             }
 
-            //<h3>@a.DisplayName</h3>
+            //<h3>@prop.DisplayName</h3>
         }
     
 </div>
