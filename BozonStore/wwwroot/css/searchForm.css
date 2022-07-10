@@ -38,14 +38,17 @@
 }
 
 #ProductSearch .ranges-line {
-    --lineheight:4px;
-    width: 90%;
+
+    width: inherit;
     height: 4px;
-    left: 5%;
-    position: relative;
+    position: absolute;
     background-color: grey;
-    top: calc(50% - var(--lineheight)/2);
     border-radius: 2px;
+    align-self: center;
+}
+
+#ProductSearch .ranges-line.active{
+    background-color:#2a6ae0;
 }
 
 #ProductSearch .first-range {
