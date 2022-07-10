@@ -14,14 +14,20 @@
             }
             @if (a.ModelType == typeof(int) && a.ShowForEdit)
             {
+            <div>
                 <label>@a.DisplayName</label>
                 <div class="ranges">
                     <div class="ranges-line"></div>
                     <input step="any" type="range" />
                     <input step="any" type="range" />
-                    @*<input name=@string.Concat(a.PropertyName, "[0]") />
-                    <input name=@string.Concat(a.PropertyName, "[1]") />*@
                 </div>
+                <div class="fields">
+                    <p>от</p>
+                    <input name=@string.Concat(a.PropertyName, "[0]") />
+                    <p>до</p>
+                    <input name=@string.Concat(a.PropertyName, "[1]") />
+                </div>
+            </div>
             }
 
             //<h3>@a.DisplayName</h3>

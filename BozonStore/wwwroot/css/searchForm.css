@@ -14,10 +14,11 @@
     background: transparent;
     display: block;
     outline: none;
-    padding: 2px 20px;
+    padding: 2px 0;
     -webkit-appearance: none;
     -moz-appearance: none;
     height: 20px;
+    width: inherit;
     pointer-events: none;
 }
 
@@ -31,12 +32,38 @@
 
 #ProductSearch .ranges {
     height: 20px;
+    width: 200px;
+    display: flex;
+    margin-bottom: 5px;
+}
+
+#ProductSearch .ranges-line {
+    --lineheight:4px;
+    width: 90%;
+    height: 4px;
+    left: 5%;
+    position: relative;
+    background-color: grey;
+    top: calc(50% - var(--lineheight)/2);
+    border-radius: 2px;
 }
 
 #ProductSearch .first-range {
     z-index: 1;
 }
 
-#ProductSearch .ranges-line {
-    z-index: 1;
+#ProductSearch .fields {
+    display: inline-flex;
+    height: 30px;
+    width: 200px;
+    margin-bottom: 5px;
 }
+
+#ProductSearch .fields input {
+    width: 40%;
+}
+#ProductSearch .fields p {
+    margin: 2px;
+}
+
+
