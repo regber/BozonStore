@@ -5,15 +5,17 @@
 }
 @model Product
 
-
+<link rel="stylesheet" href="~/css/searchForm.css" />
 
 <div id="ProductSearch">
     <h4>Фильтр</h4>
     <form>
         <input type="hidden" value="@Context.Request.Query["catalogType"].ToString()" name="catalogType" />
 
-        @Html.EditorForModel()
+        @Html.EditorForModel("Search")
 
         <input type="submit" value="Найти" />
     </form>
 </div>
+
+

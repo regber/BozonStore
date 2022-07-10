@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div>
+    
+        @foreach (var a in ViewData.ModelMetadata.Properties)
+        {
+            @if (a.ModelType == typeof(string))
+            {
+                <label>@a.DisplayName</label>
+                <input name=@a.PropertyName />
+            }
+            @if (a.ModelType == typeof(int) && a.ShowForEdit)
+            {
+                <label>@a.DisplayName</label>
+                <div class="ranges">
+                    <div class="ranges-line"></div>
+                    <input step="any" type="range" />
+                    <input step="any" type="range" />
+                    @*<input name=@string.Concat(a.PropertyName, "[0]") />
+                    <input name=@string.Concat(a.PropertyName, "[1]") />*@
+                </div>
+            }
+
+            //<h3>@a.DisplayName</h3>
+        }
+    
+</div>
+<script>
+
+    var items = document.querySelectorAll("#ProductSearch input[type='range']");
+
+    var index;
+    for (index = 0; index < items.length; ++index) {
+        items[index].addEventListener("mouseup", func);
+        items[index].addEventListener("mousedown", func);
+    }
+
+
+    function func(t) {
+        console.log(t);
+        console.log("target: " + t.target + " /currentTarget:" + t.currentTarget + "/timestamp:" + t.timeStamp);
+        //if (t.target === t.currentTarget || t.timeStamp >= o || t.timeStamp <= 0 || t.target.ownerDocument !== document) return c.apply(this, arguments)
+    }
+
+</script>
+
