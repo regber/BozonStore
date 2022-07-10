@@ -3,21 +3,23 @@
     margin: 3px
 }
 
+.navbarfixation {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+main {
+    padding-block-start: 80px;
+}
+
 #ProductsContainer {
     display:inline-flex;
     justify-content:center;
     width: 100%;
 }
 
-#ProductSearch {
-    position: sticky;
-    top: 80px;
-    height:600px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    margin-right: 10px;
-    min-width: 250px;
-}
+
 
 #ProductsWindow {
     display: grid;
@@ -36,12 +38,4 @@
     height: 200px;
 }
 
-.navbarfixation{
-    position:fixed;
-    width:100%;
-    z-index: 1;
-}
 
-main {
-    padding-block-start: 80px;
-}
