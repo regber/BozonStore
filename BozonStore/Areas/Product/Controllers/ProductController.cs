@@ -59,6 +59,8 @@ namespace BozonStore.Areas.Product.Controllers
             return Json(prodBundle);
         }
 
+
+
         private bool Filtration(ProductModel.Product prod, string queryFilters)
         {
             //переместить в отдельный метод
@@ -242,7 +244,7 @@ namespace BozonStore.Areas.Product.Controllers
         {
             if (TempData.ContainsKey("ShopId"))
             {
-                var children = ProdTypeInfo.GetProdTypeInfo();
+                var children = ProdInfo.GetProdTypeInfo();
                 ViewBag.SelectList = GenerateSelectList(children);
 
                 return View();

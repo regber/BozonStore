@@ -31,14 +31,14 @@ namespace BozonStore.TagHelpers
 
             TagBuilder a = new TagBuilder("a");
             a.InnerHtml.Append("Каталог");
-            a.Attributes.Add("href", "/?catalogType=all");
+            a.Attributes.Add("href", "/?catalogType=Product");
 
             TagBuilder li = new TagBuilder("li");
             li.InnerHtml.AppendHtml(a);
 
             TagBuilder mainUl = new TagBuilder("ul");
 
-            var prodTypes = ProdTypeInfo.GetProdTypeInfo();
+            var prodTypes = ProdInfo.GetProdTypeInfo();
 
             foreach (var type in prodTypes)
             {

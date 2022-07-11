@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace BozonStore.Common
 {
-    public static class ProdTypeInfo
+    public static class ProdInfo
     {
         public static ArraySegment<TypeInfo> GetProdTypeInfo()
         {
@@ -17,5 +18,19 @@ namespace BozonStore.Common
 
             return interfaces;
         }
+
+        public static string GetProdLimitValues(string productType)
+        {
+            var type = Assembly.GetEntryAssembly().GetTypes().FirstOrDefault(t=>t.Name== productType);
+
+            var properties = Assembly.GetEntryAssembly()
+                                      .DefinedTypes
+                                      .Where(t => t.IsSubclassOf(type));//t.GetNestedTypes()
+
+            //var b = properties.GetNestedTypes();
+            return "";
+        }
     }
+
+
 }
