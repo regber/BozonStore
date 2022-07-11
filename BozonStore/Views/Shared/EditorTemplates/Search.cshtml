@@ -2,19 +2,24 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var propLimitValues = (Newtonsoft.Json.Linq.JObject)ViewData["PropLimitValues"];
 }
 <div>
-    
+    <p>@(propLimitValues.Value<string>("PriceMax"))</p>
         @foreach (var prop in ViewData.ModelMetadata.Properties)
         {
-
             @if (prop.ModelType == typeof(string))
             {
                 var propName = prop.PropertyName;
                 var propDisplay = prop.DisplayName;
 
-                <label>@propDisplay</label>
-                <input name=@propName value="@Context.Request.Query[propName]"/>
+                <div>
+                    <label>@propDisplay</label>
+                </div>
+                <div>
+                    <input name=@propName value="@Context.Request.Query[propName]" />
+                </div>
+                
             }
             @if (prop.ModelType == typeof(int) && prop.ShowForEdit)
             {
@@ -27,12 +32,13 @@
                 <label>@propDisplay</label>
                 <div class="ranges">
                     <div class="ranges-line"></div>
-                    <input step="any" type="range" />
-                    <input step="any" type="range" />
+                    <div class="ranges-line active"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
+                    <input step="any" type="range" oninput="myFunction(this)" value="@(propLimitValues.Value<string>(propName+"Min"))" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))" />
+                    <input step="any" type="range" oninput="myFunction(this.target.value)" value="@(propLimitValues.Value<string>(propName+"Max"))" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))"/>
                 </div>
                 <div class="fields">
                     <p>от</p>
-                    <input name=@propNameFirst value="@Context.Request.Query[propNameFirst]"/>
+                    <input name=@propNameFirst  value="@Context.Request.Query[propNameFirst]" />
                     <p>до</p>
                     <input name=@propNameSecond value="@Context.Request.Query[propNameSecond]"/>
                 </div>
@@ -44,19 +50,20 @@
     
 </div>
 <script>
+    //var items = document.querySelectorAll("#ProductSearch input[type='range']");
 
-    var items = document.querySelectorAll("#ProductSearch input[type='range']");
+    //var index;
+    //for (index = 0; index < items.length; ++index) {
+    //    items[index].addEventListener("mouseup", func);
+    //    items[index].addEventListener("mousedown", func);
+    //    items[index].addEventListener("input", func);
+    //}
 
-    var index;
-    for (index = 0; index < items.length; ++index) {
-        items[index].addEventListener("mouseup", func);
-        items[index].addEventListener("mousedown", func);
-    }
 
-
-    function func(t) {
-        console.log(t);
-        console.log("target: " + t.target + " /currentTarget:" + t.currentTarget + "/timestamp:" + t.timeStamp);
+    function myFunction(e) {
+        //console.log(t);
+        console.log(e.value);
+        //console.log("target: " + t.target + " /currentTarget:" + t.currentTarget + "/timestamp:" + t.timeStamp);
         //if (t.target === t.currentTarget || t.timeStamp >= o || t.timeStamp <= 0 || t.target.ownerDocument !== document) return c.apply(this, arguments)
     }
 

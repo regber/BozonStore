@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using System.Reflection;
+using BozonStore.Common;
 
 namespace BozonStore.ViewComponents
 {
@@ -34,6 +35,11 @@ namespace BozonStore.ViewComponents
             finally
             {
                 view = (ViewViewComponentResult)generic.Invoke(this, null);
+
+                var propertyList = ProdInfo.GetProperyListOfType(type);
+                var propLimitValues = ProdInfo.GetProdPropLimitValues(productType, propertyList);
+
+                view.ViewData["PropLimitValues"] = propLimitValues;
             }
 
             return view;
