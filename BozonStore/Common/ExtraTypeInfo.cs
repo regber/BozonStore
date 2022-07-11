@@ -56,14 +56,14 @@ namespace BozonStore.Common
             return childrenTypes;
         }
 
-        public static IEnumerable<TypeInfo> GetLastChildrenOfType(Type type)
+        public static IEnumerable<Type> GetLastChildrenOfType(Type type)
         {
-            var types = Assembly.GetEntryAssembly().DefinedTypes;
+            var types = Assembly.GetEntryAssembly().GetTypes();
 
-            var lastChildren = types.Where(t1 => (t1.IsSubclassOf(type) || t1.ImplementedInterfaces.Any(t => t == type)) &&
-                                                                  types.Where(t2 => t2.IsSubclassOf(t1) || t2.ImplementedInterfaces.Any(t => t == t1)).Count() == 0);
+            var lastChildren = types.Where(t1 => (t1.IsSubclassOf(type) || t1.GetInterfaces().Any(t => t == type)) &&
+                                                                  types.Where(t2 => t2.IsSubclassOf(t1) || t2.GetInterfaces().Any(t => t == t1)).Count() == 0);
 
-            return lastChildren == null ? Enumerable.Empty<TypeInfo>() : lastChildren;
+            return lastChildren == null ? Enumerable.Empty<Type>() : lastChildren;
         }
     }
 }
