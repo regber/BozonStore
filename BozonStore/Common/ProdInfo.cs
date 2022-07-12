@@ -64,18 +64,33 @@ namespace BozonStore.Common
         private static T GetProductsMinPropertyValue<T>(string propertyName, IEnumerable<BozonStore.Models.ProductModel.Product> products) where T: IComparable
         {
             //учесть вариант когда в products.count()==0
-            return products.Select(p => (T)p.GetType()
-                                        .GetProperty(propertyName)
-                                        .GetValue(p))
-                                        .Min();
+            if(products.Count()>0)
+            {
+                return products.Select(p => (T)p.GetType()
+                                                .GetProperty(propertyName)
+                                                .GetValue(p))
+                                                .Min();
+            }
+            else
+            {
+                return default(T);
+            }
+
         }
         private static T GetProductsMaxPropertyValue<T>(string propertyName, IEnumerable<BozonStore.Models.ProductModel.Product> products) where T : IComparable
         {
             //учесть вариант когда в products.count()==0
-            return products.Select(p => (T)p.GetType()
-                                        .GetProperty(propertyName)
-                                        .GetValue(p))
-                                        .Max();
+            if (products.Count() > 0)
+            {
+                return products.Select(p => (T)p.GetType()
+                                                .GetProperty(propertyName)
+                                                .GetValue(p))
+                                                .Max();
+            }
+            else
+            {
+                return default(T);
+            }
         }
 
         public static IEnumerable<PropertyInfo> GetProperyListOfType(Type type)
