@@ -38,9 +38,9 @@ namespace BozonStore.Common
         {
             var type = Assembly.GetEntryAssembly().GetTypes().FirstOrDefault(t=>t.Name== productType);
 
-            var childrenTypes = ExtraTypeInfo.GetLastChildrenOfType(type);
+            var dependentTypes = ExtraTypeInfo.GetAllDependentTypeOfType(type);
 
-            var products = GetProductsByTypes(childrenTypes.ToArray());
+            var products = GetProductsByTypes(dependentTypes.ToArray());
 
             JObject json = new JObject();
 
@@ -100,9 +100,9 @@ namespace BozonStore.Common
             return properties;
         }
 
-        private static IEnumerable<Models.ProductModel.Product> GetProductsByTypes(params Type[] types)
+        public static IEnumerable<Models.ProductModel.Product> GetProductsByTypes(params Type[] types)
         {
-            var products = db.Products.AsNoTracking().ToList();
+            var products = db.Products.AsNoTracking().Include(p => p.Images).ToList();
 
             products = products.Where(t => types.Any(T => T.Name == t.GetType().Name)).ToList();
 

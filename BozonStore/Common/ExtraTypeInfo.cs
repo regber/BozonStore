@@ -56,13 +56,25 @@ namespace BozonStore.Common
             return childrenTypes;
         }
 
-        public static IEnumerable<Type> GetLastChildrenOfType(Type type)
+        private static IEnumerable<Type> GetLastChildrenOfType(Type type)
         {
             var types = Assembly.GetEntryAssembly().GetTypes();
 
-            var lastChildren = types.Where(t1 => (t1.IsSubclassOf(type) || t1 == type || t1.GetInterfaces().Any(t => t == type)) && !TypeHasChild(t1));
+            var lastChildren = types.Where(t1 => (TypeIsChildOfType(t1,type)) && !TypeHasChild(t1));
 
             return lastChildren == null ? Enumerable.Empty<Type>() : lastChildren;
+        }
+
+        public static IEnumerable<Type> GetAllDependentTypeOfType(Type type)
+        {
+            List<Type> types=new List<Type>(GetLastChildrenOfType(type));
+
+            if(!TypeHasChild(type))
+            {
+                types.Add(type);
+            }
+
+            return types;
         }
 
         private static bool TypeHasChild(Type type)
@@ -70,6 +82,11 @@ namespace BozonStore.Common
             var types = Assembly.GetEntryAssembly().GetTypes();
 
             return types.Where(t => t.IsSubclassOf(type) || t.GetInterfaces().Any(t => t == type)).Count() > 0;
+        }
+
+        private static bool TypeIsChildOfType(Type childType, Type baseType)
+        {
+            return (childType.IsSubclassOf(baseType) || childType.GetInterfaces().Any(t => t == baseType));
         }
     }
 }
