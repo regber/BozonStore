@@ -30,11 +30,21 @@
     pointer-events: auto;
 }
 
+#ProductSearch form{
+    width: 200px;
+}
+
 #ProductSearch .ranges {
     height: 20px;
     width: 200px;
     display: flex;
     margin-bottom: 5px;
+}
+
+#ProductSearch .ranges-limit-values {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
 }
 
 #ProductSearch .ranges-line {
@@ -58,7 +68,6 @@
 #ProductSearch .fields {
     display: inline-flex;
     height: 30px;
-    width: 200px;
     margin-bottom: 5px;
 }
 

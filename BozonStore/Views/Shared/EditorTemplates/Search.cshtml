@@ -27,25 +27,30 @@
                 var propNameSecond = string.Concat(propName, "[1]");
                 var propDisplay = prop.DisplayName;
 
-            <div>
-                <label>@propDisplay</label>
-                <div class="ranges">
-                    @{ 
-                        var minValue = Context.Request.Query[propNameFirst].ToString() == string.Empty ? (propLimitValues.Value<string>(propName + "Min")) : Context.Request.Query[propNameFirst].ToString();
-                        var maxValue = Context.Request.Query[propNameSecond].ToString() == string.Empty ? (propLimitValues.Value<string>(propName + "Max")) : Context.Request.Query[propNameSecond].ToString();
-                    }
-                    <div class="ranges-line"></div>
-                    <div class="ranges-line active"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
-                    <input step="any" type="range" oninput="myFunction(this)" value="@minValue" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))" />
-                    <input step="any" type="range" oninput="myFunction(this.target.value)" value="@maxValue" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))"/>
+                <div>
+                    <label>@propDisplay</label>
+                    <div class="ranges-limit-values">
+                        <p>@(propLimitValues.Value<string>(propName+"Min"))</p>
+                        <p>@(propLimitValues.Value<string>(propName+"Max"))</p>
+                    </div>
+                    <div class="ranges">
+                        @{
+                            var minValue = Context.Request.Query[propNameFirst].ToString() == string.Empty ? (propLimitValues.Value<string>(propName + "Min")) : Context.Request.Query[propNameFirst].ToString();
+                            var maxValue = Context.Request.Query[propNameSecond].ToString() == string.Empty ? (propLimitValues.Value<string>(propName + "Max")) : Context.Request.Query[propNameSecond].ToString();
+                        }
+
+                        <div class="ranges-line"></div>
+                        <div class="ranges-line active"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
+                        <input step="any" type="range" oninput="myFunction(this)" value="@minValue" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))" />
+                        <input step="any" type="range" oninput="myFunction(this.target.value)" value="@maxValue" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))" />
+                    </div>
+                    <div class="fields">
+                        <p>от</p>
+                        <input name=@propNameFirst value="@Context.Request.Query[propNameFirst]" />
+                        <p>до</p>
+                        <input name=@propNameSecond value="@Context.Request.Query[propNameSecond]" />
+                    </div>
                 </div>
-                <div class="fields">
-                    <p>от</p>
-                    <input name=@propNameFirst  value="@Context.Request.Query[propNameFirst]"/>
-                    <p>до</p>
-                    <input name=@propNameSecond value="@Context.Request.Query[propNameSecond]"/>
-                </div>
-            </div>
             }
 
             //<h3>@prop.DisplayName</h3>
