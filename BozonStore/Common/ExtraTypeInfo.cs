@@ -60,10 +60,16 @@ namespace BozonStore.Common
         {
             var types = Assembly.GetEntryAssembly().GetTypes();
 
-            var lastChildren = types.Where(t1 => (t1.IsSubclassOf(type) || t1 == type || t1.GetInterfaces().Any(t => t == type)) &&
-                                                                  types.Where(t2 => t2.IsSubclassOf(t1)  || t2.GetInterfaces().Any(t => t == t1)).Count() == 0);
+            var lastChildren = types.Where(t1 => (t1.IsSubclassOf(type) || t1 == type || t1.GetInterfaces().Any(t => t == type)) && !TypeHasChild(t1));
 
             return lastChildren == null ? Enumerable.Empty<Type>() : lastChildren;
+        }
+
+        private static bool TypeHasChild(Type type)
+        {
+            var types = Assembly.GetEntryAssembly().GetTypes();
+
+            return types.Where(t => t.IsSubclassOf(type) || t.GetInterfaces().Any(t => t == type)).Count() > 0;
         }
     }
 }
