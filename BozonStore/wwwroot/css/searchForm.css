@@ -74,7 +74,14 @@
 
 #ProductSearch .fields input {
     width: 40%;
+    -moz-appearance: textfield;
 }
+
+#ProductSearch .fields input::-webkit-outer-spin-button,
+#ProductSearch .fields input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
 #ProductSearch .fields p {
     margin: 2px;
 }
