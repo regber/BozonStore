@@ -66,18 +66,15 @@
                     </div>
                     <div class="fields">
                         <p>от</p>
-                        <input name=@propNameMin valueInput="@propNameMin" oninput="setMinInputValue('@propNameMin','@propNameMax',this.value)" value="@minValue" />
+                        <input type="number" min="@min" max="@max" name=@propNameMin valueInput="@propNameMin" oninput="setMinInputValue('@propNameMin','@propNameMax',this.value)" value="@minValue" />
                         <p>до</p>
-                        <input name=@propNameMax valueInput="@propNameMax" oninput="setMaxInputValue('@propNameMax','@propNameMin',this.value)" value="@maxValue" />
+                        <input type="number" min="@min" max="@max" name=@propNameMax valueInput="@propNameMax" oninput="setMaxInputValue('@propNameMax','@propNameMin',this.value)" value="@maxValue" />
                     </div>
                 </div>
             }
         }
 </div>
 <script>
-
-
-
     function setMaxInputValue(maxInput, minInput,value) {
 
         let maxInputs = document.querySelectorAll("[valueInput='" + maxInput+"']");
@@ -86,7 +83,7 @@
         let minValue=parseInt(minInputs.item(0).value);
         let maxValue=parseInt(value);
 
-        setActiveRangeLineOnEvent(minValue,maxValue,minInputs,minInputs);
+        setActiveRangeLineStyle(minValue,maxValue,minInputs,minInputs);
 
         maxInputs.forEach(function (input, index) {
             input.value=maxValue;
@@ -108,7 +105,7 @@
         let maxValue=parseInt(maxInputs.item(0).value);
         let minValue=parseInt(value);
 
-        setActiveRangeLineOnEvent(minValue,maxValue,minInputs,minInputs);
+        setActiveRangeLineStyle(minValue,maxValue,minInputs,minInputs);
 
         minInputs.forEach(function (input, index) {
             input.value=minValue;
@@ -123,15 +120,34 @@
         }
     }
 
-    function setActiveRangeLineOnEvent(minValue,maxValue,minInputs,maxInputs)
+    function setActiveRangeLineStyle(minValue,maxValue,minInputs,maxInputs)
     {   
-        //при загрузке сбрасывает значения стилей дива
+        //устанавливать значение стиля ппри превышении лимитовв максимально возможную
         var minLimit=minInputs[0].min;
         var maxLimit=maxInputs[0].max;
 
+        if(minValue<minLimit)
+        {
+            minValue=minLimit;
+        }
+        if(maxValue>maxLimit)
+        {
+            maxValue=maxLimit;
+        }
+
+        if(isNaN(minValue))
+        {
+            minValue=maxLimit/2;
+        }
+        if(isNaN(maxValue))
+        {
+            maxValue=maxLimit/2;
+        }
+
+
         let rangeLine= minInputs.item(0).parentElement.querySelector(".ranges-line.active");
 
-        var activeRangeLineStyle=ActiveRangeLineStyle(minValue,maxValue,maxLimit);
+        var activeRangeLineStyle=getActiveRangeLineStyle(minValue,maxValue,maxLimit);
 
         rangeLine.setAttribute("style",activeRangeLineStyle);
     }
@@ -139,7 +155,7 @@
 
 
 
-    function ActiveRangeLineStyle(minValue, maxValue,maxLimit)
+    function getActiveRangeLineStyle(minValue, maxValue,maxLimit)
     {
         var left=(1-((maxLimit-minValue)/maxLimit))*100;
         var right=(1-((maxLimit-(maxLimit-maxValue))/maxLimit))*100;
