@@ -4,6 +4,26 @@
 @{
     var propLimitValues = (Newtonsoft.Json.Linq.JObject)ViewData["PropLimitValues"];
 }
+@functions
+{
+    public string GetActiveRangeInitalStyle(string minValue, string maxValue, string maxLimit)
+    {
+
+        var left=(1-((float.Parse(maxLimit)-float.Parse(minValue))/float.Parse(maxLimit)))*100;
+        var right=(1-((float.Parse(maxLimit)-(float.Parse(maxLimit)-float.Parse(maxValue)))/float.Parse(maxLimit)))*100;
+        
+        var width=100-left-right;
+
+        if(width<0)
+        {
+            width=0;
+        }
+
+        var activeRangeLineStyle="left:"+left.ToString().Replace(',','.')+"%; width:"+width.ToString().Replace(',','.')+"%";
+
+        return activeRangeLineStyle;
+    }
+}
 <div>
         @foreach (var prop in ViewData.ModelMetadata.Properties)
         {
@@ -23,56 +43,117 @@
             @if (prop.ModelType == typeof(int) && prop.ShowForEdit)
             {
                 var propName = prop.PropertyName;
-                var propNameFirst = string.Concat(propName, "[0]");
-                var propNameSecond = string.Concat(propName, "[1]");
+                var propNameMin = string.Concat(propName, "[0]");
+                var propNameMax = string.Concat(propName, "[1]");
                 var propDisplay = prop.DisplayName;
+
+                var min = propLimitValues.Value<string>(propName + "Min");
+                var max = propLimitValues.Value<string>(propName + "Max");
+                var minValue = Context.Request.Query[propNameMin].ToString() == string.Empty ? (min) : Context.Request.Query[propNameMin].ToString();
+                var maxValue = Context.Request.Query[propNameMax].ToString() == string.Empty ? (max) : Context.Request.Query[propNameMax].ToString();
 
                 <div>
                     <label>@propDisplay</label>
                     <div class="ranges-limit-values">
-                        <p>@(propLimitValues.Value<string>(propName+"Min"))</p>
-                        <p>@(propLimitValues.Value<string>(propName+"Max"))</p>
+                        <p>@min</p>
+                        <p>@max</p>
                     </div>
                     <div class="ranges">
-                        @{
-                            var minValue = Context.Request.Query[propNameFirst].ToString() == string.Empty ? (propLimitValues.Value<string>(propName + "Min")) : Context.Request.Query[propNameFirst].ToString();
-                            var maxValue = Context.Request.Query[propNameSecond].ToString() == string.Empty ? (propLimitValues.Value<string>(propName + "Max")) : Context.Request.Query[propNameSecond].ToString();
-                        }
-
                         <div class="ranges-line"></div>
-                        <div class="ranges-line active"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
-                        <input step="any" type="range" oninput="myFunction(this)" value="@minValue" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))" />
-                        <input step="any" type="range" oninput="myFunction(this.target.value)" value="@maxValue" min="@(propLimitValues.Value<string>(propName+"Min"))" max="@(propLimitValues.Value<string>(propName+"Max"))" />
+                        <div class="ranges-line active" style="@GetActiveRangeInitalStyle(@minValue,@maxValue,@max)"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
+                        <input step="1" type="range" valueInput="@propNameMin" oninput="setMinInputValue('@propNameMin','@propNameMax',this.value)" value="@minValue" min="@min" max="@max" />
+                        <input step="1" type="range" valueInput="@propNameMax" oninput="setMaxInputValue('@propNameMax','@propNameMin',this.value)" value="@maxValue" min="@min" max="@max" />
                     </div>
                     <div class="fields">
                         <p>от</p>
-                        <input name=@propNameFirst value="@Context.Request.Query[propNameFirst]" />
+                        <input name=@propNameMin valueInput="@propNameMin" oninput="setMinInputValue('@propNameMin','@propNameMax',this.value)" value="@minValue" />
                         <p>до</p>
-                        <input name=@propNameSecond value="@Context.Request.Query[propNameSecond]" />
+                        <input name=@propNameMax valueInput="@propNameMax" oninput="setMaxInputValue('@propNameMax','@propNameMin',this.value)" value="@maxValue" />
                     </div>
                 </div>
             }
-
-            //<h3>@prop.DisplayName</h3>
         }
-    
 </div>
 <script>
-    //var items = document.querySelectorAll("#ProductSearch input[type='range']");
-
-    //var index;
-    //for (index = 0; index < items.length; ++index) {
-    //    items[index].addEventListener("mouseup", func);
-    //    items[index].addEventListener("mousedown", func);
-    //    items[index].addEventListener("input", func);
-    //}
 
 
-    function myFunction(e) {
-        //console.log(t);
-        console.log(e.value);
-        //console.log("target: " + t.target + " /currentTarget:" + t.currentTarget + "/timestamp:" + t.timeStamp);
-        //if (t.target === t.currentTarget || t.timeStamp >= o || t.timeStamp <= 0 || t.target.ownerDocument !== document) return c.apply(this, arguments)
+
+    function setMaxInputValue(maxInput, minInput,value) {
+
+        let maxInputs = document.querySelectorAll("[valueInput='" + maxInput+"']");
+        let minInputs = document.querySelectorAll("[valueInput='" + minInput+"']");
+
+        let minValue=parseInt(minInputs.item(0).value);
+        let maxValue=parseInt(value);
+
+        setActiveRangeLineOnEvent(minValue,maxValue,minInputs,minInputs);
+
+        maxInputs.forEach(function (input, index) {
+            input.value=maxValue;
+        });
+
+        if(minValue>=maxValue)
+        {
+            minInputs.forEach(function (input, index) {
+                input.value=maxValue;
+            });
+        }
+    }
+    function setMinInputValue(minInput, maxInput, value) {
+
+        let maxInputs = document.querySelectorAll("[valueInput='" + maxInput+"']");
+        let minInputs = document.querySelectorAll("[valueInput='" + minInput+"']");
+        
+
+        let maxValue=parseInt(maxInputs.item(0).value);
+        let minValue=parseInt(value);
+
+        setActiveRangeLineOnEvent(minValue,maxValue,minInputs,minInputs);
+
+        minInputs.forEach(function (input, index) {
+            input.value=minValue;
+        });
+
+        if(minValue>=maxValue)
+        {
+            
+            maxInputs.forEach(function (input, index) {
+                input.value=minValue;
+            });
+        }
+    }
+
+    function setActiveRangeLineOnEvent(minValue,maxValue,minInputs,maxInputs)
+    {   
+        //при загрузке сбрасывает значения стилей дива
+        var minLimit=minInputs[0].min;
+        var maxLimit=maxInputs[0].max;
+
+        let rangeLine= minInputs.item(0).parentElement.querySelector(".ranges-line.active");
+
+        var activeRangeLineStyle=ActiveRangeLineStyle(minValue,maxValue,maxLimit);
+
+        rangeLine.setAttribute("style",activeRangeLineStyle);
+    }
+
+
+
+
+    function ActiveRangeLineStyle(minValue, maxValue,maxLimit)
+    {
+        var left=(1-((maxLimit-minValue)/maxLimit))*100;
+        var right=(1-((maxLimit-(maxLimit-maxValue))/maxLimit))*100;
+        
+        var width=100-left-right;
+
+        if(width<0)
+        {
+            width=0;
+        }
+
+        var activeRangeLineStyle="left:"+left+"%; width:"+width+"%";
+
+        return activeRangeLineStyle
     }
 
 </script>
