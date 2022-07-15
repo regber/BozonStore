@@ -36,9 +36,10 @@
 
 #ProductSearch .ranges {
     height: 20px;
-    width: 200px;
+    width: 100%;
     display: flex;
     margin-bottom: 5px;
+    position: relative;
 }
 
 #ProductSearch .ranges-limit-values {
