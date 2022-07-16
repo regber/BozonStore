@@ -46,33 +46,35 @@ namespace BozonStore.Areas.Product.Controllers
 
             var bundleSize = 1000;
             var skipProdCount = bundleNumber * bundleSize;
-            //вынести в отдельный метод
-            IEnumerable<ProductModel.Product> products;
-
-            JObject jsonFilters = JObject.Parse(queryFilters);
-            JToken catalogType=null;
-
-            if (jsonFilters.TryGetValue("catalogType",out catalogType))
-            {
-                var type = Assembly.GetEntryAssembly().GetTypes().First(t => t.Name == catalogType.Value<string>());
-                var dependentTypes = ExtraTypeInfo.GetAllDependentTypeOfType(type);
-
-                products = ProdInfo.GetProductsByTypes(dependentTypes.ToArray());
-            }
-            else
-            {
-                products = db.Products.AsNoTracking()
-                                        .Include(p => p.Images)
-                                        .AsEnumerable();
-            }
+            
+            var products = GetProducts(queryFilters);
 
             var prodBundle = products.Where(p=>Filtration(p,queryFilters))
                                      .Skip(skipProdCount)
                                      .Take(bundleSize);
 
-
             
             return Json(prodBundle);
+        }
+
+        private IEnumerable<ProductModel.Product> GetProducts(string queryFilters)
+        {
+            JObject jsonFilters = JObject.Parse(queryFilters);
+            JToken catalogType = null;
+
+            if (jsonFilters.TryGetValue("catalogType", out catalogType))
+            {
+                var type = Assembly.GetEntryAssembly().GetTypes().First(t => t.Name == catalogType.Value<string>());
+                var dependentTypes = ExtraTypeInfo.GetAllDependentTypeOfType(type);
+
+                return ProdInfo.GetProductsByTypes(dependentTypes.ToArray());
+            }
+            else
+            {
+                return db.Products.AsNoTracking()
+                                        .Include(p => p.Images)
+                                        .AsEnumerable();
+            }
         }
 
 
