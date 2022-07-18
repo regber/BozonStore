@@ -8,49 +8,55 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/MyStyle.css" />
     <link rel="stylesheet" href="~/css/catalog.css">
+    <link rel="stylesheet" href="~/css/navbar.css" />
 </head>
 <body>
     <header>
         <nav class="navbarfixation navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BozonStore</a>
+                <div class="navbar-bozon-title">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/Content/Site/Header/BozonTitle.png" />
+                    </a>
+                </div>
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div>
-                    <catalog></catalog>
+                <div class="navbar-search">
+                    <div>
+                        <catalog></catalog>
+                    </div>
+                    <div>
+                        <form asp-area="" asp-controller="Home" asp-action="TitleSearch">
+                            <input type="text" name="title" />
+                            <input class="nav-item" type="submit" value="" />
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <form asp-area="" asp-controller="Home" asp-action="TitleSearch">
-                        <input type="text" name="title" />
-                        <input class="nav-item"  type="submit" value="Search" />
-                    </form>
-                    @*<a class="nav-item" onclick="Search()">Search</a>
-                    <input id="SearchText" type="text" />*@
-                </div>
-                <div class="navbar-collapse collapse d-sm-inline-flex">
+                <div class="navbar-collapse collapse d-sm-inline-flex navbar-user-options">
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <ul class="navbar-nav flex-lg-row float-lg-right">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                        </ul>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">
+                            <img src="~/Content/Site/Header/login.png" />
+                            <p style="font-size:small">Войти</p>
+                        </a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">
+                            <img src="~/Content/Site/Header/registration.png" />
+                            <p style="font-size:small">Регистрация</p>
+                        </a>
                     }
                     else
                     {
-                        <ul class="navbar-nav flex-lg-row float-lg-right">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="PersonalPage">@User.Identity.Name</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                            </li>
-                        </ul>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="PersonalPage">
+                            <img src="~/Content/Site/Header/person.png" />
+                            <p style="font-size:small">@User.Identity.Name</p>
+                        </a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">
+                            <img src="~/Content/Site/Header/login.png" />
+                            <p style="font-size:small">Выйти</p>
+                        </a>
                     }
                 </div>
             </div>

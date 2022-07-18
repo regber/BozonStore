@@ -109,8 +109,6 @@ namespace BozonStore.Common
             return products;
         }
 
-        //private static void Get
-
 
     }
 

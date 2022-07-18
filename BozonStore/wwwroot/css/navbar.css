@@ -1,0 +1,67 @@
+﻿.navbar-bozon-title {
+    display: contents;
+}
+
+.navbar-bozon-title img {
+    border-radius: 3px;
+}
+
+.navbarfixation {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+.navbar-search{
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.navbar-search div:first-child{
+    margin-right: 20px;
+}
+.navbar-search div:last-child{
+    width: 50%;
+    border: 2px solid #005bff;
+    border-radius: 5px;
+}
+.navbar-search form{
+    width: 100%;
+    display: inline-flex;
+    background-color: #005bff;
+}
+.navbar-search form input[type='text']{
+    width: 100%;
+    border: none;
+    border-radius: 2px;
+}
+
+.navbar-search form input[type='submit']{
+    background-color: transparent;
+    border: none;
+    background-image: url(/Content/Site/Header/scopes.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    scale: 0.8;
+    width: 60px;
+}
+
+.navbar-user-options{
+    justify-content: end;
+}
+
+.navbar-user-options a{
+    margin: 0 5px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.navbar-user-options p{
+    margin: 0;
+}

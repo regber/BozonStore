@@ -10,6 +10,10 @@ nav{
     margin: 0;
     padding: 0;
 }
+.catalog > li{
+    border-radius: 5px;
+}
+
 
 .catalog a {
     display: block;
@@ -21,12 +25,12 @@ nav{
 }
 
 .catalog a:hover{
-    background-color: #4a6a94;
+    background-color: rgb(92, 131, 182);
 }
 
 .catalog li{
     list-style: none;
-    background-color: #2c4a72;
+    background-color: #005bff;
     min-width: inherit;
 }
 

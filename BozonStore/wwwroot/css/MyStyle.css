@@ -3,12 +3,6 @@
     margin: 3px
 }
 
-.navbarfixation {
-    position: fixed;
-    width: 100%;
-    z-index: 1;
-}
-
 main {
     padding-block-start: 80px;
 }
@@ -19,18 +13,20 @@ main {
     width: 100%;
 }
 
-
-
 #ProductsWindow {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
     justify-items: center;
     width: 100%;
+    background-color: #eaf3ff;
+    border: 2px solid #a2caff;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .prodContainer {
-    background-color: beige;
+    background-color: #a2caff;
     border: 2px solid gray;
     border-radius: 5%;
     padding: 10px;
