@@ -33,7 +33,7 @@
             </div>
             <div>
                 @{
-                    var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?id="+ "{{id}}";
+                    var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + "{{id}}";
                 }
                 <a class="prodBuy" onclick="AddProductToShopCart(event,'@url')">В корзину</a>
             </div>
