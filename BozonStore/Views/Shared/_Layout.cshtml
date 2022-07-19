@@ -53,6 +53,13 @@
                             <img src="~/Content/Site/Header/person.png" />
                             <p style="font-size:small">@User.Identity.Name</p>
                         </a>
+                        if (@User.IsInRole("Buyer"))
+                        {
+                            <a class="nav-link text-dark" asp-area="User" asp-controller="Buyer" asp-action="Index">
+                                <img src="~/Content/Site/Header/purchase.png" />
+                                <p style="font-size:small">Корзина</p>
+                            </a>
+                        }
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">
                             <img src="~/Content/Site/Header/login.png" />
                             <p style="font-size:small">Выйти</p>
