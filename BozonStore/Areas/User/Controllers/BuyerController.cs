@@ -29,12 +29,22 @@ namespace BozonStore.Areas.User.Controllers
         public void AddProductToShopCart(int prodId)
         {
             var userLogin = HttpContext.User.Identity.Name;
-            var buyer = db.Buyers.Include(b=>b.Purchases).First(b => b.Login == userLogin);
+            var buyer = db.Buyers.Include(b=>b.Purchases).ThenInclude(p=>p.Product).First(b => b.Login == userLogin);
             var prod = db.Products.Find(prodId);
             var shop = db.Shops.Include(s=>s.Seller).First(s => s.Products.Contains(prod));
 
-            buyer.Purchases.Add(new Purchase() { Product = prod,  Seller= shop.Seller.Title, SellerShop= shop.Title });
+            var purchases = buyer.Purchases;
+            var purchProd = purchases.FirstOrDefault(p => p.Product.Id == prod.Id);
 
+            if (purchProd!=null)
+            {
+                purchProd.Count++;
+            }
+            else
+            {
+                purchases.Add(new Purchase() { Product = prod, Seller = shop.Seller.Title, SellerShop = shop.Title, Count=1 });
+            }
+            
             db.SaveChanges();
         }
     }
