@@ -103,7 +103,7 @@ async function GetProdBundle() {
 
 async function AddProd(prod) {
 
-    CreateFromTemplate("#ProductsWindow", "#prodTemplate", { title: prod.title, price: prod.price, id: prod.id });
+    CreateFromTemplate("#ProductsWindow", "#prodTemplate", { title: prod.title, price: new Intl.NumberFormat("ru", { style: "currency", currency: "RUB", minimumFractionDigits: 0 }).format(prod.price), id: prod.id });
 
     let mainImageFile = await GetMainImage(prod);
 
@@ -156,4 +156,9 @@ function getQueryStringValues() {
     }
 
     return queryObject;
+}
+
+function AddProductToShopCart(e, url) {
+    e.stopPropagation();
+    fetch(url);
 }
