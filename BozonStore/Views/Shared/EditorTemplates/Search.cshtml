@@ -6,13 +6,12 @@
 }
 @functions
 {
-    public string GetActiveRangeInitalStyle(string minValue, string maxValue, string maxLimit)
+    public string GetActiveRangeInitalStyle(string minValue, string maxValue,string minLimit, string maxLimit)
     {
 
-        var left=(1-((float.Parse(maxLimit)-float.Parse(minValue))/float.Parse(maxLimit)))*100;
-        var right=(1-((float.Parse(maxLimit)-(float.Parse(maxLimit)-float.Parse(maxValue)))/float.Parse(maxLimit)))*100;
-        
-        var width=100-left-right;
+
+        var left= 100 / ((float.Parse(maxLimit) - float.Parse(minLimit)) / (float.Parse(minValue) - float.Parse(minLimit)));
+        var width = 100 / ((float.Parse(maxLimit) - float.Parse(minLimit)) / (float.Parse(maxValue) - float.Parse(minLimit)))- left;
 
         if(width<0)
         {
@@ -71,7 +70,7 @@
                 </div>
                 <div class="ranges">
                     <div class="ranges-line"></div>
-                    <div class="ranges-line active" style="@GetActiveRangeInitalStyle(@minValue,@maxValue,@max)"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
+                    <div class="ranges-line active" style="@GetActiveRangeInitalStyle(@minValue,@maxValue,@min,@max)"></div>@*добавить максимальное и минимальное значение над полосой, также решить каким образом загружать исходные значения ползунков, а после поиска использовать значения из query*@
                     <input step="1" type="range" valueInput="@propNameMin" oninput="setMinInputValue('@propNameMin','@propNameMax',this.value)" value="@minValue" min="@min" max="@max" />
                     <input step="1" type="range" valueInput="@propNameMax" oninput="setMaxInputValue('@propNameMax','@propNameMin',this.value)" value="@maxValue" min="@min" max="@max" />
                 </div>
@@ -158,7 +157,7 @@
 
         let rangeLine= minInputs.item(0).parentElement.querySelector(".ranges-line.active");
 
-        var activeRangeLineStyle=getActiveRangeLineStyle(minValue,maxValue,maxLimit);
+        var activeRangeLineStyle=getActiveRangeLineStyle(minValue,maxValue,minLimit,maxLimit);
 
         rangeLine.setAttribute("style",activeRangeLineStyle);
     }
@@ -166,12 +165,10 @@
 
 
 
-    function getActiveRangeLineStyle(minValue, maxValue,maxLimit)
+    function getActiveRangeLineStyle(minValue, maxValue,minLimit,maxLimit)
     {
-        var left=(1-((maxLimit-minValue)/maxLimit))*100;
-        var right=(1-((maxLimit-(maxLimit-maxValue))/maxLimit))*100;
-        
-        var width=100-left-right;
+        var left = getProportion(minValue, minLimit, maxLimit);
+        var width = getProportion(maxValue, minLimit, maxLimit)-left;
 
         if(width<0)
         {
@@ -181,6 +178,13 @@
         var activeRangeLineStyle="left:"+left+"%; width:"+width+"%";
 
         return activeRangeLineStyle
+    }
+
+    function getProportion(value, minLimit, maxLimit) {
+
+        var result = 100 / ((maxLimit - minLimit) / (value - minLimit));
+
+        return result;
     }
 
 </script>
