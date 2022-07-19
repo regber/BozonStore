@@ -9,7 +9,9 @@ namespace BozonStore.Models
         public int Id { get; set; }
 
         public Product Product { get; set; }
-        
+
+        public int Count { get; set; }
+
         public string Seller { get; set; }
         public string SellerShop { get; set; }
     }
