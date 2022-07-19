@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BozonStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace BozonStore.Areas.User.Controllers
@@ -25,11 +26,16 @@ namespace BozonStore.Areas.User.Controllers
             return View();
         }
 
-        public IActionResult AddProductToShopCart(int id)
+        public void AddProductToShopCart(int prodId)
         {
+            var userLogin = HttpContext.User.Identity.Name;
+            var buyer = db.Buyers.Include(b=>b.Purchases).First(b => b.Login == userLogin);
+            var prod = db.Products.Find(prodId);
+            var shop = db.Shops.Include(s=>s.Seller).First(s => s.Products.Contains(prod));
 
-            //HttpContext.User.Identity.Name
-            return Content(id.ToString());
+            buyer.Purchases.Add(new Purchase() { Product = prod,  Seller= shop.Seller.Title, SellerShop= shop.Title });
+
+            db.SaveChanges();
         }
     }
 }
