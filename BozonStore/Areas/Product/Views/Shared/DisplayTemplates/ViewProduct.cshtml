@@ -59,6 +59,11 @@
     $(document).on('click', '#images .imageContainer', function () {
         var thisImageContainer = $(this);
 
+        var srcSelectedImage = thisImageContainer.children(".imagePreview").first().attr("src");
+        var mainImageContainer = $(document).find("#previewMainImage .imagePreview").first();
+
+        changeSrc(srcSelectedImage, mainImageContainer);
+
         thisImageContainer.addClass(selectedClass);
 
         var allImagesContainers = $(document).find('#images .imageContainer');
@@ -69,6 +74,10 @@
             }
         });
     });
+
+    function changeSrc(scr, target) {
+        target.attr("src", scr);
+    }
 </script>
 
 
