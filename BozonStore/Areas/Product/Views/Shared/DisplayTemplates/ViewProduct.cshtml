@@ -1,0 +1,79 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var a = ViewData.ModelMetadata.Properties;
+}
+
+<div>
+    <div id="ProductImages">
+        <div id="previewImages">
+            <object class="up" data="~/Content/Site/ViewProduct/chevron-compact-up.svg" type="image/svg+xml"></object>
+            <div id="images"></div>
+            <object class="down" data="~/Content/Site/ViewProduct/chevron-compact-down.svg" type="image/svg+xml"></object>
+        </div>
+        <div id="previewMainImage"></div>
+    </div>
+    <div id="ProductInfo">
+        @foreach (var prop in a)
+        {
+            <h6>
+                @prop.DisplayName
+            </h6>
+        }
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/viewProd.css" />
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/lib/handlebars.js/handlebars.js"></script>
+<script src="~/js/handtemp.js"></script>
+
+
+<script>
+    const selectedClass = ["selectedImageContainer"];
+
+    $(document).ready(function () {
+
+        var id =@Html.Raw(Model.Id);
+        var images = @Html.Raw(@JsonConvert.SerializeObject(Model.Images));
+
+        $.each(images, function (idx, img) {
+
+            let url = "/Content/Proposal/" + id + "/" + img.Name;
+
+            if (img.MainImage) {
+                CreateFromTemplate("#previewMainImage", "#imgTemplate", { filename: img.Name, src: url });
+                CreateFromTemplate("#images", "#imgTemplate", { filename: img.Name, src: url, selected: selectedClass });
+            }
+            else
+            {
+                CreateFromTemplate("#images", "#imgTemplate", { filename: img.Name, src: url});
+            }
+        });
+    });
+
+    $(document).on('click', '#images .imageContainer', function () {
+        var thisImageContainer = $(this);
+
+        thisImageContainer.addClass(selectedClass);
+
+        var allImagesContainers = $(document).find('#images .imageContainer');
+
+        allImagesContainers.each(function () {
+            if (thisImageContainer.find(".imagePreview").first().attr("filename") != $(this).find(".imagePreview").first().attr("filename")) {
+                $(this).removeClass(selectedClass);
+            }
+        });
+    });
+</script>
+
+
+<script type="text/x-handlebars-template" id="imgTemplate">
+    <div class="imageContainer {{selected}}">
+        <img class="imagePreview" src="{{src}}" filename="{{filename}}">
+    </div>
+</script>

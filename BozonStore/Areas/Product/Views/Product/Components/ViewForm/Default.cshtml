@@ -3,11 +3,12 @@
 *@
 @{
 }
-@model Product
+@*@model Product*@
 
-
-@Html.DisplayForModel()
-@Html.DisplayFor(m => m.Images)
+<div id="ViewProduct">
+    @Html.DisplayForModel("ViewProduct")
+</div>
+@*@Html.DisplayFor(m => m.Images)
 
 <script src="/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -48,4 +49,4 @@
         <span>{{filename}}</span>
 
     </div>
-</script>
+</script>*@
