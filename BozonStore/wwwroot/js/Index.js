@@ -157,8 +157,3 @@ function getQueryStringValues() {
 
     return queryObject;
 }
-
-function AddProductToShopCart(e, url) {
-    e.stopPropagation();
-    fetch(url);
-}
