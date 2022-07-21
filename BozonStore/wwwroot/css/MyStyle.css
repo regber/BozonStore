@@ -58,18 +58,18 @@ main {
     overflow: hidden;
 }
 
-.prodContainer div:nth-child(4){
+.buyButton{
     background-color: #005bff;
     border-radius: 8px;
     padding: 5px 10px;
     width: max-content;
 }
 
-.prodContainer div:nth-child(4):hover{
+.buyButton:hover{
     background-color: #4083ff;
 }
 
-.prodBuy{
+.buyButton a{
     color: white !important;
 }
 

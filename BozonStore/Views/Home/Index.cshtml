@@ -19,6 +19,7 @@
     <script src="~/lib/handlebars.js/handlebars.js"></script>
     <script src="~/js/handtemp.js"></script>
     <script src="~/js/Index.js"></script>
+    <script src="~/js/buy.js"></script>
 
     <script type="text/x-handlebars-template" id="prodTemplate">
         <div class="prodContainer" id="{{id}}" onclick="window.location.href='/Product/Product/ViewProduct?id='+{{id}}">
@@ -31,11 +32,11 @@
             <div>
                 <p class="prodTitle">{{title}}</p>
             </div>
-            <div>
+            <div class="buyButton">
                 @{
                     var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + "{{id}}";
                 }
-                <a class="prodBuy" onclick="AddProductToShopCart(event,'@url')">В корзину</a>
+                <a onclick="AddProductToShopCart(event,'@url')">В корзину</a>
             </div>
         </div>
     </script>
