@@ -351,23 +351,25 @@ namespace BozonStore.Areas.Product.Controllers
 
         private void AddImagesInToProduct(ProductModel.Product product)
         {
-            var productTempImages = TempData.Get<List<TempImage>>("tempImages");
+            DeletePastProductImages(product.Id);
 
-            if (productTempImages == null)
+            var tempImages = TempData.Get<List<TempImage>>("tempImages");
+
+            if (tempImages == null)
             {
                 return;
             }
 
-            if (!productTempImages.Any(i => i.MainImage))
+            if (!tempImages.Any(i => i.MainImage))
             {
-                productTempImages.FirstOrDefault().MainImage = true;
+                tempImages.FirstOrDefault().MainImage = true;
             }
 
             var currentProduct = db.Products.Include(p => p.Images).FirstOrDefault(p => p.Id == product.Id);
 
             List<Image> images = new List<Image>();
 
-            foreach (var tempImage in productTempImages)
+            foreach (var tempImage in tempImages)
             {
                 CopyTempImageToProduct(tempImage, product);
 
@@ -387,6 +389,19 @@ namespace BozonStore.Areas.Product.Controllers
 
         }
 
+        private void DeletePastProductImages(int prodId)
+        {
+            var imageDirectory = env.WebRootPath + ContentAdsPath + prodId;
+
+
+            var pastFiles = System.IO.Directory.GetFiles(imageDirectory);
+
+            foreach(var file in pastFiles)
+            {
+                System.IO.File.Delete(file);
+            }
+        }
+
         private void CopyTempImageToProduct(TempImage tempImage, ProductModel.Product product)
         {
             var tempImagePath = tempImage.FilePath;
@@ -394,13 +409,8 @@ namespace BozonStore.Areas.Product.Controllers
 
             CreateDirIfItNotExist(newImageDirectory);
 
-
             var newImagePath = newImageDirectory + "\\" + tempImage.FileName;
 
-            if (System.IO.File.Exists(newImagePath))
-            {
-                System.IO.File.Delete(newImagePath);
-            }
 
             System.IO.File.Move(tempImagePath, newImagePath);
 
@@ -430,16 +440,6 @@ namespace BozonStore.Areas.Product.Controllers
             }
         }
 
-
-        //private ArraySegment<TypeInfo> GetProdTypeInfo()
-        //{
-        //    var interfaces = Assembly.GetEntryAssembly()
-        //                             .DefinedTypes
-        //                             .Where(t => t.FullName.Contains(nameof(BozonStore.Models.ProductModel.ProdTypeInterfaces)))
-        //                             .ToArray();
-
-        //    return interfaces;
-        //}
         private SelectList GenerateSelectList(IEnumerable<Type> types)
         {
             var prodTypeList = new List<ProductType>();
