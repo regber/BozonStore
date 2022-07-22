@@ -32,12 +32,15 @@
             <div>
                 <p class="prodTitle">{{title}}</p>
             </div>
-            <div class="buyButton">
-                @{
-                    var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + "{{id}}";
-                }
-                <a onclick="AddProductToShopCart(event,'@url')">В корзину</a>
-            </div>
+            @if (User.IsInRole("Buyer"))
+            {
+                <div class="buyButton">
+                    @{
+                        var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + "{{id}}";
+                    }
+                    <a onclick="AddProductToShopCart(event,'@url')">В корзину</a>
+                </div>
+            }
         </div>
     </script>
 }
