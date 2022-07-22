@@ -19,7 +19,7 @@ namespace BozonStore.Controllers
         [HttpGet]
         public IActionResult GetProposalImage(string prodId,string imageName)
         {
-            var imageDir = env.ContentRootPath.Replace("\\","/")+"/Content/Proposal/";
+            var imageDir = env.WebRootPath.Replace("\\","/")+"/Content/Proposal/";
             var fullPath = imageDir + prodId+"/"+ imageName;
             return PhysicalFile(fullPath, "image/*");
         }
