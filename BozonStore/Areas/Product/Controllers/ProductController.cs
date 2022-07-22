@@ -140,7 +140,10 @@ namespace BozonStore.Areas.Product.Controllers
                 {
                     return propValueStr.ToLower().Contains(values[0].ToLower());
                 }
-                
+                if(propValue is bool propValueBool)
+                {
+                    return (values[0] =="on" ? true: false) == propValueBool;
+                }
             }
             else
             {

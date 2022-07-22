@@ -30,6 +30,10 @@
     pointer-events: auto;
 }
 
+#ProductSearch input[type="submit"]{
+    margin-top: 10px;
+}
+
 #ProductSearch form{
     width: 200px;
 }
