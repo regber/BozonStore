@@ -1,28 +1,119 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using System.ComponentModel.DataAnnotations;
+@using BozonStore.Common;
 @{
-    var a = ViewData.ModelMetadata.Properties;
+
+    var prodProperties = ViewData.ModelMetadata.Properties;
+    var product = ViewData.Model;
+    
 }
 
-<div>
+
+<div class="prodMain">
     <div id="ProductImages">
         <div id="previewImages">
-            <object class="up" data="~/Content/Site/ViewProduct/chevron-compact-up.svg" type="image/svg+xml"></object>
+            <a onclick=scrollButton(this) direction="up" class="up">
+                <img src="~/Content/Site/ViewProduct/chevron-compact-up.svg" />
+            </a>
             <div id="images"></div>
-            <object class="down" data="~/Content/Site/ViewProduct/chevron-compact-down.svg" type="image/svg+xml"></object>
+            <a onclick=scrollButton(this) direction="down" class="down">
+                <img src="~/Content/Site/ViewProduct/chevron-compact-down.svg" />
+            </a>
         </div>
         <div id="previewMainImage"></div>
     </div>
-    <div id="ProductInfo">
-        @foreach (var prop in a)
+    <div id="ProductMainInfo">
+        <div class="prodTitle">
+            @prodProperties[nameof(ViewData.Model.Price)].DisplayName
+        </div>
+        <div class="prodPrice">
+            @string.Format("{0:C0}", product.Price)
+        </div>
+        @if (User.IsInRole("Buyer"))
         {
-            <h6>
-                @prop.DisplayName
-            </h6>
+            <script src="~/js/buy.js"></script>
+            <div class="buyButton">
+                @{
+                    var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + product.Id; ;
+                }
+                <a onclick="AddProductToShopCart(event,'@url')">В корзину</a>
+            </div>
         }
     </div>
 </div>
+<hr />
+<div id="ProductInfo">
+
+    <div class="header">Характеристики</div>
+    <div class="property">
+        <div class="propertyTitle">
+            Тип
+        </div>
+        <div class="propertyValue">
+            @ExtraTypeInfo.GetDisplayName(product.GetType())
+        </div>
+    </div>
+
+    @foreach (var property in prodProperties)
+    {
+        if (property.Name != "Discription" && property.Name != "Title" && property.Name != "Price" && property.Name != "Images" && property.ShowForDisplay)
+        {
+            if (property.Name != "Color")
+            {
+                @if (property.ModelType == typeof(bool))
+                {
+                    <div class="property">
+                        <div class="propertyTitle">
+                            @property.DisplayName
+                        </div>
+                        <div class="propertyValue">
+                            @if (product.GetType().GetProperty(property.Name).GetValue(product, null) == true)
+                            {
+                                <text>Да</text>
+                            }
+                            else
+                            {
+                                <text>Нет</text>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="property">
+                        <div class="propertyTitle">
+                            @property.DisplayName
+                        </div>
+                        <div class="propertyValue">
+                            @product.GetType().GetProperty(property.Name).GetValue(product, null)
+                        </div>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="property">
+                    <div class="propertyTitle"  style="margin-top: 10px;">
+                        @property.DisplayName
+                    </div>
+                    <div class="propertyValue">
+                        <input type="color" disabled="" value="@product.GetType().GetProperty(property.Name).GetValue(product, null)" />
+                    </div>
+                </div>
+            }
+        }
+    }
+    <div class="header">Описание</div>
+
+    <div class="description">
+        @product.GetType().GetProperty("Discription").GetValue(product, null)
+    </div>
+
+</div>
+
 
 <link rel="stylesheet" href="~/css/viewProd.css" />
 <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -77,6 +168,26 @@
 
     function changeSrc(scr, target) {
         target.attr("src", scr);
+    }
+
+    function scrollButton(self) {
+        var direction = self.getAttribute("direction");
+
+        var previewImagesNode = document.querySelector("#images");
+
+        var value = 0;
+        if (direction=="up") {
+            value = previewImagesNode.scrollTop - previewImagesNode.clientHeight;
+        }
+        if (direction == "down") {
+            value = previewImagesNode.scrollTop + previewImagesNode.clientHeight;
+        }
+
+        previewImagesNode.scroll({
+            top: (0, value),
+            behavior: 'smooth'
+        });
+
     }
 </script>
 

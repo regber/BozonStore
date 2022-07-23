@@ -1,4 +1,36 @@
-﻿#ProductImages{
+﻿.prodMain{
+    display: inline-flex;
+    width: 100%;
+}
+
+#ProductMainInfo{
+    border-radius: 5px;
+    box-shadow: 0 6px 16px rgba(0,26,52,.16),0 0 0 rgba(0,26,52,.05);
+    height: max-content;
+    padding: 10px;
+    min-width: 350px;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+#ProductMainInfo .prodPrice{
+    color: #707f8d;
+    font-weight:900;
+    font-size: 24px;
+}
+
+#ProductMainInfo .prodTitle{
+    font-weight:600;
+    font-size: 18px;
+}
+
+#ProductMainInfo .buyButton{
+    margin: 0 0 0 auto;
+}
+
+
+
+#ProductImages{
     display:inline-flex;
     max-height:350px;
 }
@@ -12,18 +44,26 @@
     display: grid;
     margin-right: 10px;
 }
-#previewImages object{
-    justify-self: center;
+#previewImages a{
     height: 25px;
     width: 100%;
 }
 
-#previewImages object.up{
+#previewImages a:hover{
+    background-color: #dddddd;
+}
+
+#previewImages a.up{
     align-self: start;
 }
 
-#previewImages object.down{
+#previewImages a.down{
     align-self: end;
+}
+
+#previewImages a>img{
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -47,8 +87,12 @@
     width: 100%;
 }
 
+#images .imageContainer:hover> img {
+    border: 3px solid #99bdff;
+}
+
 #images .imageContainer.selectedImageContainer img{
-    border: 3px solid red;
+    border: 3px solid #005bff;
     outline:none;
     margin: 0px ;
 }
@@ -65,6 +109,64 @@
     height: 100%;
     width: 500px;
 }
+
+#ProductInfo div{
+    display: inline-block;
+}
+
+#ProductInfo .property{
+    min-width: 300px;
+    max-width: max-content;
+    margin-right: 20px;
+
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+#ProductInfo .propertyTitle::after{
+    content: '';
+    position: absolute;
+    bottom: .35em;
+    width: 100%;
+    border-bottom: .1em dotted;
+    margin-left: 5px;
+}
+
+#ProductInfo .propertyValue{
+    float: right;
+    position: relative;
+    background-color: white;
+    padding-left: 5px;
+}
+
+#ProductInfo .propertyValue{
+    float: right;
+    position: relative;
+    background-color: white;
+    padding-left: 5px;
+}
+
+#ProductInfo .propertyValue input[type='color']{
+    box-sizing: content-box;
+    width: 20px;
+}
+
+#ProductInfo .header{
+    margin-top: 10px;
+    display: block;
+    font-weight:600;
+    font-size: 18px;
+}
+
+#ProductInfo .description{
+    width: 100%;
+    background-color: #f7f7f7;
+    border-radius: 2px;
+    min-height: 2em;
+    padding: 5px;
+}
+
 
 
 
