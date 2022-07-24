@@ -18,7 +18,7 @@ namespace BozonStore.Models.ProductModel
         [Required(ErrorMessage = "Поле не заполнено")]
         [Display(Name = "Описание товара", Order = -99)]
         [DataType(DataType.MultilineText)]
-        public string Discription { get; set; }
+        public string Description { get; set; }
 
 
         [Required(ErrorMessage = "Поле не заполнено")]

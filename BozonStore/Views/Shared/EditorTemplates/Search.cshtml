@@ -26,7 +26,7 @@
 <div>
     @foreach (var prop in ViewData.ModelMetadata.Properties)
     {
-        @if (prop.ModelType == typeof(string) && prop.PropertyName != "Discription")
+        @if (prop.ModelType == typeof(string) && prop.PropertyName != "Description")
         {
             var propName = prop.PropertyName;
             var propDisplay = prop.DisplayName;

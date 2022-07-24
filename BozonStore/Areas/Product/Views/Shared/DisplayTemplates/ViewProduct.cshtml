@@ -58,7 +58,7 @@
 
     @foreach (var property in prodProperties)
     {
-        if (property.Name != "Discription" && property.Name != "Title" && property.Name != "Price" && property.Name != "Images" && property.ShowForDisplay)
+        if (property.Name != "Description" && property.Name != "Title" && property.Name != "Price" && property.Name != "Images" && property.ShowForDisplay)
         {
             if (property.Name != "Color")
             {
@@ -109,7 +109,7 @@
     <div class="header">Описание</div>
 
     <div class="description">
-        @product.GetType().GetProperty("Discription").GetValue(product, null)
+        @product.GetType().GetProperty("Description").GetValue(product, null)
     </div>
 
 </div>
