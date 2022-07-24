@@ -91,13 +91,13 @@
                 <label>@propDisplay</label>
             </div>
             <div>
-                @if (Context.Request.Query[propName] == "on")
+                @if (Context.Request.Query[propName] == "true")
                 {
-                    <input type="checkbox" name=@propName checked />
+                    <input type="checkbox" name=@propName onchange="changeCheckBox(this)" checked value="true" />
                 }
                 else
                 {
-                    <input type="checkbox" name=@propName />
+                    <input type="checkbox" name=@propName onchange="changeCheckBox(this)" value="false" />
                 }
 
             </div>
@@ -206,6 +206,23 @@
 
         return result;
     }
+
+    function changeCheckBox(thisElem) {
+
+        
+        console.log(thisElem);
+
+        if (thisElem.getAttribute("value") == "true") {
+            thisElem.setAttribute("value", "false");
+        }
+        else {
+            thisElem.setAttribute("value", "true");
+        }
+
+        console.log(thisElem.getAttribute("value"));
+
+    }
+
 
 </script>
 

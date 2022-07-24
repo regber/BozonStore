@@ -142,7 +142,7 @@ namespace BozonStore.Areas.Product.Controllers
                 }
                 if(propValue is bool propValueBool)
                 {
-                    return (values[0] =="on" ? true: false) == propValueBool;
+                    return bool.Parse(values[0]) == propValueBool;
                 }
             }
             else
