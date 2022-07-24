@@ -1,52 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@*@model Product*@
+﻿
 
 <div id="ViewProduct">
     @Html.DisplayForModel("ViewProduct")
 </div>
-@*@Html.DisplayFor(m => m.Images)
-
-<script src="/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
-<script src="~/lib/handlebars.js/handlebars.js"></script>
-<script src="~/js/handtemp.js"></script>
-
-
-<script>
-    const selectedClass = ["selectedImageContainer"];
-
-    $(document).ready(function () {
-
-        var id =@Html.Raw(Model.Id);
-        var images = @Html.Raw(@JsonConvert.SerializeObject(Model.Images));
-
-        $.each(images, function (idx, img) {
-            
-            let url = "/Content/Proposal/" + id + "/" + img.Name;
-
-            if (img.MainImage) {
-                CreateFromTemplate("#previewImages", "#imgTemplate", { filename: img.Name, src: url, selected: selectedClass });
-            }
-            else
-            {
-                CreateFromTemplate("#previewImages", "#imgTemplate", { filename: img.name, src: url});
-            }
-        });
-    });
-</script>
-
-
-<script type="text/x-handlebars-template" id="imgTemplate">
-    <div class="imageContainer {{selected}}">
-
-        <img class="imagePreview" height="100" src="{{src}}" filename="{{filename}}">
-        <span>{{filename}}</span>
-
-    </div>
-</script>*@
