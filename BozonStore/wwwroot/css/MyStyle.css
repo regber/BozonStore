@@ -28,6 +28,9 @@ main {
     display: grid;
     grid-template-rows: 60% 15% 15% 10%;
     cursor: pointer;
+    background-color: #f7f7f7;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
 .prodImage{
