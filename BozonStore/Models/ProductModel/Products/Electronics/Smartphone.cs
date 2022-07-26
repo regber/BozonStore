@@ -34,22 +34,9 @@ namespace BozonStore.Models.ProductModel.Products.Electronics
         [Display(Name = "Материал корпуса")]
         public string BodyMaterialType { get; set; }
 
-
-        [Column]
         [Required(ErrorMessage = "Поле не заполнено")]
         [Display(Name = "Беспроводные интерфейсы")]
-        private string _WirelessInterface { get; set; }
-        [NotMapped]
-        public string[] WirelessInterface 
-        {
-            get => _WirelessInterface.Split(';');
-            set 
-            {
-                var _data = value;
-                _WirelessInterface = String.Join(';', _data.Select(p => p.ToString()).ToArray());
-            }
-        }
-
+        public string WirelessInterface { get; set; }
 
         [Required(ErrorMessage = "Поле не заполнено")]
         [Display(Name = "Вертикальное разрешение, точек")]

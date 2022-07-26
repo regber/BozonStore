@@ -52,7 +52,7 @@ namespace BozonStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
+            //modelBuilder.Entity<Smartphone>().Property("_WirelessInterface").HasColumnName("WirelessInterface");
 
             //Генерируем для указанных базовых типов(User,Product) отдельные таблицы в базе для их производных
             //типов, а также указываем что производные типы имеют каскадное удаление при удалении из базы записи базового типа
