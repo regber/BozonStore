@@ -393,12 +393,14 @@ namespace BozonStore.Areas.Product.Controllers
         {
             var imageDirectory = env.WebRootPath + ContentAdsPath + prodId;
 
-
-            var pastFiles = System.IO.Directory.GetFiles(imageDirectory);
-
-            foreach(var file in pastFiles)
+            if(Directory.Exists(imageDirectory))
             {
-                System.IO.File.Delete(file);
+                var pastFiles = Directory.GetFiles(imageDirectory);
+
+                foreach (var file in pastFiles)
+                {
+                    System.IO.File.Delete(file);
+                }
             }
         }
 
