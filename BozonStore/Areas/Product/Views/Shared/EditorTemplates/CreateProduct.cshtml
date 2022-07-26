@@ -1,0 +1,270 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.ComponentModel.DataAnnotations;
+@using BozonStore.Common;
+@{
+
+    var prodProperties = ViewData.ModelMetadata.Properties;
+    var product = ViewData.Model;
+
+}
+<div>
+    <div>
+        @prodProperties[nameof(product.Title)].DisplayName
+    </div>
+    @Html.Editor(nameof(product.Title))
+    <span class="field-validation-valid" data-valmsg-for="@nameof(product.Title)" data-valmsg-replace="true"></span>
+</div>
+
+<hr />
+
+<div class="prodMain">
+    <div id="ProductImages">
+        <div id="previewImages">
+            <a onclick=scrollButton(this) direction="up" class="up">
+                <img src="~/Content/Site/ViewProduct/chevron-compact-up.svg" />
+            </a>
+            <div id="images"></div>
+            <a onclick=scrollButton(this) direction="down" class="down">
+                <img src="~/Content/Site/ViewProduct/chevron-compact-down.svg" />
+            </a>
+        </div>
+        <div id="previewMainImage"></div>
+    </div>
+    <div id="ProductMainInfo">
+        <div class="prodTitle">
+            @prodProperties[nameof(product.Price)].DisplayName
+        </div>
+        <div class="prodPrice">
+            @Html.Editor(nameof(product.Price))
+            <div class="field-validation-valid" data-valmsg-for="@nameof(product.Price)" data-valmsg-replace="true"></div>
+        </div>
+    </div>
+</div>
+<input id="imagesFileInput" type="file" multiple value="Upload" accept=".png,.jpg,.jpeg,.gif" />
+<hr />
+<div id="ProductInfo">
+
+    <div class="header">Характеристики</div>
+
+    @foreach (var property in prodProperties)
+    {
+    if (property.Name != "Description" && property.Name != "Title" && property.Name != "Price" && property.Name != "Images" && property.ShowForDisplay)
+    {
+    if (property.Name != "Color")
+    {
+    @if (property.ModelType == typeof(bool))
+    {
+    <div class="property">
+        <div class="propertyTitle">
+            @property.DisplayName
+        </div>
+        <div class="propertyValue">
+            <input type="checkbox" name="property.Name" value="false" />
+        </div>
+    </div>
+    }
+    else
+    {
+    <div class="property">
+        <div class="propertyTitle">
+            @property.DisplayName
+        </div>
+        <div class="propertyValue">
+            @Html.Editor(@property.Name)
+        </div>
+    </div>
+    }
+
+    }
+    else
+    {
+    <div class="property">
+        <div class="propertyTitle" style="margin-top: 10px;">
+            @property.DisplayName
+        </div>
+        <div class="propertyValue">
+            <input type="color" name="@property.Name" />
+        </div>
+    </div>
+    }
+    }
+    }
+    <div class="header">Описание</div>
+
+    <div class="description">
+        @Html.Editor(nameof(product.Description))
+    </div>
+
+</div>
+
+
+<link rel="stylesheet" href="~/css/viewProd.css" />
+<link rel="stylesheet" href="~/css/editProd.css" />
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/lib/handlebars.js/handlebars.js"></script>
+<script src="~/js/handtemp.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        SubmitLoadFileEvent();
+
+        RenderLoadFileEvent();
+    });
+</script>
+
+<script>
+    var MainImageName;
+    const selectedClass = ["selectedImageContainer"];
+
+    function SubmitLoadFileEvent() {
+        $("#productForm").submit(function (event) {
+
+            var allImagesContainers = $(document).find('.imageContainer');
+            var mainImageFileName = "";
+
+            allImagesContainers.each(function (idx) {
+
+                if ($(this).hasClass(selectedClass)) {
+                    mainImageFileName = $(this).find(".imagePreview").first().attr("filename");
+                }
+            });
+
+            var formData = new FormData();
+
+            $.each(imageFiles, function (idx, file) {
+                if (mainImageFileName != file.name) {
+                    formData.append('images[]', file);
+                }
+                else {
+                    formData.append('mainImage', file);
+                }
+            });
+
+
+            $.ajax({
+                type: "POST",
+                url: "UploadFile",
+                data: formData,
+                enctype: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false
+            });
+
+            return true;
+        });
+    }
+    function RenderLoadFileEvent() {
+        $("#imagesFileInput").change(function () {
+
+            $("#images").empty();
+
+            imageFiles = $('#imagesFileInput').prop('files');
+
+            $.each(imageFiles, function (idx, file) {
+
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function (event) {
+
+                        if (idx == 0) {
+
+                            $('#previewMainImage').empty();
+                            CreateFromTemplate("#previewMainImage", "#imgTemplate", { filename: file.name, src: event.target.result });
+                            CreateFromTemplate("#images", "#imgTemplate", { filename: file.name, src: event.target.result, selected: selectedClass });
+                        }
+                        else {
+                            if (file.name == MainImageName) {
+
+                                var selectedContainers = $("#images ." + selectedClass);
+
+                                selectedContainers.each(function () {
+                                    $(this).removeClass(selectedClass);
+                                });
+
+                                $('#previewMainImage').empty();
+                                CreateFromTemplate("#previewMainImage", "#imgTemplate", { filename: file.name, src: event.target.result });
+                                CreateFromTemplate("#images", "#imgTemplate", { filename: file.name, src: event.target.result, selected: selectedClass });
+                            }
+                            else {
+                                CreateFromTemplate("#images", "#imgTemplate", { filename: file.name, src: event.target.result });
+                            }
+                        }
+
+
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    }
+
+
+    $(document).on('click', '#images .imageContainer', function () {
+        var thisImageContainer = $(this);
+
+        var srcSelectedImage = thisImageContainer.children(".imagePreview").first().attr("src");
+        var mainImageContainer = $(document).find("#previewMainImage .imagePreview").first();
+
+        changeSrc(srcSelectedImage, mainImageContainer);
+
+        thisImageContainer.addClass(selectedClass);
+
+        var allImagesContainers = $(document).find('#images .imageContainer');
+
+        allImagesContainers.each(function () {
+            if (thisImageContainer.find(".imagePreview").first().attr("filename") != $(this).find(".imagePreview").first().attr("filename")) {
+                $(this).removeClass(selectedClass);
+            }
+        });
+    });
+
+    function changeSrc(scr, target) {
+        target.attr("src", scr);
+    }
+
+    function scrollButton(self) {
+        var direction = self.getAttribute("direction");
+
+        var previewImagesNode = document.querySelector("#images");
+
+        var value = 0;
+        if (direction == "up") {
+            value = previewImagesNode.scrollTop - previewImagesNode.clientHeight;
+        }
+        if (direction == "down") {
+            value = previewImagesNode.scrollTop + previewImagesNode.clientHeight;
+        }
+
+        previewImagesNode.scroll({
+            top: (0, value),
+            behavior: 'smooth'
+        });
+
+    }
+
+    $(document).on('change', "input[type='checkbox']", function () {
+        var thisElem = $(this);
+
+        if (thisElem.attr("value") == "true") {
+            thisElem.attr("value", "false");
+        }
+        else {
+            thisElem.attr("value", "true");
+        }
+    });
+
+</script>
+
+
+<script type="text/x-handlebars-template" id="imgTemplate">
+    <div class="imageContainer {{selected}}">
+        <img class="imagePreview" src="{{src}}" filename="{{filename}}">
+    </div>
+</script>
