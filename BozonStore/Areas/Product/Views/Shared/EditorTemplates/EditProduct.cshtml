@@ -7,10 +7,11 @@
 
     var prodProperties = ViewData.ModelMetadata.Properties;
     var product = ViewData.Model;
-
 }
+
 <div>
-    <input type="text" name="@prodProperties[nameof(ViewData.Model.Title)].Name" value="@product.GetType().GetProperty(prodProperties[nameof(ViewData.Model.Title)].Name).GetValue(product, null)" />
+    @Html.Editor(nameof(product.Title))
+    <span class="field-validation-valid" data-valmsg-for="@nameof(product.Title)" data-valmsg-replace="true"></span>
 </div>
 
 <hr />
@@ -33,7 +34,8 @@
             @prodProperties[nameof(ViewData.Model.Price)].DisplayName
         </div>
         <div class="prodPrice">
-            <input type="text" name="@prodProperties[nameof(ViewData.Model.Price)].Name" value="@product.GetType().GetProperty(prodProperties[nameof(ViewData.Model.Price)].Name).GetValue(product, null)" />
+            @Html.Editor(nameof(product.Price))
+            <div class="field-validation-valid" data-valmsg-for="@nameof(product.Price)" data-valmsg-replace="true"></div>
         </div>
     </div>
 </div>
@@ -70,7 +72,7 @@
                             }
                             else
                             {
-                                <input type="checkbox" name="@property.Name" value="false"/>
+                                <input type="checkbox" name="@property.Name" value="false" />
                             }
                         </div>
                     </div>
@@ -82,7 +84,7 @@
                             @property.DisplayName
                         </div>
                         <div class="propertyValue">
-                            <input type="text" name="@property.Name" value="@product.GetType().GetProperty(property.Name).GetValue(product, null)" />
+                            @Html.Editor(@property.Name)
                         </div>
                     </div>
                 }
@@ -104,9 +106,7 @@
     <div class="header">Описание</div>
 
     <div class="description">
-        <textarea name="@prodProperties[nameof(ViewData.Model.Description)].Name">
-            @product.GetType().GetProperty(prodProperties[nameof(ViewData.Model.Description)].Name).GetValue(product, null)
-        </textarea>
+        @Html.Editor(nameof(product.Description))
     </div>
 
 </div>
