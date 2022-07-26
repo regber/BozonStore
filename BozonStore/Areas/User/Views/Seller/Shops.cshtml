@@ -4,18 +4,51 @@
 @{
 }
 @model IEnumerable<Shop>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/handlebars.js/handlebars.min.js"></script>
+<script src="~/js/handtemp.js"></script>
+<link rel="stylesheet" href="~/css/shops.css" />
+
 <h3>Страница с магазинами</h3>
 
-<div>
-    @foreach (var shop in Model)
-    {
-    <div>
-        <a href="@Url.Action("Shop", new {id=shop.Id})">@shop.Title</a>
-        <a href="@Url.Action("DeleteShop", new {id=shop.Id})">Delete Shop</a>
-    </div>
+<div id="Shops">
+    <a class="shopContainer addShopButton" href="@Url.Action("CreateShop","Seller",new {area="User"})">
+        <img src="~/Content/Site/Shop/plus.svg" />
+    </a>
+</div>
+
+<script>
+    $(document).ready(function () {
+        loadShops();
+    });
+
+    let loadShops = () => {
+        let shops =@Html.Raw(@JsonConvert.SerializeObject(Model));
+
+        shops.forEach(function (shop) {
+            addShop("#Shops", shop);
+        });
     }
 
+    let addShop = (target, shop) => {
+
+        CreateFromTemplate(target, "#shopTemplate", { id: shop.Id, title: shop.Title });
+    }
+</script>
+
+<script type="text/x-handlebars-template" id="shopTemplate">
+    <div class="shopContainer" id="{{id}}">
         <div>
-            <a href="@Url.Action("CreateShop")">Добавить новый магазин</a>
+            <p class="shopTitle">{{title}}</p>
         </div>
-</div>
+        <div class="inline-buttons">
+            <div class="button">
+                <a onclick="window.location.href='/User/Seller/Shop?id='+{{id}}">Просмот.</a>
+            </div>
+            <div class="button">
+                <a onclick="window.location.href='/User/Seller/DeleteShop?id='+{{id}}">Удалить</a>
+            </div>
+        </div>
+    </div>
+</script>
