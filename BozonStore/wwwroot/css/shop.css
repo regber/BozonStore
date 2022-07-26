@@ -1,0 +1,33 @@
+﻿#ShopProducts {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+}
+#ShopProducts .prodContainer {
+    display: inline-grid;
+    cursor: default;
+}
+
+#ShopProducts .prodContainer.addProductButton {
+    display: flex;
+}
+#ShopProducts .prodContainer.addProductButton:hover {
+    cursor: pointer;
+}
+#ShopProducts .prodContainer.addProductButton:hover>img {
+    filter: brightness(75%);
+}
+
+#ShopProducts .prodContainer.addProductButton>img {
+    display: flex;
+    scale: 0.5;
+}
+
+#ShopProducts .prodContainer .button {
+    display: inline-grid;
+}
+
+#ShopProducts .prodContainer .inline-buttons {
+    display: inline-flex;
+    justify-content: space-between;
+}
+

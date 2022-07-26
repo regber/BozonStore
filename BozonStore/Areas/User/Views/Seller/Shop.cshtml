@@ -1,28 +1,80 @@
 ﻿@{
-    
+
 }
 
 @model ShopProducts
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/handlebars.js/handlebars.min.js"></script>
+<script src="~/js/handtemp.js"></script>
+<link rel="stylesheet" href="~/css/shop.css" />
+
 <h3>Товары в магазине</h3>
-<div>
-    @foreach (var prod in @Model.Products)
-    {
+<div id="ShopProducts">
+    <a class="prodContainer addProductButton" href="@Url.Action("CreateProduct","Product",new {area="Product"})">
+        <img src="~/Content/Site/Shop/plus.svg" />
+    </a>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        loadProducts();
+    });
+
+    let loadProducts = () => {
+        let products =@Html.Raw(@JsonConvert.SerializeObject(Model.Products));
+
+        products.forEach(function (product) {
+            addProduct("#ShopProducts", product);
+        });
+    }
+
+    let getMainImage = (prod) => {
+
+        let prodId = prod.Id;
+        let mainImageName = "";
+
+        prod.Images.forEach(function (image, index) {
+
+            if (image.MainImage == true) {
+
+                mainImageName = image.Name;
+            }
+        });
+
+        let url = "/Content/Proposal/" + prodId + "/" + mainImageName;
+
+        return url;
+    }
+
+
+    let addProduct = (target, prod) => {
+
+        let mainImageUrl = getMainImage(prod);
+
+        CreateFromTemplate(target, "#prodTemplate", { id: prod.Id, src: mainImageUrl, price: new Intl.NumberFormat("ru", { style: "currency", currency: "RUB", minimumFractionDigits: 0 }).format(prod.Price), title: prod.Title });
+    }
+</script>
+
+<script type="text/x-handlebars-template" id="prodTemplate">
+    <div class="prodContainer" id="{{id}}" >
         <div>
-            <div>@prod.Title</div>
-            <div>
-                <img width="100" src="@Url.Content("~/Content/Proposal/"+@prod.Id+"/"+ @prod.Images.FirstOrDefault(i=>i.MainImage)?.Name)"/>
+            <img class="prodImage" src="{{src}}">
+        </div>
+        <div>
+            <p class="prodPrice">{{price}}</p>
+        </div>
+        <div>
+            <p class="prodTitle">{{title}}</p>
+        </div>
+        <div class="inline-buttons">
+            <div class="button">
+                <a onclick="window.location.href='/Product/Product/EditProduct?id='+{{id}}+'&shopId='+@Model.ShopId">Редакт.</a>
             </div>
-            <div>@prod.Price</div>
-            <div>
-                <a href="@Url.Action("EditProduct","Product",new {id=prod.Id, shopId=Model.ShopId, area="Product" })">Edit</a>
-            </div>
-            <div>
-                <a href="@Url.Action("DeleteProduct","Product",new {id=prod.Id , shopId=Model.ShopId,area="Product"  })">Delete</a>
+            <div class="button">
+                <a onclick="window.location.href='/Product/Product/DeleteProduct?id='+{{id}}+'&shopId='+@Model.ShopId">Удалить</a>
             </div>
         </div>
-    }
-    <div>
-        <a href="@Url.Action("CreateProduct","Product",new {area="Product"})">Add New Product</a>
     </div>
-</div>
+</script>
