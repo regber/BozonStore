@@ -34,7 +34,7 @@
         @if (User.IsInRole("Buyer"))
         {
             <script src="~/js/buy.js"></script>
-            <div class="buyButton">
+            <div class="button">
                 @{
                     var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + product.Id; ;
                 }

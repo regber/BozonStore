@@ -58,7 +58,7 @@ main {
     overflow: hidden;
 }
 
-.buyButton{
+.button{
     background-color: #005bff;
     border-radius: 8px;
     padding: 5px 10px;
@@ -66,11 +66,11 @@ main {
     cursor: pointer;
 }
 
-.buyButton:hover{
+.button:hover{
     background-color: #4083ff;
 }
 
-.buyButton a{
+.button a{
     color: white !important;
 }
 
