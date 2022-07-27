@@ -3,4 +3,78 @@
 *@
 @{
 }
+@model IEnumerable<Purchase>
 <h3>Окно с покупками</h3>
+
+<div id="PurchasedProducts">
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/handlebars.js/handlebars.min.js"></script>
+<script src="~/js/handtemp.js"></script>
+<link rel="stylesheet" href="~/css/purchase.css" />
+
+
+<script>
+        $(document).ready(function () {
+
+            loadPurchases();
+        });
+
+        let loadPurchases = () => {
+            let purchases =@Html.Raw(@JsonConvert.SerializeObject(Model));
+
+            purchases.forEach(function (purchase) {
+                addPurchase("#PurchasedProducts", purchase);
+            });
+        }
+
+        let getMainImage = (prod) => {
+
+            let prodId = prod.Id;
+            let mainImageName = "";
+
+            prod.Images.forEach(function (image, index) {
+
+                if (image.MainImage == true) {
+
+                    mainImageName = image.Name;
+                }
+            });
+
+            let url = "/Content/Proposal/" + prodId + "/" + mainImageName;
+
+            return url;
+        }
+
+
+        let addPurchase = (target, purchase) => {
+
+            let product = purchase.Product;
+            console.log(product);
+            let mainImageUrl = getMainImage(product);
+            console.log(mainImageUrl);
+
+            CreateFromTemplate(target, "#purchaseTemplate", { id: product.Id, src: mainImageUrl, count: purchase.Count, title: product.Title, description: product.Description });
+        }
+    </script>
+
+<script type="text/x-handlebars-template" id="purchaseTemplate">
+    <div class="purchaseContainer" onclick="window.location.href='/Product/Product/ViewProduct?id='+{{id}}">
+        <div>
+            <p class="purchaseTitle">{{title}}</p>
+        </div>
+        <div class="mainInfo">
+            <div>
+                <img class="purchaseImage" src="{{src}}">
+            </div>
+            <div class="description">
+                <textarea  readonly="readonly">{{description}}</textarea>
+            </div>
+        </div>
+        <div>
+            <p class="purchaseCount">Куплено: {{count}}</p>
+        </div>
+    </div>
+</script>
