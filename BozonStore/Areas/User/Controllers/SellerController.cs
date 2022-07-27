@@ -51,6 +51,11 @@ namespace BozonStore.Controllers
         {
             var shop = db.Shops.FirstOrDefault(s => s.Id == id);
 
+            if(shop==null)
+            {
+                return RedirectToAction(nameof(this.Shops));
+            }
+
             return View(shop);
         }
 
