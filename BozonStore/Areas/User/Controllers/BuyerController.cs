@@ -23,7 +23,16 @@ namespace BozonStore.Areas.User.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var buyer = db.Buyers.Include(b=>b.Purchases)
+                                 .ThenInclude(p=>p.Product)
+                                 .ThenInclude(prod=>prod.Images)
+                                 .FirstOrDefault(b => b.Login == HttpContext.User.Identity.Name);
+
+            IEnumerable<Purchase> purchases;
+
+            purchases = buyer == null ? Enumerable.Empty<Purchase>() : buyer.Purchases;
+
+            return View(purchases);
         }
 
         public void AddProductToShopCart(int prodId)
