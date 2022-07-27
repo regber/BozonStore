@@ -24,8 +24,8 @@
     font-size: 18px;
 }
 
-#ProductMainInfo .button{
-    margin: 0 0 0 auto;
+#ProductMainInfo .button {
+    float: right;
 }
 
 

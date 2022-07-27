@@ -69,12 +69,8 @@
             <p class="prodTitle">{{title}}</p>
         </div>
         <div class="inline-buttons">
-            <div class="button">
-                <a onclick="window.location.href='/Product/Product/EditProduct?id='+{{id}}+'&shopId='+@Model.ShopId">Редакт.</a>
-            </div>
-            <div class="button">
-                <a onclick="window.location.href='/Product/Product/DeleteProduct?id='+{{id}}+'&shopId='+@Model.ShopId">Удалить</a>
-            </div>
+            <a class="button" onclick="window.location.href='/Product/Product/EditProduct?id='+{{id}}+'&shopId='+@Model.ShopId">Редакт.</a>
+            <a class="button" onclick="window.location.href='/Product/Product/DeleteProduct?id='+{{id}}+'&shopId='+@Model.ShopId">Удалить</a>
         </div>
     </div>
 </script>

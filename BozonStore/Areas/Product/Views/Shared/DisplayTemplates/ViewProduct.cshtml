@@ -34,12 +34,9 @@
         @if (User.IsInRole("Buyer"))
         {
             <script src="~/js/buy.js"></script>
-            <div class="button">
-                @{
-                    var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + product.Id; ;
-                }
-                <a onclick="AddProductToShopCart(event,'@url')">В корзину</a>
-            </div>
+            
+            var url = Url.Action("AddProductToShopCart", "Buyer", new { area = "User" }) + "?prodId=" + product.Id; ;
+            <a class="button" onclick="AddProductToShopCart(event,'@url')">В корзину</a>
         }
     </div>
 </div>

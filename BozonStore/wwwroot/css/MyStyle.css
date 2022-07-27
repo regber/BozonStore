@@ -67,17 +67,16 @@ main {
     padding: 5px 10px;
     width: max-content;
     cursor: pointer;
+    color: white !important;
 }
 
 .button:hover{
     background-color: #4083ff;
+    text-decoration: none;
 }
 
-.button a{
-    color: white !important;
-}
-.button a:hover{
-    text-decoration: none;
+input.button {
+    border-style: none;
 }
 
 

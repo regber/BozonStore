@@ -43,12 +43,8 @@
             <p class="shopTitle">{{title}}</p>
         </div>
         <div class="inline-buttons">
-            <div class="button">
-                <a onclick="window.location.href='/User/Seller/Shop?id='+{{id}}">Просмот.</a>
-            </div>
-            <div class="button">
-                <a onclick="window.location.href='/User/Seller/DeleteShop?id='+{{id}}">Удалить</a>
-            </div>
+            <a class="button" onclick="window.location.href='/User/Seller/Shop?id='+{{id}}">Просмот.</a>
+            <a class="button" onclick="window.location.href='/User/Seller/DeleteShop?id='+{{id}}">Удалить</a>
         </div>
     </div>
 </script>
