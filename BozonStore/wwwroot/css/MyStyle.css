@@ -76,6 +76,9 @@ main {
 .button a{
     color: white !important;
 }
+.button a:hover{
+    text-decoration: none;
+}
 
 
 
