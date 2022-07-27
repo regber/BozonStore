@@ -45,6 +45,28 @@ namespace BozonStore.Controllers
 
             return RedirectToAction("Shops");
         }
+
+        [HttpGet]
+        public IActionResult DeleteShop(int id)
+        {
+            var shop = db.Shops.FirstOrDefault(s => s.Id == id);
+
+            return View(shop);
+        }
+
+        [HttpPost]
+        [ActionName("DeleteShop")]
+        public IActionResult DeleteThisShop(int id)
+        {
+            var shop = db.Shops.FirstOrDefault(s=>s.Id==id);
+
+            db.Shops.Remove(shop);
+
+            db.SaveChanges();
+
+            return RedirectToAction(nameof(this.Shops));
+        }
+
         [HttpGet]
         public IActionResult Shop(int id)
         {
