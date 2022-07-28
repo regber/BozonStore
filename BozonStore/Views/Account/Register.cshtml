@@ -2,10 +2,23 @@
     ViewData["Title"] = "Register Page";
 
     //defaultTypeId необходим для выбора позиции выпадающего списка после редиректа
-    if (!ViewData.ContainsKey("defaultTypeId"))
+    if(Model is Buyer)
+    {
+        ViewData["defaultTypeId"] = (int)UserType.Buyer;
+    }
+    else if (Model is Seller)
+    {
+        ViewData["defaultTypeId"] = (int)UserType.Seller;
+    }
+    else if (Model is Delivery)
+    {
+        ViewData["defaultTypeId"] = (int)UserType.Delivery;
+    }
+    else
     {
         ViewData["defaultTypeId"] = 0;
     }
+
 
 }
 <h2>Регистрация пользователя</h2>
@@ -28,12 +41,13 @@
                 e.preventDefault();
 
                 userTypeId = $('#selector').val();
-
-                $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' + userTypeId)
+                console.log(userTypeId);
+                $('#userRegistrationForm').load('@Url.Action("GetRegisterForm", "Account")?userTypeId=' + userTypeId)
             });
 
-            $('#userRegistrationForm').load('@Url.Action("UserTypeSelector", "Account")?userTypeId=' +@ViewData["defaultTypeId"]  );
+            $('#userRegistrationForm').load('@Url.Action("GetRegisterForm", "Account")?userTypeId=' +@ViewData["defaultTypeId"]);
             $('#selector').val(@ViewData["defaultTypeId"]);
         });
     </script>
+
 }

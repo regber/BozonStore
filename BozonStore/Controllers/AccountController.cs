@@ -15,6 +15,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using BozonStore.Extension;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BozonStore.Common;
+using BozonStore.Models.PageModel;
+using System.Reflection;
+using Newtonsoft.Json;
 
 
 
@@ -144,6 +147,57 @@ namespace BozonStore.Controllers
 
                 return View("Register");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegisterUser(Dictionary<string, string> userFormProperties)
+        {
+            var userType = Assembly.GetExecutingAssembly().GetType(userFormProperties["UserType"]);
+
+            dynamic user = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(userFormProperties), userType);
+
+            CheckUser(ModelState, user);
+
+            if(ModelState.IsValid)
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+                Authenticate(user);
+
+                return View("RegistrationConfirm");
+            }
+            else
+            {
+                TempData.Put("user", (object)user);
+                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
+
+                //ViewData["defaultTypeId"] = 1;
+
+                return View("Register", user);
+            }
+        }
+
+        public IActionResult GetRegisterForm(int userTypeId)
+        {
+
+            Type userType= typeof(Buyer);
+            User user = TempData.Get<Buyer>("user");
+
+            if (userTypeId == (int)UserType.Seller)
+            {
+                userType = typeof(Seller);
+                user = TempData.Get<Seller>("user");
+            }
+            if (userTypeId == (int)UserType.Delivery)
+            {
+                userType = typeof(Delivery);
+                user = TempData.Get<Delivery>("user");
+            }
+
+            AddErrorsInToPartialView(ModelState);
+
+            return ViewComponent("CreateAccountForm", new { userType = userType.FullName, user = user });
         }
 
         public IActionResult UserTypeSelector(int userTypeId)
