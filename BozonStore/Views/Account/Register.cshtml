@@ -16,7 +16,7 @@
     }
     else
     {
-        ViewData["defaultTypeId"] = 0;
+        ViewData["defaultTypeId"] = -1;
     }
 
 
@@ -37,6 +37,8 @@
     <script>
         var userTypeId;
         $(document).ready(function () {
+            $('#selector').append(`<option disabled selected hidden value="-1">-Выберите-</option>`);
+            
             $('#selector').change(function (e) {
                 e.preventDefault();
 

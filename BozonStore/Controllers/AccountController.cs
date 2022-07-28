@@ -104,6 +104,10 @@ namespace BozonStore.Controllers
 
         public IActionResult GetRegisterForm(int userTypeId)
         {
+            if (userTypeId == -1)
+            {
+                return NotFound();
+            } 
 
             Type userType= typeof(Buyer);
             User user = TempData.Get<Buyer>("user");
