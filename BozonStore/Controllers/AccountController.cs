@@ -77,80 +77,6 @@ namespace BozonStore.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterBuyer(Buyer buyer)
-        {
-            CheckUser(ModelState, buyer);
-
-            if (ModelState.IsValid)
-            {
-                db.Buyers.Add(buyer);
-                db.SaveChanges();
-                Authenticate(buyer);
-
-                return View("RegistrationConfirm");
-            }
-            else
-            {
-                TempData.Put("Buyer", buyer);
-                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
-                ViewData["defaultTypeId"] = 0;
-
-                return View("Register");
-            }
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RegisterSeller(Seller seller)
-        {
-            CheckUser(ModelState, seller);
-            
-            if (ModelState.IsValid)
-            {
-                db.Sellers.Add(seller);
-                db.SaveChanges();
-                Authenticate(seller);
-
-                return View("RegistrationConfirm");
-            }
-            else
-            {
-                TempData.Put("Seller", seller);
-                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
-                ViewData["defaultTypeId"] = 1;
-
-                return View("Register");
-            }
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RegisterDelivery(Delivery delivery)
-        {
-            CheckUser(ModelState, delivery);
-
-            if (ModelState.IsValid)
-            {
-                db.Deliveries.Add(delivery);
-                db.SaveChanges();
-                Authenticate(delivery);
-
-                return View("RegistrationConfirm");
-            }
-            else
-            {
-                TempData.Put("Delivery", delivery);
-                TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
-                ViewData["defaultTypeId"] = 2;
-
-                return View("Register");
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult RegisterUser(Dictionary<string, string> userFormProperties)
         {
             var userType = Assembly.GetExecutingAssembly().GetType(userFormProperties["UserType"]);
@@ -171,8 +97,6 @@ namespace BozonStore.Controllers
             {
                 TempData.Put("user", (object)user);
                 TempData.Put("ModelState", ModelStateErrorToDic(ModelState));
-
-                //ViewData["defaultTypeId"] = 1;
 
                 return View("Register", user);
             }
@@ -199,23 +123,6 @@ namespace BozonStore.Controllers
 
             return ViewComponent("CreateAccountForm", new { userType = userType.FullName, user = user });
         }
-
-        public IActionResult UserTypeSelector(int userTypeId)
-        {
-            AddErrorsInToPartialView(ModelState);
-
-            if (userTypeId == 0)
-                return PartialView("_RegisterBuyer", TempData.Get<Buyer>("Buyer"));
-
-            if (userTypeId == 1)
-                return PartialView("_RegisterSeller", TempData.Get<Seller>("Seller"));
-
-            if (userTypeId == 2)
-                return PartialView("_RegisterDelivery", TempData.Get<Delivery>("Delivery"));
-
-            return NotFound();
-        }
-
 
 
         private void CheckUser(ModelStateDictionary modelState, User user)
