@@ -7,6 +7,7 @@ namespace BozonStore.Models.UserModel
     [System.Serializable]
     public class User
     {
+        [ScaffoldColumn(false)]
         public int Id { get; set; }
 
 
