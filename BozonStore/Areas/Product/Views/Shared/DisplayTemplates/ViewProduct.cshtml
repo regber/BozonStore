@@ -31,7 +31,7 @@
         <div class="prodPrice">
             @string.Format("{0:C0}", product.Price)
         </div>
-        @if (User.IsInRole("Buyer"))
+        @if (User.IsInRole("Buyer") && Context.Request.Query["FromPurchases"]!="true")
         {
             <script src="~/js/buy.js"></script>
             
