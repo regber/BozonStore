@@ -15,6 +15,10 @@
     <script>
 
         $(document).ready(function () {
+
+        $('#selector').append(`<option disabled selected hidden value="-1">-Выберите-</option>`,);
+        $('#selector').val("-1");
+
         $('#selector').change(function (e) {
 
             var selectorValue=$('#selector').val()

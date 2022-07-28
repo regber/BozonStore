@@ -15,6 +15,9 @@
         var currentSelector = $(".selector").last();
         var currentProdForm = $('.prodForm').last();
 
+        currentSelector.append(`<option disabled selected hidden value="-1">-Выберите-</option>`,);
+        currentSelector.val("-1");
+
         $('.selector').change(function (e) {
             var selectorValue = currentSelector.val();
             currentProdForm.load('@Url.Action("ChildTypeView", "Product",new {area="Product"  })?parentType=' + selectorValue);
